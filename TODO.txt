@@ -1,0 +1,24 @@
+* Tidy code and unit test
+
+
+
+* Output palette sizes debug info
+
+
+
+* Warn if a specific tile runs out of colours
+    Try to pick the nearest best alternative colour?
+    Or automatically strip out the processed pixels and reprocess the tile with any remaining, to create automatic overlays?
+
+
+
+* Detect identical output sprite data from the output binary point of view and avoid
+    Instead use the original index for screen output
+
+
+
+* Add char and colour screen output
+
+
+
+* Make the inputs and outputs configurable via a text config file, with includes

@@ -14,6 +14,8 @@ import java.util.HashSet;
 public class Main {
     public static void main(String[] args) throws Exception {
         String path = "src/test/resources/TestImage1.png";
+//        String path = "C:\\Users\\Martin Piper\\Downloads\\town_rpg_pack\\town_rpg_pack\\graphics\\tiles-map.png";
+//        String path = "C:\\Users\\Martin Piper\\Downloads\\dirt-tiles.png";
         BufferedImage img = ImageIO.read(new File(path));
         int imageWidth = img.getWidth();
         int imageHeight = img.getHeight();
@@ -27,9 +29,6 @@ public class Main {
 
         ArrayList<HashMap<Color,Integer>> palettes = new ArrayList<>();
 
-        int numBitplanes = 3;
-        ByteBuffer[] bitplaneData = new ByteBuffer[numBitplanes];
-
         int paletteMaxLen = 8;
         HashMap<Color , Integer> forcedColourIndex = new HashMap<>();
         forcedColourIndex.put(new Color(255, 0, 255) , forcedColourIndex.size());
@@ -37,17 +36,22 @@ public class Main {
         int tileWidth = 16 , tileHeight = 16;
         int startX = 0 , startY = 0;
 
+        int numBitplanes = 3;
+        ByteBuffer[] bitplaneData = new ByteBuffer[numBitplanes];
         for (int bp = 0 ; bp < numBitplanes ; bp++) {
-            bitplaneData[bp] = ByteBuffer.allocate((imageWidth * imageHeight)/8);
+            bitplaneData[bp] = ByteBuffer.allocate((2*imageWidth * imageHeight)/8);
         }
 
         for (int y = startY ; y < imageHeight ; y+=tileHeight) {
-            for (int x = startX ; x < imageWidth ; x+=tileWidth) {
+            for (int x = startX ; x < imageWidth ; ) {
                 // First collect all unique colours used in the tile
                 HashSet<Color> usedColours = new HashSet<>();
                 for (int ty = 0 ; ty < tileHeight ; ty++) {
                     for (int tx = 0 ; tx < tileWidth ; tx++) {
-                        usedColours.add(imageColours[x + tx + ((y + ty) * imageWidth)]);
+                        Color colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                        if (colour != null) {
+                            usedColours.add(colour);
+                        }
                     }
                 }
 
@@ -94,6 +98,9 @@ public class Main {
 
                 // Update any new colours into the best palette
                 for (Color colour : usedColours) {
+                    if (palette.size() >= paletteMaxLen) {
+                        break;
+                    }
                     if (!palette.containsKey(colour)) {
                         palette.put(colour, palette.size());
                     }
@@ -105,8 +112,19 @@ public class Main {
                 byte[] theTile = new byte[tileWidth * tileHeight];
                 for (int ty = 0 ; ty < tileHeight ; ty++) {
                     for (int tx = 0 ; tx < tileWidth ; tx++) {
+                        // If there is no colour then assume it's the first palette entry, which should be transparent
+                        theTile[tx + (ty * tileWidth)] = 0;
+
+                        // Then try to map the colour if it exists
                         Color colour = imageColours[x + tx + ((y + ty) * imageWidth)];
-                        theTile[tx + (ty * tileWidth)] = palette.get(colour).byteValue();
+                        if (colour != null) {
+                            Integer value = palette.get(colour);
+                            if (value != null) {
+                                theTile[tx + (ty * tileWidth)] = value.byteValue();
+                                // Remove the pixel, since it has been processed
+                                imageColours[x + tx + ((y + ty) * imageWidth)] = null;
+                            }
+                        }
                     }
                 }
                 // The pattern of pixels to pull from the linear row/column tile data into the bitplane data
@@ -147,9 +165,12 @@ public class Main {
                         0xe8,0xe9,0xea,0xeb,0xec,0xed,0xee,0xef,
                         0xf8,0xf9,0xfa,0xfb,0xfc,0xfd,0xfe,0xff
                 };
+                byte[][] bitplaneDataTemp = new byte[numBitplanes][(indexPick.length)/8];
+
                 for (int bp = 0 ; bp < numBitplanes ; bp++) {
                     int shiftedPixels = 0;
                     int shiftedPixelsCount = 0;
+                    int pi = 0;
                     for (int index = 0 ; index < indexPick.length ; index++) {
                         shiftedPixels = shiftedPixels << 1;
                         if ((theTile[indexPick[index]] & (1<<bp)) > 0) {
@@ -158,12 +179,33 @@ public class Main {
                         shiftedPixelsCount++;
 
                         if (shiftedPixelsCount == 8) {
-                            bitplaneData[bp].put((byte) shiftedPixels);
+                            bitplaneDataTemp[bp][pi]=(byte) shiftedPixels;
+                            pi++;
                             shiftedPixels = 0;
                             shiftedPixelsCount = 0;
                         }
                     }
                 }
+
+                for (int bp = 0 ; bp < numBitplanes ; bp++) {
+                    bitplaneData[bp].put(bitplaneDataTemp[bp]);
+                }
+
+                    // Now calculate if there is any data left
+                usedColours.clear();
+                for (int ty = 0 ; ty < tileHeight ; ty++) {
+                    for (int tx = 0 ; tx < tileWidth ; tx++) {
+                        Color colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                        if (colour != null) {
+                            usedColours.add(colour);
+                        }
+                    }
+                }
+                if (usedColours.size() > 1) {
+                    System.out.println("Stacked x=" + x + " y=" + y);
+                    continue;
+                }
+                x+=tileWidth;
             }
         }
 
@@ -172,6 +214,11 @@ public class Main {
             bitplaneData[bp].flip();
             fc.write(bitplaneData[bp]);
             fc.close();
+        }
+
+        System.out.println("num palettes=" + palettes.size());
+        for (HashMap<Color,Integer> palette : palettes) {
+            System.out.println("palette size=" + palette.size());
         }
         System.out.println("Foo");
     }

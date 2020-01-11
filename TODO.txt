@@ -1,3 +1,7 @@
+* Look for duplicate palettes
+
+
+
 * Tidy code and unit test
 
 

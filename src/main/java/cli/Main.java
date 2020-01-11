@@ -7,10 +7,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
+class ColorComparator implements Comparator<Color> {
+    public int compare(Color c1, Color c2)
+    {
+        return c1.getRGB() - c2.getRGB();
+    }
+}
 public class Main {
     public static void main(String[] args) throws Exception {
         String path = "src/test/resources/TestImage1.png";
@@ -42,10 +46,35 @@ public class Main {
             bitplaneData[bp] = ByteBuffer.allocate((2*imageWidth * imageHeight)/8);
         }
 
+        // Quantize tiles down to a maximum number of colours
+        for (int y = startY ; y < imageHeight ; y+=tileHeight) {
+            for (int x = startX ; x < imageWidth ; x+= tileWidth) {
+                HashMap<Color,Integer> usedColours = new HashMap<>();
+                for (int ty = 0 ; ty < tileHeight ; ty++) {
+                    for (int tx = 0 ; tx < tileWidth ; tx++) {
+                        Color colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                        if (colour != null) {
+                            if (!usedColours.containsKey(colour)) {
+                                usedColours.put(colour, 0);
+                            } else {
+                                Integer num = usedColours.get(colour);
+                                usedColours.put(colour, num+1);
+                            }
+                        }
+                    }
+                }
+//                while (usedColours.size() >= paletteMaxLen) {
+
+//                }
+            }
+        }
+
+
+
         for (int y = startY ; y < imageHeight ; y+=tileHeight) {
             for (int x = startX ; x < imageWidth ; ) {
                 // First collect all unique colours used in the tile
-                HashSet<Color> usedColours = new HashSet<>();
+                SortedSet<Color> usedColours = new TreeSet<>(new ColorComparator());
                 for (int ty = 0 ; ty < tileHeight ; ty++) {
                     for (int tx = 0 ; tx < tileWidth ; tx++) {
                         Color colour = imageColours[x + tx + ((y + ty) * imageWidth)];
@@ -70,7 +99,7 @@ public class Main {
                     }
 
                     // If all the colours are found in a palette, then early out
-                    if (numColoursMatching == usedColours.size()) {
+                    if (numColoursMatching == usedColours.size() || numColoursMatching >= palette.size()) {
                         bestFoundNum = numColoursMatching;
                         bestFoundPalette = currentPalette;
                         break;

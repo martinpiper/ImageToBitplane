@@ -7,3 +7,7 @@
 * Warn if a specific tile runs out of colours
     Try to pick the nearest best alternative colour?
     Done> Or automatically strip out the processed pixels and reprocess the tile with any remaining, to create automatic overlays?
+
+
+
+* Look for duplicate palettes

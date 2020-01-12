@@ -73,10 +73,18 @@ public class Main {
 
         for (int y = startY ; y < imageHeight ; y+=tileHeight) {
             for (int x = startX ; x < imageWidth ; ) {
+                System.out.println("Process x=" + x + " y=" + y);
                 // First collect all unique colours used in the tile
                 SortedSet<Color> usedColours = new TreeSet<>(new ColorComparator());
+                usedColours.addAll(forcedColourIndex.keySet());
                 for (int ty = 0 ; ty < tileHeight ; ty++) {
+                    if (usedColours.size() >= paletteMaxLen) {
+                        break;
+                    }
                     for (int tx = 0 ; tx < tileWidth ; tx++) {
+                        if (usedColours.size() >= paletteMaxLen) {
+                            break;
+                        }
                         Color colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                         if (colour != null) {
                             usedColours.add(colour);
@@ -85,9 +93,8 @@ public class Main {
                 }
 
                 // Find the best fit existing palette index
-                int bestFoundPalette = -1;
+                HashMap<Color,Integer> bestFoundPalette = null;
                 int bestFoundNum = -1;
-                int currentPalette = 0;
                 for (HashMap<Color,Integer> palette : palettes) {
                     int numColoursMatching = 0;
                     int numColoursMissing = usedColours.size();
@@ -101,28 +108,28 @@ public class Main {
                     // If all the colours are found in a palette, then early out
                     if (numColoursMatching == usedColours.size() || numColoursMatching >= palette.size()) {
                         bestFoundNum = numColoursMatching;
-                        bestFoundPalette = currentPalette;
+                        bestFoundPalette = palette;
                         break;
                     }
 
                     // Choose the best palette to extend if possible, greedy fill
                     if (numColoursMatching > bestFoundNum) {
                         // If there is room to extend the existing palette
-                        if (numColoursMissing < (paletteMaxLen - palette.size())) {
+                        // The "numColoursMatching > numColoursMissing" will favour palette reuse and sprite stacking instead of creating new palettes
+                        if (numColoursMatching > numColoursMissing || numColoursMissing < (paletteMaxLen - palette.size())) {
                             bestFoundNum = numColoursMatching;
-                            bestFoundPalette = currentPalette;
+                            bestFoundPalette = palette;
                             // Continue searching...
                         }
                     }
-                    currentPalette++;
                 }
 
                 HashMap<Color,Integer> palette;
-                if (bestFoundPalette < 0) {
+                if (bestFoundPalette == null) {
                     palette = (HashMap<Color, Integer>) forcedColourIndex.clone();
                     palettes.add(palette);
                 } else {
-                    palette = palettes.get(bestFoundPalette);
+                    palette = bestFoundPalette;
                 }
 
                 // Update any new colours into the best palette
@@ -220,7 +227,7 @@ public class Main {
                     bitplaneData[bp].put(bitplaneDataTemp[bp]);
                 }
 
-                    // Now calculate if there is any data left
+                // Now calculate if there is any data left
                 usedColours.clear();
                 for (int ty = 0 ; ty < tileHeight ; ty++) {
                     for (int tx = 0 ; tx < tileWidth ; tx++) {
@@ -230,7 +237,7 @@ public class Main {
                         }
                     }
                 }
-                if (usedColours.size() > 1) {
+                if (usedColours.size() > 0) {
                     System.out.println("Stacked x=" + x + " y=" + y);
                     continue;
                 }

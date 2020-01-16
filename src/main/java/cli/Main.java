@@ -11,10 +11,11 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String path = "src/test/resources/TestImage1.png";
+//        String path = "src/test/resources/TestImage1.png";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\town_rpg_pack\\town_rpg_pack\\graphics\\tiles-map.png";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\dirt-tiles.png";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\oldbridge.gif";
+        String path = "C:\\Users\\Martin Piper\\Downloads\\oldbridge cropped.bmp";
         BufferedImage img = ImageIO.read(new File(path));
         int imageWidth = img.getWidth();
         int imageHeight = img.getHeight();
@@ -30,9 +31,9 @@ public class Main {
 
         int paletteMaxLen = 8;
         HashMap<Integer , Integer> forcedColourIndex = new HashMap<>();
-        forcedColourIndex.put(new Color(255, 0, 255).getRGB() , forcedColourIndex.size());
+//        forcedColourIndex.put(new Color(255, 0, 255).getRGB() , forcedColourIndex.size());
 //        forcedColourIndex.put(new Color(164, 218, 244).getRGB() , forcedColourIndex.size());
-//        forcedColourIndex.put(new Color(119, 122, 133).getRGB() , forcedColourIndex.size());
+        forcedColourIndex.put(new Color(119, 122, 133).getRGB() , forcedColourIndex.size());
 
         int tileWidth = 16 , tileHeight = 16;
         int startX = 0 , startY = 0;
@@ -47,6 +48,9 @@ public class Main {
         for (int y = startY ; y < imageHeight ; y+=tileHeight) {
             for (int x = startX ; x < imageWidth ; x+= tileWidth) {
                 HashMap<Integer,Integer> usedColours = new HashMap<>();
+                for (Integer colour : forcedColourIndex.keySet()) {
+                    usedColours.put(colour , tileWidth*tileHeight);
+                }
                 for (int ty = 0 ; ty < tileHeight ; ty++) {
                     for (int tx = 0 ; tx < tileWidth ; tx++) {
                         Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
@@ -60,9 +64,54 @@ public class Main {
                         }
                     }
                 }
-//                while (usedColours.size() >= paletteMaxLen) {
+                // Reduce until it fits
+                while (usedColours.size() >= paletteMaxLen) {
+                    // Find the least used colour
+                    Integer chosenMinColour = null;
+                    int count = 0;
+                    for (Map.Entry<Integer,Integer> entry: usedColours.entrySet()) {
+                        if (chosenMinColour == null || entry.getValue() < count) {
+                            chosenMinColour = entry.getKey();
+                            count = entry.getValue();
+                        }
+                    }
 
-//                }
+                    Color source = new Color(chosenMinColour);
+                    Integer closestColourToMin = null;
+                    double difference = -1;
+                    for (Map.Entry<Integer,Integer> entry: usedColours.entrySet()) {
+                        // Skip the same colour
+                        if (chosenMinColour.equals(entry.getKey())) {
+                            continue;
+                        }
+
+                        Color destination = new Color(entry.getKey());
+                        double thisDifference = (source.getRed() - destination.getRed()) * (source.getRed() - destination.getRed());
+                        thisDifference += (source.getGreen() - destination.getGreen()) * (source.getGreen() - destination.getGreen());
+                        thisDifference += (source.getBlue() - destination.getBlue()) * (source.getBlue() - destination.getBlue());
+
+                        if (closestColourToMin == null || thisDifference < difference) {
+                            closestColourToMin = entry.getKey();
+                            difference = thisDifference;
+                        }
+                    }
+
+                    // Replace colours in the tile
+                    for (int ty = 0 ; ty < tileHeight ; ty++) {
+                        for (int tx = 0 ; tx < tileWidth ; tx++) {
+                            Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                            if (colour != null) {
+                                if (colour.equals(chosenMinColour)) {
+                                    imageColours[x + tx + ((y + ty) * imageWidth)] = closestColourToMin;
+                                }
+                            }
+                        }
+                    }
+
+                    // Update the used totals
+                    usedColours.put(closestColourToMin , usedColours.get(closestColourToMin) + usedColours.get(chosenMinColour));
+                    usedColours.remove(chosenMinColour);
+                }
             }
         }
 
@@ -113,8 +162,8 @@ public class Main {
                     if (numColoursMatching > bestFoundNum) {
                         // If there is room to extend the existing palette
                         // The "numColoursMatching > numColoursMissing" will favour palette reuse and sprite stacking instead of creating new palettes
-                        if (numColoursMatching > numColoursMissing || numColoursMissing < (paletteMaxLen - palette.size())) {
-//                         if (numColoursMissing < (paletteMaxLen - palette.size())) {
+//                        if (numColoursMatching > numColoursMissing || numColoursMissing < (paletteMaxLen - palette.size())) {
+                        if (numColoursMissing < (paletteMaxLen - palette.size())) {
                             bestFoundNum = numColoursMatching;
                             bestFoundPalette = palette;
                             // Continue searching...

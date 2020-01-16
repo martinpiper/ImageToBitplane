@@ -11,3 +11,7 @@
 
 
 * Look for duplicate palettes
+
+
+
+* Colour quantize for each tile

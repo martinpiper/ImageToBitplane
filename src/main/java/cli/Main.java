@@ -9,33 +9,30 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.*;
 
-class ColorComparator implements Comparator<Color> {
-    public int compare(Color c1, Color c2)
-    {
-        return c1.getRGB() - c2.getRGB();
-    }
-}
 public class Main {
     public static void main(String[] args) throws Exception {
         String path = "src/test/resources/TestImage1.png";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\town_rpg_pack\\town_rpg_pack\\graphics\\tiles-map.png";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\dirt-tiles.png";
+//        String path = "C:\\Users\\Martin Piper\\Downloads\\oldbridge.gif";
         BufferedImage img = ImageIO.read(new File(path));
         int imageWidth = img.getWidth();
         int imageHeight = img.getHeight();
-        Color[] imageColours = new Color[imageWidth * imageHeight];
+        Integer[] imageColours = new Integer[imageWidth * imageHeight];
         for (int y = 0 ; y < imageHeight ; y++) {
             for (int x = 0; x < imageWidth; x++) {
-                imageColours[x+(y*imageWidth)] = new Color(img.getRGB(x,y));
+                imageColours[x+(y*imageWidth)] = img.getRGB(x,y);
             }
         }
 
 
-        ArrayList<HashMap<Color,Integer>> palettes = new ArrayList<>();
+        ArrayList<HashMap<Integer,Integer>> palettes = new ArrayList<>();
 
         int paletteMaxLen = 8;
-        HashMap<Color , Integer> forcedColourIndex = new HashMap<>();
-        forcedColourIndex.put(new Color(255, 0, 255) , forcedColourIndex.size());
+        HashMap<Integer , Integer> forcedColourIndex = new HashMap<>();
+        forcedColourIndex.put(new Color(255, 0, 255).getRGB() , forcedColourIndex.size());
+//        forcedColourIndex.put(new Color(164, 218, 244).getRGB() , forcedColourIndex.size());
+//        forcedColourIndex.put(new Color(119, 122, 133).getRGB() , forcedColourIndex.size());
 
         int tileWidth = 16 , tileHeight = 16;
         int startX = 0 , startY = 0;
@@ -49,10 +46,10 @@ public class Main {
         // Quantize tiles down to a maximum number of colours
         for (int y = startY ; y < imageHeight ; y+=tileHeight) {
             for (int x = startX ; x < imageWidth ; x+= tileWidth) {
-                HashMap<Color,Integer> usedColours = new HashMap<>();
+                HashMap<Integer,Integer> usedColours = new HashMap<>();
                 for (int ty = 0 ; ty < tileHeight ; ty++) {
                     for (int tx = 0 ; tx < tileWidth ; tx++) {
-                        Color colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                        Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                         if (colour != null) {
                             if (!usedColours.containsKey(colour)) {
                                 usedColours.put(colour, 0);
@@ -75,7 +72,7 @@ public class Main {
             for (int x = startX ; x < imageWidth ; ) {
                 System.out.println("Process x=" + x + " y=" + y);
                 // First collect all unique colours used in the tile
-                SortedSet<Color> usedColours = new TreeSet<>(new ColorComparator());
+                SortedSet<Integer> usedColours = new TreeSet<>();
                 usedColours.addAll(forcedColourIndex.keySet());
                 for (int ty = 0 ; ty < tileHeight ; ty++) {
                     if (usedColours.size() >= paletteMaxLen) {
@@ -85,7 +82,7 @@ public class Main {
                         if (usedColours.size() >= paletteMaxLen) {
                             break;
                         }
-                        Color colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                        Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                         if (colour != null) {
                             usedColours.add(colour);
                         }
@@ -93,12 +90,12 @@ public class Main {
                 }
 
                 // Find the best fit existing palette index
-                HashMap<Color,Integer> bestFoundPalette = null;
+                HashMap<Integer,Integer> bestFoundPalette = null;
                 int bestFoundNum = -1;
-                for (HashMap<Color,Integer> palette : palettes) {
+                for (HashMap<Integer,Integer> palette : palettes) {
                     int numColoursMatching = 0;
                     int numColoursMissing = usedColours.size();
-                    for (Color colour : usedColours) {
+                    for (Integer colour : usedColours) {
                         if (palette.containsKey(colour)) {
                             numColoursMatching++;
                             numColoursMissing--;
@@ -117,6 +114,7 @@ public class Main {
                         // If there is room to extend the existing palette
                         // The "numColoursMatching > numColoursMissing" will favour palette reuse and sprite stacking instead of creating new palettes
                         if (numColoursMatching > numColoursMissing || numColoursMissing < (paletteMaxLen - palette.size())) {
+//                         if (numColoursMissing < (paletteMaxLen - palette.size())) {
                             bestFoundNum = numColoursMatching;
                             bestFoundPalette = palette;
                             // Continue searching...
@@ -124,16 +122,16 @@ public class Main {
                     }
                 }
 
-                HashMap<Color,Integer> palette;
+                HashMap<Integer,Integer> palette;
                 if (bestFoundPalette == null) {
-                    palette = (HashMap<Color, Integer>) forcedColourIndex.clone();
+                    palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
                     palettes.add(palette);
                 } else {
                     palette = bestFoundPalette;
                 }
 
                 // Update any new colours into the best palette
-                for (Color colour : usedColours) {
+                for (Integer colour : usedColours) {
                     if (palette.size() >= paletteMaxLen) {
                         break;
                     }
@@ -152,7 +150,7 @@ public class Main {
                         theTile[tx + (ty * tileWidth)] = 0;
 
                         // Then try to map the colour if it exists
-                        Color colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                        Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                         if (colour != null) {
                             Integer value = palette.get(colour);
                             if (value != null) {
@@ -231,7 +229,7 @@ public class Main {
                 usedColours.clear();
                 for (int ty = 0 ; ty < tileHeight ; ty++) {
                     for (int tx = 0 ; tx < tileWidth ; tx++) {
-                        Color colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                        Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                         if (colour != null) {
                             usedColours.add(colour);
                         }
@@ -253,7 +251,7 @@ public class Main {
         }
 
         System.out.println("num palettes=" + palettes.size());
-        for (HashMap<Color,Integer> palette : palettes) {
+        for (HashMap<Integer,Integer> palette : palettes) {
             System.out.println("palette size=" + palette.size());
         }
         System.out.println("Foo");

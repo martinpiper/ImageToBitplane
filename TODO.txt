@@ -2,6 +2,10 @@
 
 
 
+* Option to learn palettes from one or more input sections before outputting pixels
+
+
+
 * Detect identical output sprite data from the output binary point of view and avoid
     Instead use the original index for screen output
 

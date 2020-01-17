@@ -15,3 +15,11 @@
 
 
 * Colour quantize for each tile
+
+
+
+* Add char and colour screen output
+
+
+
+* Output palettes

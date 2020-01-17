@@ -20,9 +20,13 @@ public class Main {
         int imageWidth = img.getWidth();
         int imageHeight = img.getHeight();
         Integer[] imageColours = new Integer[imageWidth * imageHeight];
+        // Applies target platform colour limits first
         for (int y = 0 ; y < imageHeight ; y++) {
             for (int x = 0; x < imageWidth; x++) {
-                imageColours[x+(y*imageWidth)] = img.getRGB(x,y);
+//                imageColours[x+(y*imageWidth)] = img.getRGB(x,y);
+                Color colour = new Color(img.getRGB(x,y));
+                Color newColour = new Color((colour.getRed()>>4)<<4 , (colour.getGreen()>>4)<<4 , (colour.getBlue()>>4)<<4 );
+                imageColours[x+(y*imageWidth)] = newColour.getRGB();
             }
         }
 
@@ -30,10 +34,12 @@ public class Main {
         ArrayList<HashMap<Integer,Integer>> palettes = new ArrayList<>();
 
         int paletteMaxLen = 8;
+        int paletteMaxQuantize = 8;
         HashMap<Integer , Integer> forcedColourIndex = new HashMap<>();
 //        forcedColourIndex.put(new Color(255, 0, 255).getRGB() , forcedColourIndex.size());
 //        forcedColourIndex.put(new Color(164, 218, 244).getRGB() , forcedColourIndex.size());
         forcedColourIndex.put(new Color(119, 122, 133).getRGB() , forcedColourIndex.size());
+//        forcedColourIndex.put(new Color(0, 0, 0).getRGB() , forcedColourIndex.size());
 
         int tileWidth = 16 , tileHeight = 16;
         int startX = 0 , startY = 0;
@@ -43,6 +49,11 @@ public class Main {
         for (int bp = 0 ; bp < numBitplanes ; bp++) {
             bitplaneData[bp] = ByteBuffer.allocate((2*imageWidth * imageHeight)/8);
         }
+
+        ByteBuffer screenTileData = ByteBuffer.allocate((imageWidth * imageHeight)/tileWidth/tileHeight);
+        ByteBuffer screenColourData = ByteBuffer.allocate((imageWidth * imageHeight)/tileWidth/tileHeight);
+
+        byte currentTile = 0;
 
         // Quantize tiles down to a maximum number of colours
         for (int y = startY ; y < imageHeight ; y+=tileHeight) {
@@ -65,7 +76,7 @@ public class Main {
                     }
                 }
                 // Reduce until it fits
-                while (usedColours.size() >= paletteMaxLen) {
+                while (usedColours.size() > paletteMaxQuantize) {
                     // Find the least used colour
                     Integer chosenMinColour = null;
                     int count = 0;
@@ -140,7 +151,9 @@ public class Main {
 
                 // Find the best fit existing palette index
                 HashMap<Integer,Integer> bestFoundPalette = null;
+                byte bestFoundPaletteIndex = 0;
                 int bestFoundNum = -1;
+                byte currentPaletteIndex = 0;
                 for (HashMap<Integer,Integer> palette : palettes) {
                     int numColoursMatching = 0;
                     int numColoursMissing = usedColours.size();
@@ -155,6 +168,7 @@ public class Main {
                     if (numColoursMatching == usedColours.size() || numColoursMatching >= palette.size()) {
                         bestFoundNum = numColoursMatching;
                         bestFoundPalette = palette;
+                        bestFoundPaletteIndex = currentPaletteIndex;
                         break;
                     }
 
@@ -166,13 +180,17 @@ public class Main {
                         if (numColoursMissing < (paletteMaxLen - palette.size())) {
                             bestFoundNum = numColoursMatching;
                             bestFoundPalette = palette;
+                            bestFoundPaletteIndex = currentPaletteIndex;
                             // Continue searching...
                         }
                     }
+
+                    currentPaletteIndex++;
                 }
 
                 HashMap<Integer,Integer> palette;
                 if (bestFoundPalette == null) {
+                    bestFoundPaletteIndex = (byte)palettes.size();
                     palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
                     palettes.add(palette);
                 } else {
@@ -270,9 +288,14 @@ public class Main {
                     }
                 }
 
+                screenTileData.put(currentTile);
+                screenColourData.put((byte) (bestFoundPaletteIndex & 0xf));
+
+                // Advances the tile number, could do with duplicate check here
                 for (int bp = 0 ; bp < numBitplanes ; bp++) {
                     bitplaneData[bp].put(bitplaneDataTemp[bp]);
                 }
+                currentTile++;
 
                 // Now calculate if there is any data left
                 usedColours.clear();
@@ -293,16 +316,38 @@ public class Main {
         }
 
         for (int bp = 0 ; bp < numBitplanes ; bp++) {
-            FileChannel fc = new FileOutputStream("target/plane"+bp+".bin").getChannel();
+//            FileChannel fc = new FileOutputStream("target/sprite_plane"+bp+".bin").getChannel();
+            FileChannel fc = new FileOutputStream("target/background_plane"+bp+".bin").getChannel();
             bitplaneData[bp].flip();
             fc.write(bitplaneData[bp]);
             fc.close();
         }
 
+        FileChannel fc = new FileOutputStream("target/background_tiles.bin").getChannel();
+        screenTileData.flip();
+        fc.write(screenTileData);
+        screenColourData.flip();
+        fc.write(screenColourData);
+        fc.close();
+
+        fc = new FileOutputStream("target/PaletteData.bin").getChannel();
         System.out.println("num palettes=" + palettes.size());
+        int outNum = 0;
         for (HashMap<Integer,Integer> palette : palettes) {
             System.out.println("palette size=" + palette.size());
+            if (outNum < 16) {
+                byte[] thisPalette = new byte[paletteMaxLen * 2];
+                for (Map.Entry<Integer, Integer> entry : palette.entrySet()) {
+                    Color colour = new Color(entry.getKey());
+                    thisPalette[(entry.getValue() * 2)] = (byte) ((colour.getGreen() >> 4) << 4);
+                    thisPalette[(entry.getValue() * 2)] |= (byte) (colour.getRed() >> 4);
+                    thisPalette[(entry.getValue() * 2) + 1] = (byte) (colour.getBlue() >> 4);
+                }
+                fc.write(ByteBuffer.wrap(thisPalette));
+            }
+            outNum++;
         }
         System.out.println("Foo");
+        fc.close();
     }
 }

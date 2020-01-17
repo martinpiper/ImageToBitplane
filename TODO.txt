@@ -11,8 +11,4 @@
 
 
 
-* Add char and colour screen output
-
-
-
 * Make the inputs and outputs configurable via a text config file, with includes

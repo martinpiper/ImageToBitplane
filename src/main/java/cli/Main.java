@@ -10,12 +10,19 @@ import java.nio.channels.FileChannel;
 import java.util.*;
 
 public class Main {
+
+    public static Color ApplyColorLimitsFromColour(Color colour) {
+        Color newColour = new Color((colour.getRed()>>4)<<4 , (colour.getGreen()>>4)<<4 , (colour.getBlue()>>4)<<4 );
+        return newColour;
+    }
+
     public static void main(String[] args) throws Exception {
-//        String path = "src/test/resources/TestImage1.png";
+        String path = "src/test/resources/TestImage1.png";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\town_rpg_pack\\town_rpg_pack\\graphics\\tiles-map.png";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\dirt-tiles.png";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\oldbridge.gif";
-        String path = "C:\\Users\\Martin Piper\\Downloads\\oldbridge cropped.bmp";
+//        String path = "C:\\Users\\Martin Piper\\Downloads\\oldbridge cropped.bmp";
+//        String path = "C:\\Users\\Martin Piper\\Downloads\\map_9 - Copy.png";
         BufferedImage img = ImageIO.read(new File(path));
         int imageWidth = img.getWidth();
         int imageHeight = img.getHeight();
@@ -25,7 +32,7 @@ public class Main {
             for (int x = 0; x < imageWidth; x++) {
 //                imageColours[x+(y*imageWidth)] = img.getRGB(x,y);
                 Color colour = new Color(img.getRGB(x,y));
-                Color newColour = new Color((colour.getRed()>>4)<<4 , (colour.getGreen()>>4)<<4 , (colour.getBlue()>>4)<<4 );
+                Color newColour = ApplyColorLimitsFromColour(colour);
                 imageColours[x+(y*imageWidth)] = newColour.getRGB();
             }
         }
@@ -33,13 +40,17 @@ public class Main {
 
         ArrayList<HashMap<Integer,Integer>> palettes = new ArrayList<>();
 
+        boolean outputScreenData = false;
+        int paletteOffset = 5;
         int paletteMaxLen = 8;
-        int paletteMaxQuantize = 8;
+        int spriteXPos = 0;
+        int spriteYPos = 0xd0;
+        int paletteMaxQuantize = 32;
         HashMap<Integer , Integer> forcedColourIndex = new HashMap<>();
-//        forcedColourIndex.put(new Color(255, 0, 255).getRGB() , forcedColourIndex.size());
-//        forcedColourIndex.put(new Color(164, 218, 244).getRGB() , forcedColourIndex.size());
-        forcedColourIndex.put(new Color(119, 122, 133).getRGB() , forcedColourIndex.size());
-//        forcedColourIndex.put(new Color(0, 0, 0).getRGB() , forcedColourIndex.size());
+        forcedColourIndex.put(ApplyColorLimitsFromColour(new Color(255, 0, 255)).getRGB() , forcedColourIndex.size());
+//        forcedColourIndex.put(ApplyColorLimitsFromColour(new Color(164, 218, 244)).getRGB() , forcedColourIndex.size());
+//        forcedColourIndex.put(ApplyColorLimitsFromColour(new Color(119, 122, 133)).getRGB() , forcedColourIndex.size());
+//        forcedColourIndex.put(ApplyColorLimitsFromColour(new Color(0, 0, 0)).getRGB() , forcedColourIndex.size());
 
         int tileWidth = 16 , tileHeight = 16;
         int startX = 0 , startY = 0;
@@ -47,13 +58,16 @@ public class Main {
         int numBitplanes = 3;
         ByteBuffer[] bitplaneData = new ByteBuffer[numBitplanes];
         for (int bp = 0 ; bp < numBitplanes ; bp++) {
-            bitplaneData[bp] = ByteBuffer.allocate((2*imageWidth * imageHeight)/8);
+//            bitplaneData[bp] = ByteBuffer.allocate((2*imageWidth * imageHeight)/8);
+            bitplaneData[bp] = ByteBuffer.allocate(8192);
         }
 
         ByteBuffer screenTileData = ByteBuffer.allocate((imageWidth * imageHeight)/tileWidth/tileHeight);
         ByteBuffer screenColourData = ByteBuffer.allocate((imageWidth * imageHeight)/tileWidth/tileHeight);
 
         byte currentTile = 0;
+
+        System.out.println("Quantize...");
 
         // Quantize tiles down to a maximum number of colours
         for (int y = startY ; y < imageHeight ; y+=tileHeight) {
@@ -77,6 +91,7 @@ public class Main {
                 }
                 // Reduce until it fits
                 while (usedColours.size() > paletteMaxQuantize) {
+                    System.out.println("Reduce x=" + x + " y=" + y);
                     // Find the least used colour
                     Integer chosenMinColour = null;
                     int count = 0;
@@ -127,10 +142,11 @@ public class Main {
         }
 
 
+        System.out.println("To tiles...");
 
         for (int y = startY ; y < imageHeight ; y+=tileHeight) {
             for (int x = startX ; x < imageWidth ; ) {
-                System.out.println("Process x=" + x + " y=" + y);
+                System.out.println(";Process x=" + x + " y=" + y);
                 // First collect all unique colours used in the tile
                 SortedSet<Integer> usedColours = new TreeSet<>();
                 usedColours.addAll(forcedColourIndex.keySet());
@@ -176,8 +192,8 @@ public class Main {
                     if (numColoursMatching > bestFoundNum) {
                         // If there is room to extend the existing palette
                         // The "numColoursMatching > numColoursMissing" will favour palette reuse and sprite stacking instead of creating new palettes
-//                        if (numColoursMatching > numColoursMissing || numColoursMissing < (paletteMaxLen - palette.size())) {
-                        if (numColoursMissing < (paletteMaxLen - palette.size())) {
+                        if (numColoursMatching > numColoursMissing || numColoursMissing <= (paletteMaxLen - palette.size())) {
+//                        if (numColoursMissing <= (paletteMaxLen - palette.size())) {
                             bestFoundNum = numColoursMatching;
                             bestFoundPalette = palette;
                             bestFoundPaletteIndex = currentPaletteIndex;
@@ -268,6 +284,7 @@ public class Main {
                 };
                 byte[][] bitplaneDataTemp = new byte[numBitplanes][(indexPick.length)/8];
 
+                boolean tileHasData = false;
                 for (int bp = 0 ; bp < numBitplanes ; bp++) {
                     int shiftedPixels = 0;
                     int shiftedPixelsCount = 0;
@@ -276,6 +293,7 @@ public class Main {
                         shiftedPixels = shiftedPixels << 1;
                         if ((theTile[indexPick[index]] & (1<<bp)) > 0) {
                             shiftedPixels = shiftedPixels | 1;
+                            tileHasData = true;
                         }
                         shiftedPixelsCount++;
 
@@ -288,14 +306,24 @@ public class Main {
                     }
                 }
 
-                screenTileData.put(currentTile);
-                screenColourData.put((byte) (bestFoundPaletteIndex & 0xf));
-
-                // Advances the tile number, could do with duplicate check here
-                for (int bp = 0 ; bp < numBitplanes ; bp++) {
-                    bitplaneData[bp].put(bitplaneDataTemp[bp]);
+                if (outputScreenData) {
+                    screenTileData.put(currentTile);
+                    screenColourData.put((byte) (bestFoundPaletteIndex & 0xf));
+                } else {
+                    if (tileHasData) {
+                        System.out.println("b" + currentTile + ",b" + (bestFoundPaletteIndex + paletteOffset) + ",b" + spriteYPos + ",b" + spriteXPos);
+                    } else {
+                        System.out.println(";Empty");
+                    }
                 }
-                currentTile++;
+
+                if (outputScreenData || tileHasData) {
+                    // Advances the tile number, could do with duplicate check here
+                    for (int bp = 0; bp < numBitplanes; bp++) {
+                        bitplaneData[bp].put(bitplaneDataTemp[bp]);
+                    }
+                    currentTile++;
+                }
 
                 // Now calculate if there is any data left
                 usedColours.clear();
@@ -308,29 +336,47 @@ public class Main {
                     }
                 }
                 if (usedColours.size() > 0) {
-                    System.out.println("Stacked x=" + x + " y=" + y);
+                    System.out.println(";Stacked x=" + x + " y=" + y);
                     continue;
                 }
                 x+=tileWidth;
+
+                spriteXPos+=tileWidth;
+                if (spriteXPos >= 256) {
+                    spriteXPos = 0;
+                    spriteYPos -= tileHeight;
+                }
             }
+            spriteXPos = 0;
+            spriteYPos -= tileHeight;
         }
 
+        FileChannel fc;
         for (int bp = 0 ; bp < numBitplanes ; bp++) {
-//            FileChannel fc = new FileOutputStream("target/sprite_plane"+bp+".bin").getChannel();
-            FileChannel fc = new FileOutputStream("target/background_plane"+bp+".bin").getChannel();
+            if (outputScreenData) {
+                fc = new FileOutputStream("target/background_plane" + bp + ".bin").getChannel();
+            } else {
+                fc = new FileOutputStream("target/sprite_plane" + bp + ".bin").getChannel();
+            }
             bitplaneData[bp].flip();
             fc.write(bitplaneData[bp]);
             fc.close();
         }
 
-        FileChannel fc = new FileOutputStream("target/background_tiles.bin").getChannel();
-        screenTileData.flip();
-        fc.write(screenTileData);
-        screenColourData.flip();
-        fc.write(screenColourData);
-        fc.close();
+        if (outputScreenData) {
+            fc = new FileOutputStream("target/background_tiles.bin").getChannel();
+            screenTileData.flip();
+            fc.write(screenTileData);
+            screenColourData.flip();
+            fc.write(screenColourData);
+            fc.close();
+        }
 
-        fc = new FileOutputStream("target/PaletteData.bin").getChannel();
+        if (outputScreenData) {
+            fc = new FileOutputStream("target/PaletteData.bin").getChannel();
+        } else {
+            fc = new FileOutputStream("target/PaletteDataSprites.bin").getChannel();
+        }
         System.out.println("num palettes=" + palettes.size());
         int outNum = 0;
         for (HashMap<Integer,Integer> palette : palettes) {

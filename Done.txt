@@ -23,3 +23,4 @@
 
 
 * Output palettes
+    Tests worked quite well: https://twitter.com/MartinPiper/status/1218539634847711232

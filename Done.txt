@@ -24,3 +24,8 @@
 
 * Output palettes
     Tests worked quite well: https://twitter.com/MartinPiper/status/1218539634847711232
+
+
+
+* Command line options for background and stacked sprite conversions
+    Tested with the simulated hardware, working

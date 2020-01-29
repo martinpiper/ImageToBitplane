@@ -1,3 +1,7 @@
+* Command line parameters: Unify the background and sprite conversion with a single palette pass without pixel output, followed by pixel output, no palette offset for the stacked sprites
+
+
+
 * Tidy code and unit test
 
 

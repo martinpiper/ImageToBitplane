@@ -182,7 +182,7 @@ public class Main {
         for (int bp = 0 ; bp < numBitplanes ; bp++) {
             fc = null;
             if (outputScreenData != null) {
-                fc = new FileOutputStream(outputScreenData + bp + ".bin").getChannel();
+                fc = new FileOutputStream(outputPlanes + bp + ".bin").getChannel();
             } else if (outputSprites != null) {
                 fc = new FileOutputStream(outputSprites + bp + ".bin").getChannel();
             }

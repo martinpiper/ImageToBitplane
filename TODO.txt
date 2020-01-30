@@ -1,9 +1,4 @@
-* Command line parameters: Unify the background and sprite conversion with a single palette pass without pixel output, followed by pixel output, no palette offset for the stacked sprites
-    * Looks good, except the first sprite is using palette 3 instead of the correct choice, which is causing a sprite with bright purple
-        Look for rejectPalette, it does not seem to be working correctly and picking bright purple even though it doesn't match the forcedColourIndex
-
-
-* outputSprites to be used to output sprite sheet data (4 bytes for hardware) as text
+* outputSprites to be used to output sprite sheet data (4 bytes for hardware) as text file, for automatic inclusion into the TestData2.txt file
 
 
 

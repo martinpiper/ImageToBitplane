@@ -271,7 +271,7 @@ public class Main {
                             if (forcedColourIndex.containsKey(colour)) {
                                 if (!forcedColourIndex.get(colour).equals(colourIndex)) {
                                     // Reject the colour choice if the colour is in the forced colour table and the colour doesn't match the index
-//                                    rejectPalette = true;
+                                    rejectPalette = true;
                                     continue;
                                 }
                             }
@@ -280,6 +280,7 @@ public class Main {
                         }
                     }
                     if (rejectPalette) {
+                        currentPaletteIndex++;
                         continue;
                     }
 

@@ -63,6 +63,9 @@ public class Main {
             } else if (args[i].compareToIgnoreCase("--newpalettes") == 0) {
                 palettes = new ArrayList<>();
                 continue;
+            } else if (args[i].compareToIgnoreCase("--resetforcergb") == 0) {
+                forcedColourIndex.clear();
+                continue;
             } else if (args[i].compareToIgnoreCase("--forcergb") == 0) {
                 forcedColourIndex.put(ApplyColorLimitsFromColour(new Color(ParseValueFrom(args[i+1]), ParseValueFrom(args[i+2]), ParseValueFrom(args[i+3]))).getRGB() , forcedColourIndex.size());
 //        forcedColourIndex.put(ApplyColorLimitsFromColour(new Color(164, 218, 244)).getRGB() , forcedColourIndex.size());
@@ -125,6 +128,12 @@ public class Main {
 
                 currentTile = 0;
                 continue;
+            } else if (args[i].compareToIgnoreCase("--nowrite") == 0) {
+                outputScreenData = null;
+                outputSprites = null;
+                outputPlanes = null;
+                outputPalettes = null;
+                continue;
             } else if (args[i].compareToIgnoreCase("--nowritepass") == 0) {
                 outputScreenData = null;
                 outputSprites = null;
@@ -164,10 +173,7 @@ public class Main {
             }
         }
 
-        // --outputplanes target/background_plane --outputscrcol target/background_tiles.bin --outputpalettes target/PaletteData.bin --nostacking --numbitplanes 3 --convertwritepass
-        // --outputplanes target/sprite_plane --outputsprites target/sprite_plane --outputpalettes target/PaletteDataSprites.bin --usestacking --numbitplanes 3 --convertwritepass
 
-        // --convertpass
 //        String inputPath = "src/test/resources/TestImage1.png";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\town_rpg_pack\\town_rpg_pack\\graphics\\tiles-map.png";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\dirt-tiles.png";
@@ -184,7 +190,7 @@ public class Main {
             if (outputScreenData != null) {
                 fc = new FileOutputStream(outputPlanes + bp + ".bin").getChannel();
             } else if (outputSprites != null) {
-                fc = new FileOutputStream(outputSprites + bp + ".bin").getChannel();
+                fc = new FileOutputStream(outputPlanes + bp + ".bin").getChannel();
             }
             if (fc != null) {
                 bitplaneData[bp].flip();
@@ -258,11 +264,23 @@ public class Main {
                 for (HashMap<Integer,Integer> palette : palettes) {
                     int numColoursMatching = 0;
                     int numColoursMissing = usedColours.size();
+                    boolean rejectPalette = false;
                     for (Integer colour : usedColours) {
                         if (palette.containsKey(colour)) {
+                            Integer colourIndex = palette.get(colour);
+                            if (forcedColourIndex.containsKey(colour)) {
+                                if (!forcedColourIndex.get(colour).equals(colourIndex)) {
+                                    // Reject the colour choice if the colour is in the forced colour table and the colour doesn't match the index
+//                                    rejectPalette = true;
+                                    continue;
+                                }
+                            }
                             numColoursMatching++;
                             numColoursMissing--;
                         }
+                    }
+                    if (rejectPalette) {
+                        continue;
                     }
 
                     // If all the colours are found in a palette, then early out

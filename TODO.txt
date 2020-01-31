@@ -1,7 +1,3 @@
-* outputSprites to be used to output sprite sheet data (4 bytes for hardware) as text file, for automatic inclusion into the TestData2.txt file
-
-
-
 * Tidy code and unit test
 
 

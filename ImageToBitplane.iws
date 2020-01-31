@@ -18,13 +18,14 @@
     <session id="-482565366">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="15" />
+          <entry key="project.closed" value="16" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.5" value="4" />
           <entry key="project.open.time.6" value="4" />
           <entry key="project.open.time.7" value="4" />
           <entry key="project.open.time.8" value="2" />
-          <entry key="project.opened" value="15" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="16" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -37,8 +38,8 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="9819" />
-          <entry key="PLAIN_TEXT" value="1764" />
+          <entry key="JAVA" value="9936" />
+          <entry key="PLAIN_TEXT" value="1896" />
         </counts>
       </usages-collector>
     </session>
@@ -53,8 +54,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/cli/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="246">
-              <caret line="281" column="37" selection-start-line="281" selection-start-column="24" selection-end-line="281" selection-end-column="37" />
+            <state relative-caret-position="273">
+              <caret line="429" column="154" lean-forward="true" selection-start-line="429" selection-start-column="154" selection-end-line="429" selection-end-column="154" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -67,20 +68,16 @@
           <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TODO.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-            </state>
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Done.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="557">
-              <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
+            <state relative-caret-position="731">
+              <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
             </state>
           </provider>
         </entry>
@@ -98,7 +95,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>bitplaneData</find>
       <find>imageColours</find>
       <find>comparator</find>
       <find>getrgb</find>
@@ -127,6 +123,7 @@
       <find>reset</find>
       <find>forcergb</find>
       <find>outputsprites</find>
+      <find>int pi = 0;</find>
       <find>outputSprites</find>
     </findStrings>
   </component>
@@ -137,8 +134,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/main/java/cli/Main.java" />
-        <option value="$PROJECT_DIR$/Done.txt" />
         <option value="$PROJECT_DIR$/TODO.txt" />
+        <option value="$PROJECT_DIR$/Done.txt" />
       </list>
     </option>
   </component>
@@ -232,7 +229,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1580395394596" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1580480206547" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -252,7 +249,21 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main all conv">
+  <component name="RunManager" selected="Application.Main all conv (2)">
+    <configuration name="Main all conv (2)" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 0 0 0 --paletteoffset 0 --palettesize 8 --imagequantize 8 --tilewh 16 16 --startxy 0 0 --image &quot;C:\Users\Martin Piper\Downloads\map_9 - Copy.png&quot; --nowritepass --resetforcergb --forcergb 255 0 255 --spritexy 0 0xd0 --imagequantize 32 --tilewh 16 16 --startxy 0 0 --image src/test/resources/TestImage2.png --usestacking --nowritepass --resetforcergb --forcergb 0 0 0 --imagequantize 8 --tilewh 16 16 --startxy 0 0 --image &quot;C:\Users\Martin Piper\Downloads\map_9 - Copy.png&quot; --outputplanes target/background_plane --outputscrcol target/background_tiles.bin --nostacking --numbitplanes 3 --convertwritepass --nowrite --resetforcergb --forcergb 255 0 255 --spritexy 0 0xd0 --imagequantize 32 --tilewh 16 16 --startxy 0 0 --image src/test/resources/TestImage2.png --outputplanes target/sprite_plane --outputsprites target/spriteSheet.txt --outputpalettes target/PaletteData.bin --usestacking --numbitplanes 3 --convertwritepass" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main all conv" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -311,6 +322,7 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main all conv" />
+      <item itemvalue="Application.Main all conv (2)" />
       <item itemvalue="Application.Main sprites convertwritepass" />
       <item itemvalue="Application.Main background convertwritepass" />
       <item itemvalue="Application.Main background nowritepass" />
@@ -347,7 +359,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.28997868" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29317698" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -383,13 +395,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>152</line>
+          <line>153</line>
           <properties />
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>273</line>
+          <line>272</line>
           <properties />
           <option name="timeStamp" value="30" />
         </line-breakpoint>
@@ -515,25 +527,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cli/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="281" column="37" selection-start-line="281" selection-start-column="24" selection-end-line="281" selection-end-column="37" />
+        <state relative-caret-position="273">
+          <caret line="429" column="154" lean-forward="true" selection-start-line="429" selection-start-column="154" selection-end-line="429" selection-end-column="154" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/TODO.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/Done.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="557">
-          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TODO.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="731">
+          <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
         </state>
       </provider>
     </entry>

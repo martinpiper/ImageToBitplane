@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.*;
@@ -47,7 +48,7 @@ public class Main {
     static ByteBuffer screenColourData = null;
     static String outputPlanes = null;
     static String outputScreenData = null;
-    static String outputSprites = null;
+    static PrintStream outputSprites = null;
     static String outputPalettes = null;
     static boolean useStacking = false;
 
@@ -150,7 +151,7 @@ public class Main {
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputsprites") == 0) {
-                outputSprites = args[i+1];
+                outputSprites = new PrintStream(new FileOutputStream(args[i+1]));
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputpalettes") == 0) {
@@ -186,13 +187,8 @@ public class Main {
     private static void OutputFiles() throws IOException {
         FileChannel fc;
         for (int bp = 0 ; bp < numBitplanes ; bp++) {
-            fc = null;
-            if (outputScreenData != null) {
+            if (outputScreenData != null || outputSprites != null) {
                 fc = new FileOutputStream(outputPlanes + bp + ".bin").getChannel();
-            } else if (outputSprites != null) {
-                fc = new FileOutputStream(outputPlanes + bp + ".bin").getChannel();
-            }
-            if (fc != null) {
                 bitplaneData[bp].flip();
                 fc.write(bitplaneData[bp]);
                 fc.close();
@@ -238,6 +234,9 @@ public class Main {
         for (int y = startY ; y < imageHeight ; y+=tileHeight) {
             for (int x = startX ; x < imageWidth ; ) {
                 System.out.println(";Process x=" + x + " y=" + y);
+                if (outputSprites != null) {
+                    outputSprites.println(";Process x=" + x + " y=" + y);
+                }
                 // First collect all unique colours used in the tile
                 SortedSet<Integer> usedColours = new TreeSet<>();
                 usedColours.addAll(forcedColourIndex.keySet());
@@ -425,9 +424,12 @@ public class Main {
                     screenColourData.put((byte) (bestFoundPaletteIndex & 0xf));
                 } else if (outputSprites != null) {
                     if (tileHasData) {
-                        System.out.println("b" + currentTile + ",b" + (bestFoundPaletteIndex + paletteOffset) + ",b" + spriteYPos + ",b" + spriteXPos);
+                        if (currentTile >= 24) {
+                            outputSprites.print(";");
+                        }
+                        outputSprites.println("b" + currentTile + ",b" + (bestFoundPaletteIndex + paletteOffset) + ",b" + spriteYPos + ",b" + spriteXPos);
                     } else {
-                        System.out.println(";Empty");
+                        outputSprites.println(";Empty");
                     }
                 }
 
@@ -451,6 +453,9 @@ public class Main {
                 }
                 if (useStacking && usedColours.size() > 0) {
                     System.out.println(";Stacked x=" + x + " y=" + y);
+                    if (outputSprites != null) {
+                        outputSprites.println(";Stacked x=" + x + " y=" + y);
+                    }
                     continue;
                 }
                 x+=tileWidth;
@@ -467,6 +472,10 @@ public class Main {
                 spriteXPos = 0;
                 spriteYPos -= tileHeight;
             }
+        }
+
+        if (outputSprites != null) {
+            outputSprites.flush();
         }
 
         System.out.println("num palettes=" + palettes.size());

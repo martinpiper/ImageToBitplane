@@ -36,3 +36,8 @@
     * Looks good, except the first sprite is using palette 3 instead of the correct choice, which is causing a sprite with bright purple
         Look for rejectPalette, it does not seem to be working correctly and picking bright purple even though it doesn't match the forcedColourIndex
         * Was missing currentPaletteIndex++ when rejectPalette was triggered
+
+
+
+* outputSprites to be used to output sprite sheet data (4 bytes for hardware) as text file, for automatic inclusion into the TestData2.txt file
+    TestImage2.png created to demonstrate the other sprites rendering correctly, including the complex colour sprites test

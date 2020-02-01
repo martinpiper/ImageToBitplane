@@ -89,6 +89,7 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--imagequantize") == 0) {
                 paletteMaxQuantize = ParseValueFrom(args[i+1]);
+                ImageQuantize();
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--tilewh") == 0) {
@@ -116,7 +117,8 @@ public class Main {
                         imageColours[x+(y*imageWidth)] = newColour.getRGB();
                     }
                 }
-                ImageQuantize();
+                tileWidth = imageWidth;
+                tileHeight = imageHeight;
                 continue;
             } else if (args[i].compareToIgnoreCase("--numbitplanes") == 0) {
                 numBitplanes = ParseValueFrom(args[i+1]);

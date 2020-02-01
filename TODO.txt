@@ -1,12 +1,12 @@
+* Add ability to squeeze similar palettes until a target number is reached, then add an option that chooses the closest palette without adding new palettes
+
+
+
 * Tidy code and unit test
 
 
 
-* Option to learn palettes from one or more input sections before outputting pixels
-
-
-
-* Detect identical output sprite data from the output binary point of view and avoid
+* Detect identical output tile data, with H/V flips, from the output binary point of view and avoid
     Instead use the original index for screen output
 
 

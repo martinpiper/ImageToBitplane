@@ -39,5 +39,16 @@
 
 
 
+* Option to learn palettes from one or more input sections before outputting pixels
+
+
+
 * outputSprites to be used to output sprite sheet data (4 bytes for hardware) as text file, for automatic inclusion into the TestData2.txt file
     TestImage2.png created to demonstrate the other sprites rendering correctly, including the complex colour sprites test
+
+
+
+* --image can set the tile size to be the image size
+    Then seting the tile size after --image
+    Then --imagequantize can act on the current configured tile size, and optionally handle the whole image
+        Using asset mentioned in: https://twitter.com/MonstersGo/status/1196534673675051008

@@ -41,6 +41,7 @@ public class Main {
     static int imageWidth = 0;
     static int imageHeight = 0;
     static Integer[] imageColours = null;
+    static Integer[] imageColoursOriginal = null;
     static int numBitplanes = 3;
     static ByteBuffer[] bitplaneData = null;
     static byte currentTile = 0;
@@ -51,6 +52,7 @@ public class Main {
     static PrintStream outputSprites = null;
     static String outputPalettes = null;
     static boolean useStacking = false;
+    static boolean fitPalettes = false;
 
     public static void main(String[] args) throws Exception {
 
@@ -117,6 +119,7 @@ public class Main {
                         imageColours[x+(y*imageWidth)] = newColour.getRGB();
                     }
                 }
+                imageColoursOriginal = imageColours.clone();
                 tileWidth = imageWidth;
                 tileHeight = imageHeight;
                 continue;
@@ -173,9 +176,17 @@ public class Main {
             } else if (args[i].compareToIgnoreCase("--nostacking") == 0) {
                 useStacking = false;
                 continue;
+            } else if (args[i].compareToIgnoreCase("--palettequantize") == 0) {
+                int targetPalettes = ParseValueFrom(args[i+1]);
+                i++;
+                PaletteQuantize(targetPalettes);
+
+                continue;
+            } else if (args[i].compareToIgnoreCase("--fitpalettes") == 0) {
+                fitPalettes = true;
+                continue;
             }
         }
-
 
 //        String inputPath = "src/test/resources/TestImage1.png";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\town_rpg_pack\\town_rpg_pack\\graphics\\tiles-map.png";
@@ -184,6 +195,119 @@ public class Main {
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\oldbridge cropped.bmp";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\map_9 - Copy.png";
         return;
+    }
+
+    private static void PaletteQuantize(int targetPalettes) {
+        while (palettes.size() > targetPalettes) {
+            System.out.println("Palette quantize pass. Size = " + palettes.size());
+            //    * Find the palette with the smallest number of image pixels
+            HashMap<Integer,Integer> smallestPalette = null;
+            int smallestNumPixels = 0;
+            for (HashMap<Integer,Integer> palette : palettes) {
+                int numPixels = 0;
+                for (int y = 0 ; y < imageHeight ; y++) {
+                    for (int x = 0; x < imageWidth; x++) {
+                        int theColour = imageColoursOriginal[x+(y*imageWidth)];
+                        if (palette.containsKey(theColour)) {
+                            numPixels++;
+                        }
+                    }
+                }
+                if (smallestPalette == null || numPixels < smallestNumPixels) {
+                    smallestNumPixels = numPixels;
+                    smallestPalette = palette;
+                }
+            }
+
+            assert smallestPalette != null;
+
+            //    * Find the next closest colour palette
+
+            HashMap<Integer,Integer> bestPalette = null;
+            double bestColourDifference = 0;
+
+            for (HashMap<Integer,Integer> palette : palettes) {
+                if (palette == smallestPalette) {
+                    continue;
+                }
+                double colourDifference = getPaletteDifference(smallestPalette, palette);
+
+                if (bestPalette == null || colourDifference < bestColourDifference) {
+                    bestColourDifference = colourDifference;
+                    bestPalette = palette;
+                }
+            }
+
+            assert bestPalette != null;
+
+            //    * If free slots, merge in most used colours from the smallest palette
+            while (bestPalette.size() < paletteMaxLen) {
+
+                // Find remaining colours not in bestPalette from smallestPalette
+                HashSet<Integer> missingColours = new HashSet<>();
+                for (int aColour : smallestPalette.keySet()) {
+                    if (!bestPalette.containsKey(aColour)) {
+                        missingColours.add(aColour);
+                    }
+                }
+
+                if (missingColours.isEmpty()) {
+                    break;
+                }
+
+                // Get the most used missing colour
+                int bestLargestCount = 0;
+                int bestColour = 0;
+
+                for (int aColour : missingColours) {
+                    int numPixels = 0;
+                    for (int y = 0; y < imageHeight; y++) {
+                        for (int x = 0; x < imageWidth; x++) {
+                            int theColour = imageColoursOriginal[x + (y * imageWidth)];
+                            if (theColour == aColour) {
+                                numPixels++;
+                            }
+                        }
+                    }
+                    if (numPixels > bestLargestCount) {
+                        bestColour = aColour;
+                        bestLargestCount = numPixels;
+                    }
+                }
+
+                bestPalette.put(bestColour, bestPalette.size());
+            }
+            //    * Delete the smallest palette
+            palettes.remove(smallestPalette);
+
+            //    * Repeat until the target palette number is reached
+        }
+
+        Color[][] visualisePalettes = new Color[palettes.size()][paletteMaxLen];
+        for (int i = 0 ; i < palettes.size() ; i++) {
+            for (Map.Entry<Integer,Integer> entry : palettes.get(i).entrySet()) {
+                visualisePalettes[i][entry.getValue()] = new Color(entry.getKey());
+            }
+        }
+
+        System.out.print("Finished palette quantize");
+    }
+
+    private static double getPaletteDifference(HashMap<Integer, Integer> smallestPalette, HashMap<Integer, Integer> palette) {
+        return getColoursDifference(smallestPalette.keySet() , palette.keySet());
+    }
+
+    private static double getColoursDifference(Set<Integer> smallestPalette, Set<Integer> palette) {
+        double colourDifference = 0;
+        for (int sourceColour : smallestPalette) {
+            Color theSourceColour = new Color(sourceColour);
+            for (int aColour : palette) {
+                Color theColour = new Color(aColour);
+                double thisDifference = getColourDifference(theSourceColour, theColour);
+                colourDifference += thisDifference;
+            }
+        }
+        return colourDifference;
     }
 
     private static void OutputFiles() throws IOException {
@@ -258,85 +382,101 @@ public class Main {
                 }
 
                 // Find the best fit existing palette index
-                HashMap<Integer,Integer> bestFoundPalette = null;
-                byte bestFoundPaletteIndex = 0;
-                int bestFoundNum = -1;
-                byte currentPaletteIndex = 0;
-                for (HashMap<Integer,Integer> palette : palettes) {
-                    int numColoursMatching = 0;
-                    int numColoursMissing = usedColours.size();
-                    boolean rejectPalette = false;
-                    for (Integer colour : usedColours) {
-                        if (palette.containsKey(colour)) {
-                            Integer colourIndex = palette.get(colour);
-                            if (forcedColourIndex.containsKey(colour)) {
-                                if (!forcedColourIndex.get(colour).equals(colourIndex)) {
-                                    // Reject the colour choice if the colour is in the forced colour table and the colour doesn't match the index
-                                    rejectPalette = true;
-                                    continue;
+                HashMap<Integer, Integer> resultPalette = null;
+                int bestFoundPaletteIndex = 0;
+                if (fitPalettes) {
+                    int currentPaletteIndex = 0;
+                    resultPalette = null;
+                    double bestDistance = 0;
+                    for (HashMap<Integer, Integer> palette : palettes) {
+                        // MPi: TODO: While this uses the single set of "used colours" a better approach might be to calculate the total distance for all pixels in the tile
+                        double colourDifference = getColoursDifference(palette.keySet(), usedColours);
+                        if (resultPalette == null || colourDifference < bestDistance) {
+                            resultPalette = palette;
+                            bestDistance = colourDifference;
+                            bestFoundPaletteIndex = currentPaletteIndex;
+                        }
+                        currentPaletteIndex++;
+                    }
+                } else {
+                    int currentPaletteIndex = 0;
+                    HashMap<Integer,Integer> bestFoundPalette = null;
+                    int bestFoundNum = -1;
+                    for (HashMap<Integer, Integer> palette : palettes) {
+                        int numColoursMatching = 0;
+                        int numColoursMissing = usedColours.size();
+                        boolean rejectPalette = false;
+                        for (Integer colour : usedColours) {
+                            if (palette.containsKey(colour)) {
+                                Integer colourIndex = palette.get(colour);
+                                if (forcedColourIndex.containsKey(colour)) {
+                                    if (!forcedColourIndex.get(colour).equals(colourIndex)) {
+                                        // Reject the colour choice if the colour is in the forced colour table and the colour doesn't match the index
+                                        rejectPalette = true;
+                                        continue;
+                                    }
+                                }
+                                numColoursMatching++;
+                                numColoursMissing--;
+                            }
+                        }
+                        if (rejectPalette) {
+                            currentPaletteIndex++;
+                            continue;
+                        }
+
+                        // If all the colours are found in a palette, then early out
+                        if (numColoursMatching == usedColours.size() || numColoursMatching >= palette.size()) {
+                            bestFoundNum = numColoursMatching;
+                            bestFoundPalette = palette;
+                            bestFoundPaletteIndex = currentPaletteIndex;
+                            break;
+                        }
+
+                        // Choose the best palette to extend if possible, greedy fill
+                        if (numColoursMatching > bestFoundNum) {
+                            // If there is room to extend the existing palette
+                            // The "numColoursMatching > numColoursMissing" will favour palette reuse and sprite stacking instead of creating new palettes
+                            if (useStacking) {
+                                if (numColoursMatching > numColoursMissing || numColoursMissing <= (paletteMaxLen - palette.size())) {
+                                    bestFoundNum = numColoursMatching;
+                                    bestFoundPalette = palette;
+                                    bestFoundPaletteIndex = currentPaletteIndex;
+                                    // Continue searching...
+                                }
+                            } else {
+                                if (numColoursMissing <= (paletteMaxLen - palette.size())) {
+                                    bestFoundNum = numColoursMatching;
+                                    bestFoundPalette = palette;
+                                    bestFoundPaletteIndex = currentPaletteIndex;
+                                    // Continue searching...
                                 }
                             }
-                            numColoursMatching++;
-                            numColoursMissing--;
                         }
-                    }
-                    if (rejectPalette) {
+
                         currentPaletteIndex++;
-                        continue;
                     }
 
-                    // If all the colours are found in a palette, then early out
-                    if (numColoursMatching == usedColours.size() || numColoursMatching >= palette.size()) {
-                        bestFoundNum = numColoursMatching;
-                        bestFoundPalette = palette;
-                        bestFoundPaletteIndex = currentPaletteIndex;
-                        break;
+                    if (bestFoundPalette == null) {
+                        bestFoundPaletteIndex = palettes.size();
+                        resultPalette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
+                        palettes.add(resultPalette);
+                    } else {
+                        resultPalette = bestFoundPalette;
                     }
 
-                    // Choose the best palette to extend if possible, greedy fill
-                    if (numColoursMatching > bestFoundNum) {
-                        // If there is room to extend the existing palette
-                        // The "numColoursMatching > numColoursMissing" will favour palette reuse and sprite stacking instead of creating new palettes
-                        if (useStacking) {
-                            if (numColoursMatching > numColoursMissing || numColoursMissing <= (paletteMaxLen - palette.size())) {
-                                bestFoundNum = numColoursMatching;
-                                bestFoundPalette = palette;
-                                bestFoundPaletteIndex = currentPaletteIndex;
-                                // Continue searching...
-                            }
-                        } else {
-                            if (numColoursMissing <= (paletteMaxLen - palette.size())) {
-                                bestFoundNum = numColoursMatching;
-                                bestFoundPalette = palette;
-                                bestFoundPaletteIndex = currentPaletteIndex;
-                                // Continue searching...
-                            }
+                    // Update any new colours into the best palette
+                    for (Integer colour : usedColours) {
+                        if (resultPalette.size() >= paletteMaxLen) {
+                            break;
+                        }
+                        if (!resultPalette.containsKey(colour)) {
+                            resultPalette.put(colour, resultPalette.size());
                         }
                     }
-
-                    currentPaletteIndex++;
                 }
 
-                HashMap<Integer,Integer> palette;
-                if (bestFoundPalette == null) {
-                    bestFoundPaletteIndex = (byte)palettes.size();
-                    palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
-                    palettes.add(palette);
-                } else {
-                    palette = bestFoundPalette;
-                }
-
-                // Update any new colours into the best palette
-                for (Integer colour : usedColours) {
-                    if (palette.size() >= paletteMaxLen) {
-                        break;
-                    }
-                    if (!palette.containsKey(colour)) {
-                        palette.put(colour, palette.size());
-                    }
-                }
-
-                assert palette.size() < paletteMaxLen;
+                assert resultPalette.size() <= paletteMaxLen;
 
                 // Now convert the tile to bitplane data based on the colours in the palette and the index values
                 byte[] theTile = new byte[tileWidth * tileHeight];
@@ -348,7 +488,7 @@ public class Main {
                         // Then try to map the colour if it exists
                         Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                         if (colour != null) {
-                            Integer value = palette.get(colour);
+                            Integer value = getBestPaletteIndex(resultPalette, colour);
                             if (value != null) {
                                 theTile[tx + (ty * tileWidth)] = value.byteValue();
                                 // Remove the pixel, since it has been processed
@@ -486,6 +626,28 @@ public class Main {
         }
     }
 
+    private static Integer getBestPaletteIndex(HashMap<Integer, Integer> resultPalette, Integer colour) {
+        Integer result = resultPalette.get(colour);
+
+        if (!fitPalettes) {
+            return result;
+        }
+
+        if (result == null)
+        {
+            double bestDifference = 0;
+            for (HashMap.Entry<Integer,Integer> entry : resultPalette.entrySet()) {
+                double difference = getColourDifference(new Color(entry.getKey()) , new Color(colour));
+                if (result == null || difference < bestDifference) {
+                    result = entry.getValue();
+                    bestDifference = difference;
+                }
+            }
+        }
+
+        return result;
+    }
+
     private static void ImageQuantize() {
         System.out.println("Quantize...");
 
@@ -532,9 +694,7 @@ public class Main {
                         }
 
                         Color destination = new Color(entry.getKey());
-                        double thisDifference = (source.getRed() - destination.getRed()) * (source.getRed() - destination.getRed());
-                        thisDifference += (source.getGreen() - destination.getGreen()) * (source.getGreen() - destination.getGreen());
-                        thisDifference += (source.getBlue() - destination.getBlue()) * (source.getBlue() - destination.getBlue());
+                        double thisDifference = getColourDifference(source, destination);
 
                         if (closestColourToMin == null || thisDifference < difference) {
                             closestColourToMin = entry.getKey();
@@ -560,5 +720,12 @@ public class Main {
                 }
             }
         }
+    }
+
+    private static double getColourDifference(Color source, Color destination) {
+        double thisDifference = (source.getRed() - destination.getRed()) * (source.getRed() - destination.getRed());
+        thisDifference += (source.getGreen() - destination.getGreen()) * (source.getGreen() - destination.getGreen());
+        thisDifference += (source.getBlue() - destination.getBlue()) * (source.getBlue() - destination.getBlue());
+        return Math.sqrt(thisDifference);
     }
 }

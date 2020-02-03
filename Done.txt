@@ -52,3 +52,19 @@
     Then seting the tile size after --image
     Then --imagequantize can act on the current configured tile size, and optionally handle the whole image
         Using asset mentioned in: https://twitter.com/MonstersGo/status/1196534673675051008
+
+
+
+* Add ability to squeeze similar palettes until a target number is reached, then add an option that chooses the closest palette without adding new palettes
+    * Find the palette with the smallest number of image pixels
+    * Find the next closest colour palette
+    * If free slots, merge in most used colours from the smallest palette
+    * Delete the smallest palette
+    * Repeat until the target palette number is reached
+    * Well that (--palettequantize and --fitpalettes) (in run config "Main old bridge RGB 0 0 0 palette opt") did not work as well as expected
+    * Why? :)
+    * The "visualisePalettes" seem to be reasonable after palette quantise. So maybe it's the tile choice that picks the best palette?
+        * Perhaps: MPi: TODO: While this uses the single set of "used colours" a better approach might be to calculate the total distance for all pixels in the tile
+            * Yes, this fixed it: // This calculates the total distance for all pixels in the tile using the closest matched colour for the palette
+            * Also useSquaredModel = true seems to produce a better result with the "flag" in the top right and some other small details near the bottom of the screen
+

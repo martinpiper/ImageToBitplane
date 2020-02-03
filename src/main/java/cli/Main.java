@@ -28,6 +28,7 @@ public class Main {
         return Integer.parseInt(value);
     }
 
+    static boolean useSquaredModel = true;
     static int paletteOffset = 5;
     static int paletteMaxLen = 8;
     static int spriteXPos = 0;
@@ -389,8 +390,19 @@ public class Main {
                     resultPalette = null;
                     double bestDistance = 0;
                     for (HashMap<Integer, Integer> palette : palettes) {
-                        // MPi: TODO: While this uses the single set of "used colours" a better approach might be to calculate the total distance for all pixels in the tile
-                        double colourDifference = getColoursDifference(palette.keySet(), usedColours);
+                        // This calculates the total distance for all pixels in the tile using the closest matched colour for the palette
+                        double colourDifference = 0;
+                        for (int ty = 0 ; ty < tileHeight ; ty++) {
+                            for (int tx = 0 ; tx < tileWidth ; tx++) {
+                                Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                                if (colour != null) {
+                                    Integer closestColour = getBestPaletteColour(palette, colour);
+                                    colourDifference += getColourDifference(new Color(closestColour) , new Color(colour));
+                                }
+                            }
+                        }
+
+
                         if (resultPalette == null || colourDifference < bestDistance) {
                             resultPalette = palette;
                             bestDistance = colourDifference;
@@ -648,6 +660,30 @@ public class Main {
         return result;
     }
 
+    private static Integer getBestPaletteColour(HashMap<Integer, Integer> resultPalette, Integer colour) {
+        if (resultPalette.containsKey(colour)) {
+            return colour;
+        }
+
+        if (!fitPalettes) {
+            return null;
+        }
+
+        Integer result = null;
+
+        double bestDifference = 0;
+        for (HashMap.Entry<Integer,Integer> entry : resultPalette.entrySet()) {
+            double difference = getColourDifference(new Color(entry.getKey()) , new Color(colour));
+            if (result == null || difference < bestDifference) {
+                result = entry.getKey();
+                bestDifference = difference;
+            }
+        }
+
+        return result;
+    }
+
+
     private static void ImageQuantize() {
         System.out.println("Quantize...");
 
@@ -723,9 +759,15 @@ public class Main {
     }
 
     private static double getColourDifference(Color source, Color destination) {
-        double thisDifference = (source.getRed() - destination.getRed()) * (source.getRed() - destination.getRed());
-        thisDifference += (source.getGreen() - destination.getGreen()) * (source.getGreen() - destination.getGreen());
-        thisDifference += (source.getBlue() - destination.getBlue()) * (source.getBlue() - destination.getBlue());
-        return Math.sqrt(thisDifference);
+        if (useSquaredModel) {
+            double thisDifference = (source.getRed() - destination.getRed()) * (source.getRed() - destination.getRed());
+            thisDifference += (source.getGreen() - destination.getGreen()) * (source.getGreen() - destination.getGreen());
+            thisDifference += (source.getBlue() - destination.getBlue()) * (source.getBlue() - destination.getBlue());
+            return Math.sqrt(thisDifference);
+        }
+        double thisDifference = Math.abs(source.getRed() - destination.getRed());
+        thisDifference += Math.abs(source.getGreen() - destination.getGreen());
+        thisDifference += Math.abs(source.getBlue() - destination.getBlue());
+        return thisDifference;
     }
 }

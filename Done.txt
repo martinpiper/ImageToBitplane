@@ -68,3 +68,8 @@
             * Yes, this fixed it: // This calculates the total distance for all pixels in the tile using the closest matched colour for the palette
             * Also useSquaredModel = true seems to produce a better result with the "flag" in the top right and some other small details near the bottom of the screen
 
+
+
+* RGB Colour multiplier, for the number of pixels, with a floating point number
+    Designed to preserve colours by increasing the number of pixels the algorithm uses internally
+    --rgbfactor 236 98 96 50 is enough to preserve the flag colouring and some additional red coloured elements

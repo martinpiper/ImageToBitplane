@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/Done.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Done.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -18,29 +18,29 @@
     <session id="-482565366">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="20" />
+          <entry key="project.closed" value="23" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.2" value="1" />
-          <entry key="project.open.time.5" value="5" />
-          <entry key="project.open.time.6" value="5" />
+          <entry key="project.open.time.5" value="6" />
+          <entry key="project.open.time.6" value="6" />
           <entry key="project.open.time.7" value="5" />
           <entry key="project.open.time.8" value="2" />
-          <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="20" />
+          <entry key="project.open.time.9" value="2" />
+          <entry key="project.opened" value="23" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Image" value="3" />
-          <entry key="JAVA" value="25" />
+          <entry key="JAVA" value="26" />
           <entry key="PLAIN_TEXT" value="3" />
           <entry key="XML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="12752" />
-          <entry key="PLAIN_TEXT" value="3235" />
+          <entry key="JAVA" value="13198" />
+          <entry key="PLAIN_TEXT" value="3517" />
         </counts>
       </usages-collector>
     </session>
@@ -55,8 +55,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/cli/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="262">
-              <caret line="761" column="27" selection-start-line="761" selection-start-column="12" selection-end-line="761" selection-end-column="27" />
+            <state relative-caret-position="160">
+              <caret line="372" column="37" selection-start-line="372" selection-start-column="37" selection-end-line="372" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -71,18 +71,14 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TODO.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
-            </state>
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Done.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="660">
-              <caret line="63" column="52" selection-start-line="63" selection-start-column="17" selection-end-line="63" selection-end-column="52" />
+            <state relative-caret-position="779">
+              <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
             </state>
           </provider>
         </entry>
@@ -100,20 +96,9 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>outputsprites</find>
-      <find>int pi = 0;</find>
-      <find>outputSprites</find>
-      <find>ImageQuantize</find>
-      <find>getRed</find>
-      <find>.add</find>
-      <find>.put</find>
-      <find>--image</find>
-      <find>imageColours</find>
-      <find>imageColoursOriginal</find>
       <find>--forcergb</find>
       <find>ApplyColorLimitsFromColour</find>
       <find>bestFoundNum</find>
-      <find>usedColours</find>
       <find>distance</find>
       <find>difference</find>
       <find>thisDifference</find>
@@ -130,6 +115,17 @@
       <find>getBestPaletteIndex</find>
       <find>currentPaletteIndex</find>
       <find>better</find>
+      <find>--force</find>
+      <find>forcergb</find>
+      <find>count</find>
+      <find>--rgbfactor</find>
+      <find>numPixels</find>
+      <find>rgbfactor</find>
+      <find>reduce</find>
+      <find>factorColourIndex</find>
+      <find>.print(</find>
+      <find>factor</find>
+      <find>usedColours</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -179,6 +175,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -229,7 +226,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -254,7 +250,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main old bridge RGB 0 0 0 palette opt">
+  <component name="RunManager" selected="Application.Main old bridge RGB 0 0 0 palette opt rgbfactor">
     <configuration name="Main all conv (2)" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -315,6 +311,20 @@
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 0 0 0 --paletteoffset 0 --palettesize 8 --startxy 0 0 --image &quot;C:\Users\Martin Piper\Downloads\oldbridge cropped.bmp&quot; --imagequantize 13 --tilewh 16 16 --imagequantize 6 --outputplanes target/background_plane --outputscrcol target/background_tiles.bin --outputpalettes target/PaletteData.bin --nostacking --numbitplanes 3 --convertwritepass" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main old bridge RGB 0 0 0 palette opt rgbfactor" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --rgbfactor 236 98 96 50 --newpalettes --forcergb 0 0 0 --paletteoffset 0 --palettesize 8 --startxy 0 0 --image &quot;C:\Users\Martin Piper\Downloads\oldbridge cropped.bmp&quot; --tilewh 16 16 --imagequantize 8 --nowritepass --palettequantize 16 --image &quot;C:\Users\Martin Piper\Downloads\oldbridge cropped.bmp&quot; --tilewh 16 16 --fitpalettes --outputplanes target/background_plane --outputscrcol target/background_tiles.bin --outputpalettes target/PaletteData.bin --nostacking --numbitplanes 3 --convertwritepass" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cli.*" />
@@ -388,6 +398,7 @@
       <item itemvalue="Application.Main old bridge RGB 0 0 0 full image quant" />
       <item itemvalue="Application.Main old bridge RGB 119 122 133" />
       <item itemvalue="Application.Main old bridge RGB 0 0 0 palette opt" />
+      <item itemvalue="Application.Main old bridge RGB 0 0 0 palette opt rgbfactor" />
       <item itemvalue="Application.Main sprites convertwritepass" />
       <item itemvalue="Application.Main background convertwritepass" />
       <item itemvalue="Application.Main background nowritepass" />
@@ -424,7 +435,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.30597016" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.31556502" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -460,21 +471,27 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>159</line>
+          <line>165</line>
           <properties />
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>426</line>
+          <line>432</line>
           <properties />
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>293</line>
+          <line>299</line>
           <properties />
           <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>79</line>
+          <properties />
+          <option name="timeStamp" value="60" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -582,10 +599,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
           <caret line="589" column="19" selection-start-line="589" selection-start-column="19" selection-end-line="589" selection-end-column="19" />
-          <folding>
-            <element signature="e#23523#23524#0" expanded="true" />
-            <element signature="e#23577#23578#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -593,10 +606,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3548">
           <caret line="516" column="70" lean-forward="true" selection-start-line="516" selection-start-column="70" selection-end-line="516" selection-end-column="70" />
-          <folding>
-            <element signature="e#18163#18164#0" expanded="true" />
-            <element signature="e#18191#18192#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -613,10 +622,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/java/lang/Double.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="542" selection-start-line="542" selection-end-line="542" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cli/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="761" column="27" selection-start-line="761" selection-start-column="12" selection-end-line="761" selection-end-column="27" />
+        <state relative-caret-position="160">
+          <caret line="372" column="37" selection-start-line="372" selection-start-column="37" selection-end-line="372" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -624,16 +640,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TODO.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Done.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="63" column="52" selection-start-line="63" selection-start-column="17" selection-end-line="63" selection-end-column="52" />
+        <state relative-caret-position="779">
+          <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
         </state>
       </provider>
     </entry>

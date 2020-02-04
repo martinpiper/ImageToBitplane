@@ -36,6 +36,7 @@ public class Main {
     static int paletteMaxQuantize = 32;
     static ArrayList<HashMap<Integer,Integer>> palettes = new ArrayList<>();
     static HashMap<Integer , Integer> forcedColourIndex = new HashMap<>();
+    static HashMap<Integer , Double> factorColourIndex = new HashMap<>();
     static int tileWidth = 16 , tileHeight = 16;
     static int startX = 0 , startY = 0;
     static BufferedImage img = null;
@@ -72,10 +73,15 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--forcergb") == 0) {
                 forcedColourIndex.put(ApplyColorLimitsFromColour(new Color(ParseValueFrom(args[i+1]), ParseValueFrom(args[i+2]), ParseValueFrom(args[i+3]))).getRGB() , forcedColourIndex.size());
-//        forcedColourIndex.put(ApplyColorLimitsFromColour(new Color(164, 218, 244)).getRGB() , forcedColourIndex.size());
-//        forcedColourIndex.put(ApplyColorLimitsFromColour(new Color(119, 122, 133)).getRGB() , forcedColourIndex.size());
-//        forcedColourIndex.put(ApplyColorLimitsFromColour(new Color(0, 0, 0)).getRGB() , forcedColourIndex.size());
                 i+=3;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--rgbfactor") == 0) {
+                double factor = Double.parseDouble(args[i+4]);
+                factorColourIndex.put(ApplyColorLimitsFromColour(new Color(ParseValueFrom(args[i+1]), ParseValueFrom(args[i+2]), ParseValueFrom(args[i+3]))).getRGB() , factor);
+                i+=4;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--resetrgbfactor") == 0) {
+                factorColourIndex.clear();
                 continue;
             } else if (args[i].compareToIgnoreCase("--paletteoffset") == 0) {
                 paletteOffset = ParseValueFrom(args[i+1]);
@@ -203,14 +209,14 @@ public class Main {
             System.out.println("Palette quantize pass. Size = " + palettes.size());
             //    * Find the palette with the smallest number of image pixels
             HashMap<Integer,Integer> smallestPalette = null;
-            int smallestNumPixels = 0;
+            double smallestNumPixels = 0;
             for (HashMap<Integer,Integer> palette : palettes) {
-                int numPixels = 0;
+                double numPixels = 0;
                 for (int y = 0 ; y < imageHeight ; y++) {
                     for (int x = 0; x < imageWidth; x++) {
                         int theColour = imageColoursOriginal[x+(y*imageWidth)];
                         if (palette.containsKey(theColour)) {
-                            numPixels++;
+                            numPixels += factorColourIndex.getOrDefault(theColour, 1.0);
                         }
                     }
                 }
@@ -257,16 +263,16 @@ public class Main {
                 }
 
                 // Get the most used missing colour
-                int bestLargestCount = 0;
+                double bestLargestCount = 0;
                 int bestColour = 0;
 
                 for (int aColour : missingColours) {
-                    int numPixels = 0;
+                    double numPixels = 0;
                     for (int y = 0; y < imageHeight; y++) {
                         for (int x = 0; x < imageWidth; x++) {
                             int theColour = imageColoursOriginal[x + (y * imageWidth)];
                             if (theColour == aColour) {
-                                numPixels++;
+                                numPixels += factorColourIndex.getOrDefault(theColour, 1.0);
                             }
                         }
                     }
@@ -690,19 +696,19 @@ public class Main {
         // Quantize tiles down to a maximum number of colours
         for (int y = startY ; y < imageHeight ; y+=tileHeight) {
             for (int x = startX ; x < imageWidth ; x+= tileWidth) {
-                HashMap<Integer,Integer> usedColours = new HashMap<>();
+                HashMap<Integer,Double> usedColours = new HashMap<>();
                 for (Integer colour : forcedColourIndex.keySet()) {
-                    usedColours.put(colour , tileWidth*tileHeight);
+                    usedColours.put(colour , (double) (tileWidth*tileHeight)*10000);    // Significant weighting
                 }
                 for (int ty = 0 ; ty < tileHeight ; ty++) {
                     for (int tx = 0 ; tx < tileWidth ; tx++) {
                         Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                         if (colour != null) {
                             if (!usedColours.containsKey(colour)) {
-                                usedColours.put(colour, 0);
+                                usedColours.put(colour, 0.0);
                             } else {
-                                Integer num = usedColours.get(colour);
-                                usedColours.put(colour, num+1);
+                                Double num = usedColours.get(colour);
+                                usedColours.put(colour, num+factorColourIndex.getOrDefault(colour, 1.0));
                             }
                         }
                     }
@@ -712,8 +718,8 @@ public class Main {
                     System.out.println("Reduce x=" + x + " y=" + y);
                     // Find the least used colour
                     Integer chosenMinColour = null;
-                    int count = 0;
-                    for (Map.Entry<Integer,Integer> entry: usedColours.entrySet()) {
+                    double count = 0;
+                    for (Map.Entry<Integer,Double> entry: usedColours.entrySet()) {
                         if (chosenMinColour == null || entry.getValue() < count) {
                             chosenMinColour = entry.getKey();
                             count = entry.getValue();
@@ -723,7 +729,7 @@ public class Main {
                     Color source = new Color(chosenMinColour);
                     Integer closestColourToMin = null;
                     double difference = -1;
-                    for (Map.Entry<Integer,Integer> entry: usedColours.entrySet()) {
+                    for (Map.Entry<Integer,Double> entry: usedColours.entrySet()) {
                         // Skip the same colour
                         if (chosenMinColour.equals(entry.getKey())) {
                             continue;

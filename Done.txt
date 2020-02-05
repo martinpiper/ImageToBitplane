@@ -52,6 +52,7 @@
     Then seting the tile size after --image
     Then --imagequantize can act on the current configured tile size, and optionally handle the whole image
         Using asset mentioned in: https://twitter.com/MonstersGo/status/1196534673675051008
+            http://pixeljoint.com/pixelart/31235.htm
 
 
 

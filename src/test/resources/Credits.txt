@@ -1,0 +1,9 @@
+Links for images used in this folder:
+
+map_9 - Copy.png        https://opengameart.org/content/colored-16x16-fantasy-tileset
+oldbridge cropped.bmp   http://pixeljoint.com/pixelart/31235.htm
+TestImage1.png          https://opengameart.org/content/rpg-town-pixel-art-assets
+TestImage2.png          https://opengameart.org/content/rpg-town-pixel-art-assets
+
+
+Some images were cropped and tweaked from their originals.

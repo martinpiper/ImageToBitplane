@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -16,16 +16,16 @@
     <session id="-482565366">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="27" />
+          <entry key="project.closed" value="28" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.4" value="1" />
-          <entry key="project.open.time.5" value="8" />
+          <entry key="project.open.time.5" value="9" />
           <entry key="project.open.time.6" value="7" />
           <entry key="project.open.time.7" value="5" />
           <entry key="project.open.time.8" value="2" />
           <entry key="project.open.time.9" value="2" />
-          <entry key="project.opened" value="27" />
+          <entry key="project.opened" value="28" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -38,7 +38,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="13198" />
+          <entry key="JAVA" value="13201" />
           <entry key="PLAIN_TEXT" value="3712" />
         </counts>
       </usages-collector>
@@ -54,8 +54,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/cli/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="362">
-              <caret line="587" column="53" lean-forward="true" selection-start-line="587" selection-start-column="53" selection-end-line="587" selection-end-column="53" />
+            <state relative-caret-position="586">
+              <caret line="769" column="3" lean-forward="true" selection-start-line="769" selection-start-column="3" selection-end-line="769" selection-end-column="3" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -94,7 +94,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Done.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
+            <state relative-caret-position="425">
               <caret line="25" column="87" selection-start-line="25" selection-start-column="87" selection-end-line="25" selection-end-column="87" />
             </state>
           </provider>
@@ -118,12 +118,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>--forcergb</find>
-      <find>ApplyColorLimitsFromColour</find>
-      <find>bestFoundNum</find>
-      <find>distance</find>
-      <find>difference</find>
-      <find>thisDifference</find>
       <find>getColourDifference</find>
       <find>getPaletteDifference</find>
       <find>bestfit</find>
@@ -148,6 +142,12 @@
       <find>.print(</find>
       <find>factor</find>
       <find>usedColours</find>
+      <find>16</find>
+      <find>palette</find>
+      <find>paletteMaxQuantize</find>
+      <find>outputPlanes</find>
+      <find>outputPalettes</find>
+      <find>screenColourData</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -156,10 +156,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/cli/Main.java" />
         <option value="$PROJECT_DIR$/TODO.txt" />
         <option value="$PROJECT_DIR$/Done.txt" />
         <option value="$PROJECT_DIR$/src/test/resources/Credits.txt" />
+        <option value="$PROJECT_DIR$/src/main/java/cli/Main.java" />
       </list>
     </option>
   </component>
@@ -199,7 +199,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -250,10 +249,11 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1581169243697" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1583069072123" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -347,7 +347,7 @@
     <configuration name="Main old bridge RGB 0 0 0 palette opt rgbfactor" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
-      <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --rgbfactor 255 196 112 10 --rgbfactor 255 255 214 50 --rgbfactor 236 98 96 50 --newpalettes --forcergb 0 0 0 --paletteoffset 0 --palettesize 8 --startxy 0 0 --image &quot;src/test/resources/oldbridge cropped.bmp&quot; --tilewh 16 16 --imagequantize 8 --nowritepass --palettequantize 16 --image &quot;src/test/resources/oldbridge cropped.bmp&quot; --tilewh 16 16 --fitpalettes --outputplanes target/background_plane --outputscrcol target/background_tiles.bin --outputpalettes target/PaletteData.bin --nostacking --numbitplanes 3 --convertwritepass" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --rgbfactor 255 196 112 10 --rgbfactor 255 255 214 50 --rgbfactor 236 98 96 50 --newpalettes --forcergb 0 0 0 --paletteoffset 0 --palettesize 8 --startxy 0 0 --image &quot;src/test/resources/oldbridge cropped.bmp&quot; --tilewh 16 16 --imagequantize 8 --nowritepass --palettequantize 32 --image &quot;src/test/resources/oldbridge cropped.bmp&quot; --tilewh 16 16 --fitpalettes --outputplanes target/background_plane --outputscrcol target/background_tiles.bin --outputpalettes target/PaletteData.bin --nostacking --numbitplanes 3 --convertwritepass" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cli.*" />
@@ -458,7 +458,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.32995737" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3336887" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -658,15 +658,22 @@
     <entry file="file://$PROJECT_DIR$/src/test/resources/oldbridge cropped.bmp">
       <provider selected="true" editor-type-id="images" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/Done.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="87" selection-start-line="25" selection-start-column="87" selection-end-line="25" selection-end-column="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/resources/map_9 - Copy.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/TODO.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="10" selection-start-line="10" selection-end-line="10" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/resources/map_9 - Copy.png">
-      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
@@ -675,17 +682,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Done.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="25" column="87" selection-start-line="25" selection-start-column="87" selection-end-line="25" selection-end-column="87" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cli/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="362">
-          <caret line="587" column="53" lean-forward="true" selection-start-line="587" selection-start-column="53" selection-end-line="587" selection-end-column="53" />
+        <state relative-caret-position="586">
+          <caret line="769" column="3" lean-forward="true" selection-start-line="769" selection-start-column="3" selection-end-line="769" selection-end-column="3" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

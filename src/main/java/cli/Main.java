@@ -343,7 +343,7 @@ public class Main {
             int outNum = 0;
             for (HashMap<Integer, Integer> palette : palettes) {
                 System.out.println("palette size=" + palette.size());
-                if (outNum < 16) {
+                if (outNum < 32) {
                     byte[] thisPalette = new byte[paletteMaxLen * 2];
                     for (Map.Entry<Integer, Integer> entry : palette.entrySet()) {
                         Color colour = new Color(entry.getKey());
@@ -581,7 +581,7 @@ public class Main {
 
                 if (outputScreenData != null) {
                     screenTileData.put(currentTile);
-                    screenColourData.put((byte) (bestFoundPaletteIndex & 0xf));
+                    screenColourData.put((byte) (bestFoundPaletteIndex & 0x1f));
                 } else if (outputSprites != null) {
                     if (tileHasData) {
                         if (currentTile >= 24) {

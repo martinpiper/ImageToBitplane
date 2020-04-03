@@ -8,3 +8,8 @@
 
 
 * Make the inputs and outputs configurable via a text config file, with includes
+
+
+
+* Output raw pixels as bytes, not bitplanes, make it possible to use any colours from anywhere within the specified palette.
+    This can be used for the mode7 data

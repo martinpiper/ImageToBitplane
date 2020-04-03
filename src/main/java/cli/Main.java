@@ -3,12 +3,11 @@ package cli;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Main {
@@ -46,10 +45,12 @@ public class Main {
     static Integer[] imageColoursOriginal = null;
     static int numBitplanes = 3;
     static ByteBuffer[] bitplaneData = null;
+    static ByteBuffer tilebyteData = null;
     static byte currentTile = 0;
     static ByteBuffer screenTileData = null;
     static ByteBuffer screenColourData = null;
     static String outputPlanes = null;
+    static String outputTileBytes = null;
     static String outputScreenData = null;
     static PrintStream outputSprites = null;
     static String outputPalettes = null;
@@ -89,6 +90,24 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--palettesize") == 0) {
                 paletteMaxLen = ParseValueFrom(args[i+1]);
+                i++;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--loadpalette") == 0) {
+                byte[] bytes = Files.readAllBytes(Paths.get(args[i+1]));
+                HashMap<Integer,Integer> palette = new HashMap<Integer,Integer>();
+                for (int j = 0 ; j < bytes.length ; j+=2)
+                {
+                    int red = (bytes[j] & 0xf) << colourShiftRed;
+                    int green = ((bytes[j]>>4) & 0xf) << colourShiftRed;
+                    int blue = (bytes[j+1] & 0xf) << colourShiftBlue;
+
+                    int rgb = ApplyColorLimitsFromColour(new Color(red, green, blue)).getRGB();
+                    if (!palette.containsKey(rgb)) {
+                        palette.put(rgb, j / 2);
+                    }
+                }
+                palettes.add(palette);
+
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--spritexy") == 0) {
@@ -146,16 +165,25 @@ public class Main {
                 outputSprites = null;
                 outputPlanes = null;
                 outputPalettes = null;
+                outputTileBytes = null;
                 continue;
             } else if (args[i].compareToIgnoreCase("--nowritepass") == 0) {
                 outputScreenData = null;
                 outputSprites = null;
                 outputPlanes = null;
                 outputPalettes = null;
+                outputTileBytes = null;
                 TileConvert();
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputplanes") == 0) {
                 outputPlanes = args[i+1];
+                tilebyteData = null;
+                i++;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--outputtilebytes") == 0) {
+                outputTileBytes = args[i+1];
+                outputPlanes = null;
+                tilebyteData = ByteBuffer.allocate(8192); // MPi: TODO: Make 8192 configurable
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputscrcol") == 0) {
@@ -321,12 +349,19 @@ public class Main {
 
     private static void OutputFiles() throws IOException {
         FileChannel fc;
-        for (int bp = 0 ; bp < numBitplanes ; bp++) {
-            if (outputScreenData != null || outputSprites != null) {
-                fc = new FileOutputStream(outputPlanes + bp + ".bin").getChannel();
-                bitplaneData[bp].flip();
-                fc.write(bitplaneData[bp]);
-                fc.close();
+        if (outputTileBytes != null) {
+            fc = new FileOutputStream(outputTileBytes).getChannel();
+            tilebyteData.flip();
+            fc.write(tilebyteData);
+            fc.close();
+        } else {
+            for (int bp = 0; bp < numBitplanes; bp++) {
+                if (outputScreenData != null || outputSprites != null) {
+                    fc = new FileOutputStream(outputPlanes + bp + ".bin").getChannel();
+                    bitplaneData[bp].flip();
+                    fc.write(bitplaneData[bp]);
+                    fc.close();
+                }
             }
         }
 
@@ -334,8 +369,10 @@ public class Main {
             fc = new FileOutputStream(outputScreenData).getChannel();
             screenTileData.flip();
             fc.write(screenTileData);
-            screenColourData.flip();
-            fc.write(screenColourData);
+            if (outputTileBytes == null) {
+                screenColourData.flip();
+                fc.write(screenColourData);
+            }
             fc.close();
         }
 
@@ -500,6 +537,7 @@ public class Main {
 
                 // Now convert the tile to bitplane data based on the colours in the palette and the index values
                 byte[] theTile = new byte[tileWidth * tileHeight];
+                boolean theTileHasContents = false;
                 for (int ty = 0 ; ty < tileHeight ; ty++) {
                     for (int tx = 0 ; tx < tileWidth ; tx++) {
                         // If there is no colour then assume it's the first palette entry, which should be transparent
@@ -513,6 +551,7 @@ public class Main {
                                 theTile[tx + (ty * tileWidth)] = value.byteValue();
                                 // Remove the pixel, since it has been processed
                                 imageColours[x + tx + ((y + ty) * imageWidth)] = null;
+                                theTileHasContents = true;
                             }
                         }
                     }
@@ -580,6 +619,9 @@ public class Main {
                         }
                     }
                 }
+                if (tilebyteData != null) {
+                    tileHasData = theTileHasContents;
+                }
 
                 if (outputScreenData != null) {
                     screenTileData.put(currentTile);
@@ -597,9 +639,14 @@ public class Main {
 
                 if ((outputScreenData != null) || ((outputSprites != null) && tileHasData)) {
                     // Advances the tile number, could do with duplicate check here
-                    for (int bp = 0; bp < numBitplanes; bp++) {
-                        bitplaneData[bp].put(bitplaneDataTemp[bp]);
+                    if (tilebyteData != null) {
+                        tilebyteData.put(theTile);
+                    } else {
+                        for (int bp = 0; bp < numBitplanes; bp++) {
+                            bitplaneData[bp].put(bitplaneDataTemp[bp]);
+                        }
                     }
+
                     currentTile++;
                 }
 

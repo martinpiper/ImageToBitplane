@@ -193,6 +193,8 @@ public class Main {
                 fitPalettes = true;
                 continue;
             }
+
+            System.err.println("Unknown option: " + args[i]);
         }
 
 //        String inputPath = "src/test/resources/TestImage1.png";

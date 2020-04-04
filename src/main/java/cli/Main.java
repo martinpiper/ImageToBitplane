@@ -9,6 +9,7 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.List;
 
 public class Main {
 
@@ -17,6 +18,7 @@ public class Main {
         Color newColour = new Color((colour.getRed()>>colourShiftRed)<<colourShiftRed , (colour.getGreen()>>colourShiftGreen)<<colourShiftGreen , (colour.getBlue()>>colourShiftBlue)<<colourShiftBlue );
         return newColour;
     }
+
 
     public static int ParseValueFrom(String value) {
         if (value.startsWith("0x")) {
@@ -45,7 +47,7 @@ public class Main {
     static Integer[] imageColoursOriginal = null;
     static int numBitplanes = 3;
     static ByteBuffer[] bitplaneData = null;
-    static ByteBuffer tilebyteData = null;
+    static ByteBuffer tileByteData = null;
     static byte currentTile = 0;
     static ByteBuffer screenTileData = null;
     static ByteBuffer screenColourData = null;
@@ -56,6 +58,7 @@ public class Main {
     static String outputPalettes = null;
     static boolean useStacking = false;
     static boolean fitPalettes = false;
+    static TreeMap<String , TileIndexFlip> tileToIndexFlip = new TreeMap<String , TileIndexFlip>();
 
     public static void main(String[] args) throws Exception {
 
@@ -94,19 +97,40 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--loadpalette") == 0) {
                 byte[] bytes = Files.readAllBytes(Paths.get(args[i+1]));
-                HashMap<Integer,Integer> palette = new HashMap<Integer,Integer>();
-                for (int j = 0 ; j < bytes.length ; j+=2)
-                {
-                    int red = (bytes[j] & 0xf) << colourShiftRed;
-                    int green = ((bytes[j]>>4) & 0xf) << colourShiftRed;
-                    int blue = (bytes[j+1] & 0xf) << colourShiftBlue;
 
-                    int rgb = ApplyColorLimitsFromColour(new Color(red, green, blue)).getRGB();
-                    if (!palette.containsKey(rgb)) {
-                        palette.put(rgb, j / 2);
+                if (bytes.length / 2 <= paletteMaxLen) {
+                    HashMap<Integer, Integer> palette = new HashMap<Integer, Integer>();
+                    for (int j = 0; j < bytes.length; j += 2) {
+                        int red = (bytes[j] & 0xf) << colourShiftRed;
+                        int green = ((bytes[j] >> 4) & 0xf) << colourShiftRed;
+                        int blue = (bytes[j + 1] & 0xf) << colourShiftBlue;
+
+                        int rgb = ApplyColorLimitsFromColour(new Color(red, green, blue)).getRGB();
+                        if (!palette.containsKey(rgb)) {
+                            palette.put(rgb, j / 2);
+                        }
+                    }
+                    palettes.add(palette);
+                } else {
+                    HashMap<Integer, Integer> palette = new HashMap<Integer, Integer>();
+                    for (int j = 0; j < bytes.length; j += 2) {
+                        int red = (bytes[j] & 0xf) << colourShiftRed;
+                        int green = ((bytes[j] >> 4) & 0xf) << colourShiftRed;
+                        int blue = (bytes[j + 1] & 0xf) << colourShiftBlue;
+
+                        int rgb = ApplyColorLimitsFromColour(new Color(red, green, blue)).getRGB();
+                        if (!palette.containsKey(rgb)) {
+                            palette.put(rgb, palette.size());
+                        }
+                        if (palette.size() >= paletteMaxLen) {
+                            palettes.add(palette);
+                            palette = new HashMap<Integer, Integer>();
+                        }
+                    }
+                    if (!palette.isEmpty()) {
+                        palettes.add(palette);
                     }
                 }
-                palettes.add(palette);
 
                 i++;
                 continue;
@@ -177,13 +201,12 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputplanes") == 0) {
                 outputPlanes = args[i+1];
-                tilebyteData = null;
+                outputTileBytes = null;
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputtilebytes") == 0) {
                 outputTileBytes = args[i+1];
                 outputPlanes = null;
-                tilebyteData = ByteBuffer.allocate(8192); // MPi: TODO: Make 8192 configurable
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputscrcol") == 0) {
@@ -351,8 +374,8 @@ public class Main {
         FileChannel fc;
         if (outputTileBytes != null) {
             fc = new FileOutputStream(outputTileBytes).getChannel();
-            tilebyteData.flip();
-            fc.write(tilebyteData);
+            tileByteData.flip();
+            fc.write(tileByteData);
             fc.close();
         } else {
             for (int bp = 0; bp < numBitplanes; bp++) {
@@ -402,6 +425,7 @@ public class Main {
         System.out.println("To tiles...");
         screenTileData = ByteBuffer.allocate((imageWidth * imageHeight)/tileWidth/tileHeight);
         screenColourData = ByteBuffer.allocate((imageWidth * imageHeight)/tileWidth/tileHeight);
+        tileByteData = ByteBuffer.allocate(tileWidth*tileHeight*1024);  // Ample space even for extended character data
 
         for (int y = startY ; y < imageHeight ; y+=tileHeight) {
             for (int x = startX ; x < imageWidth ; ) {
@@ -551,11 +575,14 @@ public class Main {
                                 theTile[tx + (ty * tileWidth)] = value.byteValue();
                                 // Remove the pixel, since it has been processed
                                 imageColours[x + tx + ((y + ty) * imageWidth)] = null;
-                                theTileHasContents = true;
+                                if(value > 0) {
+                                    theTileHasContents = true;
+                                }
                             }
                         }
                     }
                 }
+
                 // The pattern of pixels to pull from the linear row/column tile data into the bitplane data
                 int[] indexPick = {
                         0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
@@ -619,13 +646,109 @@ public class Main {
                         }
                     }
                 }
-                if (tilebyteData != null) {
+
+                if (outputTileBytes != null) {
                     tileHasData = theTileHasContents;
                 }
 
+                int bestTileIndex = currentTile;
+                boolean bestFlipX = false;
+                boolean bestFlipY = false;
+                if ((outputScreenData != null) || ((outputSprites != null) && tileHasData)) {
+                    String testTile = Base64.getEncoder().encodeToString(theTile);
+                    TileIndexFlip existingIndexFlip = tileToIndexFlip.get(testTile);
+
+                    if (existingIndexFlip != null) {
+                        bestFlipX = existingIndexFlip.flipX;
+                        bestFlipY = existingIndexFlip.flipY;
+                        bestTileIndex = existingIndexFlip.index;
+                        System.out.println("Found existing tile: " + bestTileIndex + " " + (bestFlipX?"H":"") + (bestFlipY?"V":""));
+                    } else {
+                        // Advances the tile number, could do with duplicate check here
+                        tileByteData.put(theTile);
+                        if (outputPlanes != null) {
+                            for (int bp = 0; bp < numBitplanes; bp++) {
+                                bitplaneData[bp].put(bitplaneDataTemp[bp]);
+                            }
+                        }
+
+                        existingIndexFlip = new TileIndexFlip();
+                        existingIndexFlip.flipX = false;
+                        existingIndexFlip.flipY = false;
+                        existingIndexFlip.index = currentTile;
+                        tileToIndexFlip.put(testTile , existingIndexFlip);
+
+                        // Now register the flips
+                        byte[] theTileFlipped = new byte[tileWidth * tileHeight];
+                        for (int ty = 0; ty < tileHeight ; ty++) {
+                            for (int tx = 0; tx < tileWidth ; tx++) {
+                                theTileFlipped[(tileWidth-1-tx) + (ty*tileWidth)] = theTile[tx + (ty*tileWidth)];
+                            }
+                        }
+                        existingIndexFlip = new TileIndexFlip();
+                        existingIndexFlip.flipX = true;
+                        existingIndexFlip.flipY = false;
+                        existingIndexFlip.index = currentTile;
+                        testTile = Base64.getEncoder().encodeToString(theTileFlipped);
+                        // Because the flipped versions might be symmetrical
+                        if (!tileToIndexFlip.containsKey(testTile)) {
+                            tileToIndexFlip.put(testTile, existingIndexFlip);
+                        }
+
+                        for (int ty = 0; ty < tileHeight ; ty++) {
+                            for (int tx = 0; tx < tileWidth ; tx++) {
+                                theTileFlipped[(tileWidth-1-tx) + ((tileHeight-1-ty)*tileWidth)] = theTile[tx + (ty*tileWidth)];
+                            }
+                        }
+                        existingIndexFlip = new TileIndexFlip();
+                        existingIndexFlip.flipX = true;
+                        existingIndexFlip.flipY = true;
+                        existingIndexFlip.index = currentTile;
+                        testTile = Base64.getEncoder().encodeToString(theTileFlipped);
+                        // Because the flipped versions might be symmetrical
+                        if (!tileToIndexFlip.containsKey(testTile)) {
+                            tileToIndexFlip.put(testTile, existingIndexFlip);
+                        }
+
+                        for (int ty = 0; ty < tileHeight ; ty++) {
+                            for (int tx = 0; tx < tileWidth ; tx++) {
+                                theTileFlipped[tx + ((tileHeight-1-ty)*tileWidth)] = theTile[tx + (ty*tileWidth)];
+                            }
+                        }
+                        existingIndexFlip = new TileIndexFlip();
+                        existingIndexFlip.flipX = false;
+                        existingIndexFlip.flipY = true;
+                        existingIndexFlip.index = currentTile;
+                        testTile = Base64.getEncoder().encodeToString(theTileFlipped);
+                        // Because the flipped versions might be symmetrical
+                        if (!tileToIndexFlip.containsKey(testTile)) {
+                            tileToIndexFlip.put(testTile, existingIndexFlip);
+                        }
+
+                        currentTile++;
+                    }
+                }
+
+                if (bestFlipX) {
+                    bestFoundPaletteIndex = bestFoundPaletteIndex | 0x80;
+                    // Mode7 tiles want the flip in screen and the other way around
+                    if (outputTileBytes != null) {
+                        bestTileIndex = bestTileIndex  | 0x80;
+                    }
+                }
+                if (bestFlipY) {
+                    bestFoundPaletteIndex = bestFoundPaletteIndex | 0x40;
+                    // Mode7 tiles want the flip in screen and the other way around
+                    if (outputTileBytes != null) {
+                        bestTileIndex = bestTileIndex  | 0x40;
+                    }
+                }
+
                 if (outputScreenData != null) {
-                    screenTileData.put(currentTile);
-                    screenColourData.put((byte) (bestFoundPaletteIndex & 0x1f));
+                    byte theTileIndex = (byte) bestTileIndex;
+                    byte theColour = (byte) (bestFoundPaletteIndex & 0x1f);
+                    screenTileData.put(theTileIndex);
+                    screenColourData.put(theColour);
                 } else if (outputSprites != null) {
                     if (tileHasData) {
                         if (currentTile >= 24) {
@@ -637,18 +760,6 @@ public class Main {
                     }
                 }
 
-                if ((outputScreenData != null) || ((outputSprites != null) && tileHasData)) {
-                    // Advances the tile number, could do with duplicate check here
-                    if (tilebyteData != null) {
-                        tilebyteData.put(theTile);
-                    } else {
-                        for (int bp = 0; bp < numBitplanes; bp++) {
-                            bitplaneData[bp].put(bitplaneDataTemp[bp]);
-                        }
-                    }
-
-                    currentTile++;
-                }
 
                 // Now calculate if there is any data left
                 usedColours.clear();
@@ -691,6 +802,7 @@ public class Main {
         for (HashMap<Integer, Integer> palette : palettes) {
             System.out.println("palette size=" + palette.size());
         }
+        System.out.println("num tiles=" + currentTile);
     }
 
     private static Integer getBestPaletteIndex(HashMap<Integer, Integer> resultPalette, Integer colour) {

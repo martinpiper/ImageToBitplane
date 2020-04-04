@@ -74,3 +74,12 @@
 * RGB Colour multiplier, for the number of pixels, with a floating point number
     Designed to preserve colours by increasing the number of pixels the algorithm uses internally
     --rgbfactor 236 98 96 50 is enough to preserve the flag colouring and some additional red coloured elements
+
+	
+	
+* Output raw pixels as bytes, not bitplanes, make it possible to use any colours from anywhere within the specified palette.
+    This can be used for the mode7 data
+    * Run/Debug Configuration: Main mode7
+        TODO: // Advances the tile number, could do with duplicate check here
+        TODO: Use mode7 screen width/height size for input data
+	* Existing sprite/tile data also works for TestData2.txt with the number of tiles reduced.

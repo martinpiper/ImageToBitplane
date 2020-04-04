@@ -1,12 +1,3 @@
-* Output raw pixels as bytes, not bitplanes, make it possible to use any colours from anywhere within the specified palette.
-    This can be used for the mode7 data
-    * Run/Debug Configuration: Main mode7
-        TODO: // Advances the tile number, could do with duplicate check here
-        TODO: Use mode7 screen width/height size for input data
-
-
-
-
 * Tidy code and unit test
 
 

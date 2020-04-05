@@ -1,3 +1,12 @@
+* // TODO: palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
+    Palette loading will need to enforce the palette size groups based on the original palette
+
+
+
+* Try the full "old bridge" in mode7 with full 256 colour palette and index 0=0,0,0
+
+
+
 * Tidy code and unit test
 
 

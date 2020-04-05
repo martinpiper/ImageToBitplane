@@ -48,7 +48,7 @@ public class Main {
     static int numBitplanes = 3;
     static ByteBuffer[] bitplaneData = null;
     static ByteBuffer tileByteData = null;
-    static byte currentTile = 0;
+    static int currentTile = 0;
     static ByteBuffer screenTileData = null;
     static ByteBuffer screenColourData = null;
     static String outputPlanes = null;
@@ -100,6 +100,7 @@ public class Main {
 
                 if (bytes.length / 2 <= paletteMaxLen) {
                     HashMap<Integer, Integer> palette = new HashMap<Integer, Integer>();
+                    // TODO: palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
                     for (int j = 0; j < bytes.length; j += 2) {
                         int red = (bytes[j] & 0xf) << colourShiftRed;
                         int green = ((bytes[j] >> 4) & 0xf) << colourShiftRed;
@@ -113,6 +114,7 @@ public class Main {
                     palettes.add(palette);
                 } else {
                     HashMap<Integer, Integer> palette = new HashMap<Integer, Integer>();
+                    // TODO: palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
                     for (int j = 0; j < bytes.length; j += 2) {
                         int red = (bytes[j] & 0xf) << colourShiftRed;
                         int green = ((bytes[j] >> 4) & 0xf) << colourShiftRed;
@@ -125,6 +127,7 @@ public class Main {
                         if (palette.size() >= paletteMaxLen) {
                             palettes.add(palette);
                             palette = new HashMap<Integer, Integer>();
+                            // TODO: palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
                         }
                     }
                     if (!palette.isEmpty()) {

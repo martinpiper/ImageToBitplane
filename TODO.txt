@@ -1,5 +1,16 @@
 * // TODO: palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
     Palette loading will need to enforce the palette size groups based on the original palette
+	
+	
+	
+* Have the option, for mode7, to support loading sparse palettes and then taking into account the forced colour(s) use the spaces for extra colours
+	Then output new palettes.
+
+
+
+* To improve duplicate character and flips detection, try permutations of output planes and *once only* reorganise the palette.
+	Or do not sort colours in palettes, this will preserve the ordering and weighting of pixels detected in chars.
+	This will need some carefully created test data to exercise these cases.
 
 
 

@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ImageToBitplane.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.ipr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Done.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Done.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,48 +51,8 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>ApplyColorLimitsFromColour</find>
-      <find>loadpalette</find>
-      <find>readfile</find>
-      <find>outputPalettes</find>
-      <find>paletteMaxLen</find>
-      <find>outputscrcol</find>
-      <find>outputPlanes</find>
-      <find>bitplaneData</find>
-      <find>readp</find>
-      <find>readpal</find>
-      <find>outputScreenData</find>
-      <find>tilebyteData</find>
-      <find>// Advances the tile number, could do with duplicate check here</find>
-      <find>tilebytedata</find>
-      <find>tileByteData</find>
-      <find>new HashMap</find>
-      <find>palettes.</find>
-      <find>palettes.add</find>
-      <find>multihas</find>
-      <find>loadpal</find>
-      <find>outputTileBytes</find>
-      <find>duplicate</find>
-      <find>tileToIndexFlip</find>
-      <find>.clone</find>
-      <find>loadpale</find>
-      <find>forcedColourIndex</find>
-      <find>byte</find>
-      <find>num tiles</find>
-      <find>currentTile</find>
-      <find>todo:</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1696" />
-    <option name="height" value="1026" />
   </component>
   <component name="ProjectId" id="1atmZFSFobtnUZP3K7eREBjnhZj" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -110,7 +69,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build.tools" />
   </component>
-  <component name="RunManager" selected="Application.Main mode7 &quot;map_9 - mode7 test.png&quot;">
+  <component name="RunManager" selected="Application.Main all conv">
     <configuration name="Main all conv (2)" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -337,49 +296,60 @@
     </todo-panel>
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588174550622">
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588176186145">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588174550622" />
-    <state width="1877" height="288" key="GridCell.Tab.0.bottom" timestamp="1588174579057">
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588176186145" />
+    <state width="1877" height="165" key="GridCell.Tab.0.bottom" timestamp="1588178522991">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="288" key="GridCell.Tab.0.bottom/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588174579057" />
-    <state width="1877" height="288" key="GridCell.Tab.0.center" timestamp="1588174579057">
+    <state width="1877" height="165" key="GridCell.Tab.0.bottom/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588178522991" />
+    <state width="1877" height="165" key="GridCell.Tab.0.center" timestamp="1588178522991">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="288" key="GridCell.Tab.0.center/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588174579057" />
-    <state width="1877" height="288" key="GridCell.Tab.0.left" timestamp="1588174579057">
+    <state width="1877" height="165" key="GridCell.Tab.0.center/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588178522991" />
+    <state width="1877" height="165" key="GridCell.Tab.0.left" timestamp="1588178522991">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="288" key="GridCell.Tab.0.left/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588174579057" />
-    <state width="1877" height="288" key="GridCell.Tab.0.right" timestamp="1588174579057">
+    <state width="1877" height="165" key="GridCell.Tab.0.left/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588178522991" />
+    <state width="1877" height="165" key="GridCell.Tab.0.right" timestamp="1588178522991">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="288" key="GridCell.Tab.0.right/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588174579057" />
+    <state width="1877" height="165" key="GridCell.Tab.0.right/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588178522991" />
+    <state width="1877" height="165" key="GridCell.Tab.1.bottom" timestamp="1588178522992">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="165" key="GridCell.Tab.1.bottom/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588178522992" />
+    <state width="1877" height="165" key="GridCell.Tab.1.center" timestamp="1588178522992">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="165" key="GridCell.Tab.1.center/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588178522992" />
+    <state width="1877" height="165" key="GridCell.Tab.1.left" timestamp="1588178522991">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="165" key="GridCell.Tab.1.left/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588178522991" />
+    <state width="1877" height="165" key="GridCell.Tab.1.right" timestamp="1588178522992">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="165" key="GridCell.Tab.1.right/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588178522992" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>219</line>
-          <option name="timeStamp" value="28" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>498</line>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>355</line>
+          <line>357</line>
           <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
           <line>83</line>
           <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>761</line>
+          <option name="timeStamp" value="61" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

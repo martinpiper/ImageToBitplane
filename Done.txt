@@ -83,3 +83,8 @@
         TODO: // Advances the tile number, could do with duplicate check here
         TODO: Use mode7 screen width/height size for input data
 	* Existing sprite/tile data also works for TestData2.txt with the number of tiles reduced.
+
+
+
+* ImageToBitplane is outputting the wrong palette index for the sprite sheet, but the original palette values in GenerateData2 are working?
+	The currentTile tile index looks to be out by 1????

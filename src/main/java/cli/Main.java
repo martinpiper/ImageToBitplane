@@ -193,6 +193,7 @@ public class Main {
                 outputPlanes = null;
                 outputPalettes = null;
                 outputTileBytes = null;
+                currentTile = 0;
                 continue;
             } else if (args[i].compareToIgnoreCase("--nowritepass") == 0) {
                 outputScreenData = null;
@@ -200,6 +201,7 @@ public class Main {
                 outputPlanes = null;
                 outputPalettes = null;
                 outputTileBytes = null;
+                currentTile = 0;
                 TileConvert();
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputplanes") == 0) {
@@ -747,9 +749,9 @@ public class Main {
                     }
                 }
 
+                byte theTileIndex = (byte) bestTileIndex;
+                byte theColour = (byte) (bestFoundPaletteIndex & 0x1f);
                 if (outputScreenData != null) {
-                    byte theTileIndex = (byte) bestTileIndex;
-                    byte theColour = (byte) (bestFoundPaletteIndex & 0x1f);
                     screenTileData.put(theTileIndex);
                     screenColourData.put(theColour);
                 } else if (outputSprites != null) {
@@ -757,7 +759,7 @@ public class Main {
                         if (currentTile >= 24) {
                             outputSprites.print(";");
                         }
-                        outputSprites.println("b" + currentTile + ",b" + (bestFoundPaletteIndex + paletteOffset) + ",b" + spriteYPos + ",b" + spriteXPos);
+                        outputSprites.println("b" + theTileIndex + ",b" + (theColour + paletteOffset) + ",b" + spriteYPos + ",b" + spriteXPos);
                     } else {
                         outputSprites.println(";Empty");
                     }

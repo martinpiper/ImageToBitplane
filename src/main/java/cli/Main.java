@@ -137,6 +137,42 @@ public class Main {
 
                 i++;
                 continue;
+            } else if (args[i].compareToIgnoreCase("--loadpalettebestfit") == 0) {
+                byte[] bytes = Files.readAllBytes(Paths.get(args[i+1]));
+
+                // TODO: palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
+                for (int j = 0; j < bytes.length; j += 2) {
+                    int red = (bytes[j] & 0xf) << colourShiftRed;
+                    int green = ((bytes[j] >> 4) & 0xf) << colourShiftRed;
+                    int blue = (bytes[j + 1] & 0xf) << colourShiftBlue;
+
+                    int rgb = ApplyColorLimitsFromColour(new Color(red, green, blue)).getRGB();
+
+                    boolean found = false;
+                    for (HashMap<Integer, Integer> palette : palettes) {
+                        if (palette.containsKey(rgb)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        for (HashMap<Integer, Integer> palette : palettes) {
+                            if (palette.size() < paletteMaxLen) {
+                                palette.put(rgb, palette.size());
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!found) {
+                        HashMap<Integer, Integer> palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
+                        palette.put(rgb, palette.size());
+                        palettes.add(palette);
+                    }
+                }
+
+                i++;
+                continue;
             } else if (args[i].compareToIgnoreCase("--spritexy") == 0) {
                 spriteXPos = ParseValueFrom(args[i+1]);
                 spriteYPos = ParseValueFrom(args[i+2]);
@@ -378,10 +414,28 @@ public class Main {
     private static void OutputFiles() throws IOException {
         FileChannel fc;
         if (outputTileBytes != null) {
-            fc = new FileOutputStream(outputTileBytes).getChannel();
             tileByteData.flip();
-            fc.write(tileByteData);
-            fc.close();
+            if (tileByteData.limit() >= 8192) {
+                ByteBuffer bank1 = tileByteData.slice();
+                ByteBuffer bank2 = tileByteData.slice();
+
+                bank1.position(0);
+                bank1.limit(8192);
+                bank2.position(8192);
+
+                fc = new FileOutputStream(outputTileBytes).getChannel();
+                fc.write(bank1);
+                fc.close();
+
+                fc = new FileOutputStream(outputTileBytes + "2").getChannel();
+                fc.write(bank2);
+                fc.close();
+
+            } else {
+                fc = new FileOutputStream(outputTileBytes).getChannel();
+                fc.write(tileByteData);
+                fc.close();
+            }
         } else {
             for (int bp = 0; bp < numBitplanes; bp++) {
                 if (outputScreenData != null || outputSprites != null) {
@@ -411,7 +465,17 @@ public class Main {
             for (HashMap<Integer, Integer> palette : palettes) {
                 System.out.println("palette size=" + palette.size());
                 if (outNum < 32) {
-                    byte[] thisPalette = new byte[paletteMaxLen * 2];
+                    int maxEntryIndex = 0;
+                    if (palettes.size() == 1) {
+                        for (Map.Entry<Integer, Integer> entry : palette.entrySet()) {
+                            if ((entry.getValue()+1) > maxEntryIndex) {
+                                maxEntryIndex = entry.getValue() + 1;
+                            }
+                        }
+                    } else {
+                        maxEntryIndex = paletteMaxLen;
+                    }
+                    byte[] thisPalette = new byte[maxEntryIndex * 2];
                     for (Map.Entry<Integer, Integer> entry : palette.entrySet()) {
                         Color colour = new Color(entry.getKey());
                         thisPalette[(entry.getValue() * 2)] = (byte) ((colour.getGreen() >> 4) << 4);
@@ -470,6 +534,9 @@ public class Main {
                             for (int tx = 0 ; tx < tileWidth ; tx++) {
                                 Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                                 if (colour != null) {
+                                    if (forcedColourIndex.containsKey(colour)) {
+                                        continue;
+                                    }
                                     Integer closestColour = getBestPaletteColour(palette, colour);
                                     colourDifference += getColourDifference(new Color(closestColour) , new Color(colour));
                                 }
@@ -772,10 +839,17 @@ public class Main {
                     for (int tx = 0 ; tx < tileWidth ; tx++) {
                         Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                         if (colour != null) {
+                            // Transparent forced colours should be ignored
+                            if (forcedColourIndex.containsKey(colour)) {
+                                if (forcedColourIndex.get(colour) == 0) {
+                                    continue;
+                                }
+                            }
                             usedColours.add(colour);
                         }
                     }
                 }
+                System.out.println("usedColours size=" + usedColours.size());
                 if (useStacking && usedColours.size() > 0) {
                     System.out.println(";Stacked x=" + x + " y=" + y);
                     if (outputSprites != null) {
@@ -811,6 +885,9 @@ public class Main {
     }
 
     private static Integer getBestPaletteIndex(HashMap<Integer, Integer> resultPalette, Integer colour) {
+        if (forcedColourIndex.containsKey(colour)) {
+            return forcedColourIndex.get(forcedColourIndex);
+        }
         Integer result = resultPalette.get(colour);
 
         if (!fitPalettes) {

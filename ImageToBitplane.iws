@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ImageToBitplane.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.ipr" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -70,7 +69,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build.tools" />
   </component>
-  <component name="RunManager" selected="Application.VideoHardware 2">
+  <component name="RunManager" selected="Maven.clean install">
     <configuration name="Main all conv (1)" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -298,6 +297,32 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="clean install" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="install" />
+              </list>
+            </option>
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Application.VideoHardware 1" />
       <item itemvalue="Application.VideoHardware 2" />
@@ -315,6 +340,7 @@
       <item itemvalue="Application.Main old bridge RGB 119 122 133" />
       <item itemvalue="Application.Main sprites convertwritepass" />
       <item itemvalue="Application.Main background nowritepass" />
+      <item itemvalue="Maven.clean install" />
     </list>
     <recent_temporary>
       <list>
@@ -349,78 +375,73 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="440" y="94" key="#Project_Structure/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588259279763" />
-    <state x="639" y="95" key="#Unnamed" timestamp="1588258965238">
+    <state x="639" y="95" key="#Unnamed" timestamp="1588340569368">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="639" y="95" key="#Unnamed/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588258965238" />
-    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588259542996">
+    <state x="639" y="95" key="#Unnamed/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588340569368" />
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588340445852">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588259542996" />
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588340445852" />
     <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1588259207229">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588259207229" />
-    <state width="1877" height="283" key="GridCell.Tab.0.bottom" timestamp="1588260141324">
+    <state width="1877" height="253" key="GridCell.Tab.0.bottom" timestamp="1588342875171">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="283" key="GridCell.Tab.0.bottom/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588260141324" />
-    <state width="1877" height="283" key="GridCell.Tab.0.center" timestamp="1588260141324">
+    <state width="1877" height="253" key="GridCell.Tab.0.bottom/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588342875171" />
+    <state width="1877" height="253" key="GridCell.Tab.0.center" timestamp="1588342875171">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="283" key="GridCell.Tab.0.center/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588260141324" />
-    <state width="1877" height="283" key="GridCell.Tab.0.left" timestamp="1588260141324">
+    <state width="1877" height="253" key="GridCell.Tab.0.center/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588342875171" />
+    <state width="1877" height="253" key="GridCell.Tab.0.left" timestamp="1588342875170">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="283" key="GridCell.Tab.0.left/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588260141324" />
-    <state width="1877" height="283" key="GridCell.Tab.0.right" timestamp="1588260141324">
+    <state width="1877" height="253" key="GridCell.Tab.0.left/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588342875170" />
+    <state width="1877" height="253" key="GridCell.Tab.0.right" timestamp="1588342875171">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="283" key="GridCell.Tab.0.right/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588260141324" />
-    <state width="1877" height="283" key="GridCell.Tab.1.bottom" timestamp="1588260141324">
+    <state width="1877" height="253" key="GridCell.Tab.0.right/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588342875171" />
+    <state width="1877" height="283" key="GridCell.Tab.1.bottom" timestamp="1588342875162">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="283" key="GridCell.Tab.1.bottom/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588260141324" />
-    <state width="1877" height="283" key="GridCell.Tab.1.center" timestamp="1588260141324">
+    <state width="1877" height="283" key="GridCell.Tab.1.bottom/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588342875162" />
+    <state width="1877" height="283" key="GridCell.Tab.1.center" timestamp="1588342875161">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="283" key="GridCell.Tab.1.center/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588260141324" />
-    <state width="1877" height="283" key="GridCell.Tab.1.left" timestamp="1588260141324">
+    <state width="1877" height="283" key="GridCell.Tab.1.center/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588342875161" />
+    <state width="1877" height="283" key="GridCell.Tab.1.left" timestamp="1588342875161">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="283" key="GridCell.Tab.1.left/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588260141324" />
-    <state width="1877" height="283" key="GridCell.Tab.1.right" timestamp="1588260141324">
+    <state width="1877" height="283" key="GridCell.Tab.1.left/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588342875161" />
+    <state width="1877" height="283" key="GridCell.Tab.1.right" timestamp="1588342875161">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="283" key="GridCell.Tab.1.right/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588260141324" />
+    <state width="1877" height="283" key="GridCell.Tab.1.right/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588342875161" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>393</line>
+          <line>397</line>
           <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>83</line>
+          <line>84</line>
           <option name="timeStamp" value="60" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>416</line>
-          <option name="timeStamp" value="73" />
+          <line>815</line>
+          <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>434</line>
-          <option name="timeStamp" value="74" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>500</line>
-          <option name="timeStamp" value="75" />
+          <line>822</line>
+          <option name="timeStamp" value="77" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

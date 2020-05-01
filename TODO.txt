@@ -1,3 +1,7 @@
+* // TODO: Chars will need to be handled, for their chosen palette range
+
+
+
 * Option to ignore forced index 0 pixels at input, makes them transparent
 
 

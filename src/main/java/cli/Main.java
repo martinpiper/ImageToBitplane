@@ -55,6 +55,7 @@ public class Main {
     static String outputTileBytes = null;
     static String outputScreenData = null;
     static PrintStream outputSprites = null;
+    static PrintStream outputSprites2 = null;
     static String outputPalettes = null;
     static boolean useStacking = false;
     static boolean fitPalettes = false;
@@ -226,6 +227,7 @@ public class Main {
             } else if (args[i].compareToIgnoreCase("--nowrite") == 0) {
                 outputScreenData = null;
                 outputSprites = null;
+                outputSprites2 = null;
                 outputPlanes = null;
                 outputPalettes = null;
                 outputTileBytes = null;
@@ -234,6 +236,7 @@ public class Main {
             } else if (args[i].compareToIgnoreCase("--nowritepass") == 0) {
                 outputScreenData = null;
                 outputSprites = null;
+                outputSprites2 = null;
                 outputPlanes = null;
                 outputPalettes = null;
                 outputTileBytes = null;
@@ -256,6 +259,7 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputsprites") == 0) {
                 outputSprites = new PrintStream(new FileOutputStream(args[i+1]));
+                outputSprites2 = new PrintStream(new FileOutputStream(args[i+1] + ".a"));
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputpalettes") == 0) {
@@ -496,11 +500,18 @@ public class Main {
         screenColourData = ByteBuffer.allocate((imageWidth * imageHeight)/tileWidth/tileHeight);
         tileByteData = ByteBuffer.allocate(tileWidth*tileHeight*1024);  // Ample space even for extended character data
 
+        boolean newSprite = true;
+
         for (int y = startY ; y < imageHeight ; y+=tileHeight) {
             for (int x = startX ; x < imageWidth ; ) {
                 System.out.println(";Process x=" + x + " y=" + y);
                 if (outputSprites != null) {
                     outputSprites.println(";Process x=" + x + " y=" + y);
+                    if (newSprite) {
+                        outputSprites2.println("EmitSpriteFrame"+ x +"_" + y);
+                        outputSprites2.println("\t+MEmitSpriteFrame_Preserve");
+                        newSprite = false;
+                    }
                 }
                 // First collect all unique colours used in the tile
                 SortedSet<Integer> usedColours = new TreeSet<>();
@@ -802,22 +813,23 @@ public class Main {
                 }
 
                 if (bestFlipX) {
-                    bestFoundPaletteIndex = bestFoundPaletteIndex | 0x80;
-                    // Mode7 tiles want the flip in screen and the other way around
+                    bestFoundPaletteIndex = bestFoundPaletteIndex | 0x40;
+                    // Mode7 tiles want the flip in screen data
                     if (outputTileBytes != null) {
                         bestTileIndex = bestTileIndex  | 0x80;
                     }
                 }
                 if (bestFlipY) {
-                    bestFoundPaletteIndex = bestFoundPaletteIndex | 0x40;
-                    // Mode7 tiles want the flip in screen and the other way around
+                    bestFoundPaletteIndex = bestFoundPaletteIndex | 0x80;
+                    // Mode7 tiles want the flip in screen data
                     if (outputTileBytes != null) {
                         bestTileIndex = bestTileIndex  | 0x40;
                     }
                 }
 
                 byte theTileIndex = (byte) bestTileIndex;
-                byte theColour = (byte) (bestFoundPaletteIndex & 0x1f);
+                // TODO: Chars will need to be handled, for their chosen palette range
+                byte theColour = (byte) (bestFoundPaletteIndex & (0x1f | 0x80 | 0x40));
                 if (outputScreenData != null) {
                     screenTileData.put(theTileIndex);
                     screenColourData.put(theColour);
@@ -827,6 +839,8 @@ public class Main {
                             outputSprites.print(";");
                         }
                         outputSprites.println("b" + theTileIndex + ",b" + (theColour + paletteOffset) + ",b" + spriteYPos + ",b" + spriteXPos);
+                        outputSprites2.println("\t+MEmitSpriteFrame " + theTileIndex + " , " + (theColour + paletteOffset));
+
                     } else {
                         outputSprites.println(";Empty");
                     }
@@ -857,6 +871,12 @@ public class Main {
                     }
                     continue;
                 }
+                if (outputSprites != null) {
+                    outputSprites2.println("\t+MEmitSpriteFrame_RestoreExit");
+                    outputSprites2.println("");
+                    newSprite = true;
+                }
+
                 x+=tileWidth;
 
                 if (outputSprites != null) {

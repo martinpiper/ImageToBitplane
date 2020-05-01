@@ -88,3 +88,8 @@
 
 * ImageToBitplane is outputting the wrong palette index for the sprite sheet, but the original palette values in GenerateData2 are working?
 	The currentTile tile index looks to be out by 1????
+
+	
+	
+* Have the option, for mode7, to support loading sparse palettes and then taking into account the forced colour(s) use the spaces for extra colours
+	Then output new palettes.

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="" />
+    <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -323,7 +326,6 @@
       <item itemvalue="Application.Main all conv (1)" />
       <item itemvalue="Application.Main all conv" />
       <item itemvalue="Application.Main background convertwritepass" />
-      <item itemvalue="Application.Main background nowritepass" />
       <item itemvalue="Application.Main mode7 &quot;map_9 - mode7 test.png&quot;" />
       <item itemvalue="Application.Main mode7" />
       <item itemvalue="Application.Main old bridge RGB 0 0 0 full image quant" />
@@ -336,6 +338,7 @@
       <item itemvalue="Application.VideoHardware 1" />
       <item itemvalue="Application.VideoHardware 2" />
       <item itemvalue="Application.VideoHardware 3" />
+      <item itemvalue="Application.Main background nowritepass" />
       <item itemvalue="Maven.clean install" />
     </list>
     <recent_temporary>
@@ -383,22 +386,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588259207229" />
-    <state width="1877" height="253" key="GridCell.Tab.0.bottom" timestamp="1588342875171">
+    <state width="1877" height="253" key="GridCell.Tab.0.bottom" timestamp="1588857987803">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="253" key="GridCell.Tab.0.bottom/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588342875171" />
-    <state width="1877" height="253" key="GridCell.Tab.0.center" timestamp="1588342875171">
+    <state width="1877" height="253" key="GridCell.Tab.0.bottom/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588857987803" />
+    <state width="1877" height="253" key="GridCell.Tab.0.center" timestamp="1588857987803">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="253" key="GridCell.Tab.0.center/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588342875171" />
-    <state width="1877" height="253" key="GridCell.Tab.0.left" timestamp="1588342875170">
+    <state width="1877" height="253" key="GridCell.Tab.0.center/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588857987803" />
+    <state width="1877" height="253" key="GridCell.Tab.0.left" timestamp="1588857987803">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="253" key="GridCell.Tab.0.left/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588342875170" />
-    <state width="1877" height="253" key="GridCell.Tab.0.right" timestamp="1588342875171">
+    <state width="1877" height="253" key="GridCell.Tab.0.left/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588857987803" />
+    <state width="1877" height="253" key="GridCell.Tab.0.right" timestamp="1588857987803">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="253" key="GridCell.Tab.0.right/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588342875171" />
+    <state width="1877" height="253" key="GridCell.Tab.0.right/-1920.-6.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1588857987803" />
     <state width="1877" height="283" key="GridCell.Tab.1.bottom" timestamp="1588342875162">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

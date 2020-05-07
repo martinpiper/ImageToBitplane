@@ -816,14 +816,14 @@ public class Main {
                     bestFoundPaletteIndex = bestFoundPaletteIndex | 0x40;
                     // Mode7 tiles want the flip in screen data
                     if (outputTileBytes != null) {
-                        bestTileIndex = bestTileIndex  | 0x80;
+                        bestTileIndex = bestTileIndex  | 0x40;
                     }
                 }
                 if (bestFlipY) {
                     bestFoundPaletteIndex = bestFoundPaletteIndex | 0x80;
                     // Mode7 tiles want the flip in screen data
                     if (outputTileBytes != null) {
-                        bestTileIndex = bestTileIndex  | 0x40;
+                        bestTileIndex = bestTileIndex  | 0x80;
                     }
                 }
 

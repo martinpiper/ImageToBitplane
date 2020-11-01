@@ -1,3 +1,15 @@
+* Character screen conversion for: oldbridge cropped_chars.bmp
+	Config: oldbridge char screen
+	* Added indexPick8_8 choice
+	* Done - Load into a unit test feature file, with just the char screen plane enabled.
+		BDD6502\features\TestVideoHardware Chars.feature
+		Best cofnig to use is: oldbridge char screen with rgbfactor
+	* Needs to cope with extra character indexes (lower 2 bits of the upper colour nybble) since: num tiles=820
+		Add command line flag
+
+
+
+
 * // TODO: Chars will need to be handled, for their chosen palette range
 
 

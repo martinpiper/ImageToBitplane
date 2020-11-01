@@ -59,6 +59,7 @@ public class Main {
     static String outputPalettes = null;
     static boolean useStacking = false;
     static boolean fitPalettes = false;
+    static boolean extraCharsBits = false;
     static TreeMap<String , TileIndexFlip> tileToIndexFlip = new TreeMap<String , TileIndexFlip>();
 
     public static void main(String[] args) throws Exception {
@@ -287,6 +288,12 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--fitpalettes") == 0) {
                 fitPalettes = true;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--chars") == 0) {
+                extraCharsBits = true;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--nochars") == 0) {
+                extraCharsBits = false;
                 continue;
             }
 
@@ -844,8 +851,11 @@ public class Main {
                 }
 
                 byte theTileIndex = (byte) bestTileIndex;
-                // TODO: Chars will need to be handled, for their chosen palette range
                 byte theColour = (byte) (bestFoundPaletteIndex & (0x1f | 0x80 | 0x40));
+                // Chars are handled, for their chosen palette range
+                if (extraCharsBits) {
+                    theColour |= (bestTileIndex & 0x300) >> 4;
+                }
                 if (outputScreenData != null) {
                     screenTileData.put(theTileIndex);
                     screenColourData.put(theColour);

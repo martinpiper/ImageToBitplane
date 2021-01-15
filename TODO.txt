@@ -1,3 +1,32 @@
+* Option to favour palette creation from existing char/tile/sprite definition.
+	This is useful for re-use of an existing char/tile/sprite as a shadow or silhouette.
+	Steps:
+	Note char shape, being careful to preserve any forced colours
+		This means a character like this, where 0 is forced to be index 0:
+			00001234
+			00000123
+			00000012
+			00000001
+			00000000
+			01241230
+			00000000
+			00000000
+		Can be mapped to be the same as this character which is intended to be its "shadow":
+			00001111
+			00000111
+			00000011
+			00000001
+			00000000
+			01111110
+			00000000
+			00000000
+	Spot duplicate, taking into account any flips
+	Just create a new palette containing 4 black colours to cover the entire range of the colour indexes in the original definition
+	* Note: To facilitate the process, it may be required to sort the definitions to process in descending order of complexity
+		This means counting the number of distinct used colours for a definition and processing those first
+
+
+
 * Option to ignore forced index 0 pixels at input, makes them transparent
 
 

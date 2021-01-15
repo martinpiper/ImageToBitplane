@@ -65,6 +65,11 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         for (int i = 0 ; i < args.length ; i++) {
+            if (i+1 < args.length) {
+                System.out.println("Considering arguments: " + args[i] + " " + args[i+1]);
+            } else {
+                System.out.println("Considering argument: " + args[i]);
+            }
             if (args[i].compareToIgnoreCase("--rgbshift") == 0) {
                 colourShiftRed = ParseValueFrom(args[i+1]);
                 colourShiftGreen = ParseValueFrom(args[i+2]);

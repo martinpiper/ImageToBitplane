@@ -778,6 +778,7 @@ public class Main {
                         // Advances the tile number, could do with duplicate check here
                         tileByteData.put(theTile);
                         if (outputPlanes != null) {
+                            System.out.println("New tile needed: Bitplane remaining size " + bitplaneData[0].remaining());
                             for (int bp = 0; bp < numBitplanes; bp++) {
                                 bitplaneData[bp].put(bitplaneDataTemp[bp]);
                             }
@@ -894,8 +895,8 @@ public class Main {
                         }
                     }
                 }
-                System.out.println("usedColours size=" + usedColours.size());
                 if (useStacking && usedColours.size() > 0) {
+                    System.out.println("usedColours size=" + usedColours.size());
                     System.out.println(";Stacked x=" + x + " y=" + y);
                     if (outputSprites != null) {
                         outputSprites.println(";Stacked x=" + x + " y=" + y);
@@ -1009,7 +1010,7 @@ public class Main {
                 }
                 // Reduce until it fits
                 while (usedColours.size() > paletteMaxQuantize) {
-                    System.out.println("Reduce x=" + x + " y=" + y);
+                    System.out.println("Reduce x=" + x + " y=" + y + " has colours " + usedColours.size());
                     // Find the least used colour
                     Integer chosenMinColour = null;
                     double count = 0;

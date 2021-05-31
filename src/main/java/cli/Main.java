@@ -300,6 +300,24 @@ public class Main {
             } else if (args[i].compareToIgnoreCase("--nochars") == 0) {
                 extraCharsBits = false;
                 continue;
+            } else if (args[i].compareToIgnoreCase("--concat") == 0) {
+                i++;
+                String filename1 = args[i];
+                i++;
+                String filename2 = args[i];
+                i++;
+                String filenameOutput = args[i];
+
+                BufferedImage image1 = ImageIO.read(new File(filename1));
+                BufferedImage image2 = ImageIO.read(new File(filename2));
+
+                BufferedImage output = new BufferedImage(Math.max(image1.getWidth(), image2.getWidth())
+                         , image1.getHeight() + image2.getHeight(), BufferedImage.TYPE_INT_RGB);
+                Graphics g = output.getGraphics();
+                g.drawImage(image1,0,0,null);
+                g.drawImage(image2,0,image1.getHeight(),null);
+                ImageIO.write(output,"png", new File(filenameOutput));
+                continue;
             }
 
             System.err.println("Unknown option: " + args[i]);

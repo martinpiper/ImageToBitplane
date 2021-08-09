@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ImageToBitplane.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.ipr" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +71,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build.tools" />
   </component>
-  <component name="RunManager" selected="Application.oldbridge char screen">
+  <component name="RunManager" selected="Application.oldbridge char screen with rgbfactor 512">
     <configuration name="Main all conv (1)" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />

@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +72,22 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build.tools" />
   </component>
-  <component name="RunManager" selected="Application.oldbridge char screen with rgbfactor 512">
+  <component name="RunManager" selected="Application.Demo7">
+    <configuration name="Demo7" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--paletteoffset 0 --palettesize 16 --rgbshift 4 4 4 --usestacking --newpalettes --loadpaletteraw ../tmp/Demo7PaletteData.bin --resetforcergb --forcergb 63 72 204 --numbitplanes 4 --image &quot;Demo7/sprites1.png&quot; --tilewh 16 16 --imagequantize 32 --fitpalettes --outputplanes ../tmp/Demo7Sprites_plane --outputsprites ../tmp/Demo7SpritesSheet.txt --convertwritepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main all conv (1)" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -469,6 +485,7 @@
       <item itemvalue="Application.Main old bridge RGB 119 122 133" />
       <item itemvalue="Application.Main sprites convertwritepass" />
       <item itemvalue="Application.Turrican (1)" />
+      <item itemvalue="Application.Demo7" />
       <item itemvalue="Application.Turrican" />
       <item itemvalue="Application.VideoHardware 1 a (turrican)" />
       <item itemvalue="Application.VideoHardware 1 a" />
@@ -529,21 +546,24 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>225</line>
-          <option name="timeStamp" value="81" />
+          <line>328</line>
+          <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>303</line>
-          <option name="timeStamp" value="82" />
+          <line>687</line>
+          <option name="timeStamp" value="87" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
-        <watch expression="tileByteData.capacity()" language="JAVA" />
-        <watch expression="tileByteData.limit()" language="JAVA" />
-        <watch expression="tileByteData.position" language="JAVA" />
+        <watch expression="palettes" />
+        <watch expression="palette" />
+        <watch expression="bytes" />
+        <watch expression="usedColours" />
+        <watch expression="forcedColourIndex" />
+        <watch expression="currentPaletteIndex" />
       </configuration>
     </watches-manager>
   </component>

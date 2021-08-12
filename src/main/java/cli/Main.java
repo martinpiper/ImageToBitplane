@@ -102,6 +102,31 @@ public class Main {
                 paletteMaxLen = ParseValueFrom(args[i+1]);
                 i++;
                 continue;
+            } else if (args[i].compareToIgnoreCase("--loadpaletteraw") == 0) {
+                byte[] bytes = Files.readAllBytes(Paths.get(args[i+1]));
+
+                HashMap<Integer, Integer> palette = new HashMap<Integer, Integer>();
+                int counter = 0;
+                for (int j = 0; j < bytes.length; j += 2) {
+                    int red = (bytes[j] & 0xf) << colourShiftRed;
+                    int green = ((bytes[j] >> 4) & 0xf) << colourShiftRed;
+                    int blue = (bytes[j + 1] & 0xf) << colourShiftBlue;
+
+                    int rgb = ApplyColorLimitsFromColour(new Color(red, green, blue)).getRGB();
+                    palette.put(rgb, palette.size());
+                    counter++;
+                    if (counter >= paletteMaxLen) {
+                        palettes.add(palette);
+                        palette = new HashMap<Integer, Integer>();
+                        counter = 0;
+                    }
+                }
+                if (!palette.isEmpty()) {
+                    palettes.add(palette);
+                }
+
+                i++;
+                continue;
             } else if (args[i].compareToIgnoreCase("--loadpalette") == 0) {
                 byte[] bytes = Files.readAllBytes(Paths.get(args[i+1]));
 
@@ -571,12 +596,21 @@ public class Main {
                     for (HashMap<Integer, Integer> palette : palettes) {
                         // This calculates the total distance for all pixels in the tile using the closest matched colour for the palette
                         double colourDifference = 0;
-                        for (int ty = 0 ; ty < tileHeight ; ty++) {
-                            for (int tx = 0 ; tx < tileWidth ; tx++) {
+                        boolean ignorePalette = false;
+                        for (int ty = 0 ; ty < tileHeight && !ignorePalette ; ty++) {
+                            for (int tx = 0 ; tx < tileWidth && !ignorePalette ; tx++) {
                                 Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                                 if (colour != null) {
                                     if (forcedColourIndex.containsKey(colour)) {
-                                        continue;
+                                        // If we are considering a forced index colour
+                                        if (forcedColourIndex.get(colour) == palette.get(colour)) {
+                                            // ... and its loaded index precisely matches the forced index
+                                            // Then it is a very good match, so skip it
+                                            continue;
+                                        }
+                                        // Otherwise ignore the palette
+                                        ignorePalette = true;
+                                        break;
                                     }
                                     Integer closestColour = getBestPaletteColour(palette, colour);
                                     colourDifference += getColourDifference(new Color(closestColour) , new Color(colour));
@@ -585,7 +619,7 @@ public class Main {
                         }
 
 
-                        if (resultPalette == null || colourDifference < bestDistance) {
+                        if (resultPalette == null || (!ignorePalette && (colourDifference < bestDistance))) {
                             resultPalette = palette;
                             bestDistance = colourDifference;
                             bestFoundPaletteIndex = currentPaletteIndex;

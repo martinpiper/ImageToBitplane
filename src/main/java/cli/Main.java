@@ -30,7 +30,7 @@ public class Main {
     }
 
     static boolean useSquaredModel = true;
-    static int paletteOffset = 5;
+    static int paletteOffset = 0;
     static int paletteMaxLen = 8;
     static int spriteXPos = 0;
     static int spriteYPos = 0xd0;
@@ -916,7 +916,7 @@ public class Main {
                 }
                 if (outputScreenData != null) {
                     screenTileData.put(theTileIndex);
-                    screenColourData.put(theColour);
+                    screenColourData.put((byte)(theColour + paletteOffset));
                 } else if (outputSprites != null) {
                     if (tileHasData) {
                         if (currentTile >= 24) {

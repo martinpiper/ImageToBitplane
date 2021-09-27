@@ -72,7 +72,21 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build.tools" />
   </component>
-  <component name="RunManager" selected="Application.Demo7">
+  <component name="RunManager" selected="Application.--planestoscaled">
+    <configuration name="--planestoscaled" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--planestoscaled C:\Work\C64\VideoHardware\tmp\TurricanSprites_plane0.bin C:\Work\C64\VideoHardware\tmp\TurricanSprites_plane1.bin C:\Work\C64\VideoHardware\tmp\TurricanSprites_plane2.bin C:\Work\C64\VideoHardware\tmp\TurricanSprites_plane3.bin C:\Work\C64\VideoHardware\tmp\TurricanSprites_scaled" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Demo7" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -474,6 +488,7 @@
     <list>
       <item itemvalue="Application.Main all conv (1)" />
       <item itemvalue="Application.Main all conv" />
+      <item itemvalue="Application.--planestoscaled" />
       <item itemvalue="Application.Main background convertwritepass" />
       <item itemvalue="Application.Main mode7 &quot;map_9 - mode7 test.png&quot;" />
       <item itemvalue="Application.Main mode7" />
@@ -551,8 +566,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>687</line>
+          <line>790</line>
           <option name="timeStamp" value="87" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>416</line>
+          <option name="timeStamp" value="88" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

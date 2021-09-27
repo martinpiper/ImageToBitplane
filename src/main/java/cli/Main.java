@@ -343,6 +343,109 @@ public class Main {
                 g.drawImage(image2,0,image1.getHeight(),null);
                 ImageIO.write(output,"png", new File(filenameOutput));
                 continue;
+            } else if (args[i].compareToIgnoreCase("--planestoscaled") == 0) {
+                i++;
+                String filename1 = args[i];
+                i++;
+                String filename2 = args[i];
+                i++;
+                String filename3 = args[i];
+                i++;
+                String filename4 = args[i];
+                i++;
+                String filenameOutput = args[i];
+
+                InputStream inputStream1 = new FileInputStream(filename1);
+                InputStream inputStream2 = new FileInputStream(filename2);
+                InputStream inputStream3 = new FileInputStream(filename3);
+                InputStream inputStream4 = new FileInputStream(filename4);
+
+                OutputStream output = new FileOutputStream(filenameOutput + "0.bin");
+
+                byte bytes1[] = new byte[64];
+                byte bytes2[] = new byte[64];
+                byte bytes3[] = new byte[64];
+                byte bytes4[] = new byte[64];
+                byte outChunk[] = new byte[256];
+                int readBytes = 0;
+                int writeBytes = 0;
+                int fileNum = 1;
+                while ( (readBytes = inputStream1.read(bytes1)) >= 0) {
+                    inputStream2.read(bytes2);
+                    inputStream3.read(bytes3);
+                    inputStream4.read(bytes4);
+
+
+                    int xp = 0 , yp = 0;
+                    for(int a = 0 ; a < 4 ; a++) {
+                        switch (a) {
+                            case 0:
+                            default:
+                                xp = 0;
+                                yp = 0;
+                                break;
+                            case 1:
+                                xp = 8;
+                                yp = 0;
+                                break;
+                            case 2:
+                                xp = 0;
+                                yp = 8;
+                                break;
+                            case 3:
+                                xp = 8;
+                                yp = 8;
+                                break;
+                        }
+
+                        for (int b = 0 ; b < 8 ; b++) {
+                            for (int c = 0 ; c < 8 ; c++) {
+                                int cb = 7-c;
+                                int pixel = 0;
+                                if ((bytes1[(a*8) + b] & (1<<cb)) > 0) {
+                                    pixel |= 0x01;
+                                }
+                                if ((bytes2[(a*8) + b] & (1<<cb)) > 0) {
+                                    pixel |= 0x02;
+                                }
+                                if ((bytes3[(a*8) + b] & (1<<cb)) > 0) {
+                                    pixel |= 0x04;
+                                }
+                                if ((bytes4[(a*8) + b] & (1<<cb)) > 0) {
+                                    pixel |= 0x08;
+                                }
+                                if (readBytes == 64) {
+                                    if ((bytes1[32 + (a * 8) + b] & (1 << cb)) > 0) {
+                                        pixel |= 0x10;
+                                    }
+                                    if ((bytes2[32 + (a * 8) + b] & (1 << cb)) > 0) {
+                                        pixel |= 0x20;
+                                    }
+                                    if ((bytes3[32 + (a * 8) + b] & (1 << cb)) > 0) {
+                                        pixel |= 0x40;
+                                    }
+                                    if ((bytes4[32 + (a * 8) + b] & (1 << cb)) > 0) {
+                                        pixel |= 0x80;
+                                    }
+                                }
+
+                                outChunk[(xp+c) + ((yp + b)*16)] = (byte) pixel;
+                            }
+                        }
+                    }
+
+                    output.write(outChunk);
+                    writeBytes += outChunk.length;
+                    if (writeBytes >= 8192) {
+                        output.close();
+                        output = new FileOutputStream(filenameOutput + (fileNum++) + ".bin");
+                        writeBytes = 0;
+                    }
+
+                }
+
+                output.close();
+                continue;
             }
 
             System.err.println("Unknown option: " + args[i]);

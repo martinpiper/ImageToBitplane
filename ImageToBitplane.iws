@@ -72,7 +72,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build.tools" />
   </component>
-  <component name="RunManager" selected="Application.--planestoscaled">
+  <component name="RunManager" selected="Application.Turrican Scaled">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -274,6 +274,21 @@
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 255 0 255 --paletteoffset 5 --palettesize 8 --spritexy 0 0xd0 --startxy 0 0 --image src/test/resources/TestImage1.png --tilewh 16 16 --imagequantize 32 --outputplanes target/sprite_plane --outputsprites target/spriteSheet.txt --outputpalettes target/PaletteDataSprites.bin --usestacking --numbitplanes 3 --convertwritepass" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Turrican Scaled" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --palettesize 16 --forcergb 255 0 255 --image &quot;Turrican/player.png&quot; --tilewh 32 32 --imagequantize 16 --palettequantize 16 --nostacking --outputscaled ../tmp/TurricanScaledSprites --outputsprites ../tmp/TurricanScaledSpritesSheet.txt --outputpalettes ../tmp/TurricanScaledPaletteData.bin --convertwritepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cli.*" />
@@ -502,6 +517,7 @@
       <item itemvalue="Application.Turrican (1)" />
       <item itemvalue="Application.Demo7" />
       <item itemvalue="Application.Turrican" />
+      <item itemvalue="Application.Turrican Scaled" />
       <item itemvalue="Application.VideoHardware 1 a (turrican)" />
       <item itemvalue="Application.VideoHardware 1 a" />
       <item itemvalue="Application.VideoHardware 1" />
@@ -561,17 +577,12 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>328</line>
+          <line>339</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>790</line>
-          <option name="timeStamp" value="87" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>416</line>
+          <line>427</line>
           <option name="timeStamp" value="88" />
         </line-breakpoint>
       </breakpoints>

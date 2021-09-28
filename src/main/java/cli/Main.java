@@ -9,7 +9,6 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.List;
 
 public class Main {
 
@@ -57,6 +56,7 @@ public class Main {
     static PrintStream outputSprites = null;
     static PrintStream outputSprites2 = null;
     static String outputPalettes = null;
+    static String outputScaled = null;
     static boolean useStacking = false;
     static boolean fitPalettes = false;
     static boolean extraCharsBits = false;
@@ -263,6 +263,7 @@ public class Main {
                 outputPalettes = null;
                 outputTileBytes = null;
                 currentTile = 0;
+                outputScaled = null;
                 continue;
             } else if (args[i].compareToIgnoreCase("--nowritepass") == 0) {
                 outputScreenData = null;
@@ -272,20 +273,30 @@ public class Main {
                 outputPalettes = null;
                 outputTileBytes = null;
                 currentTile = 0;
+                outputScaled = null;
                 TileConvert();
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputplanes") == 0) {
                 outputPlanes = args[i+1];
                 outputTileBytes = null;
+                outputScaled = null;
+                i++;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--outputscaled") == 0) {
+                outputPlanes = null;
+                outputTileBytes = null;
+                outputScaled = args[i+1];
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputtilebytes") == 0) {
                 outputTileBytes = args[i+1];
                 outputPlanes = null;
+                outputScaled = null;
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputscrcol") == 0) {
                 outputScreenData = args[i+1];
+                outputScaled = null;
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputsprites") == 0) {
@@ -597,6 +608,38 @@ public class Main {
                 fc = new FileOutputStream(outputTileBytes).getChannel();
                 fc.write(tileByteData);
                 fc.close();
+            }
+        } if (outputScaled != null) {
+            tileByteData.flip();
+            byte[] arr = new byte[tileByteData.remaining()];
+            tileByteData.get(arr);
+            int index = 0;
+            int sprPos = 0;
+            fc = null;
+            while (sprPos < arr.length) {
+                byte[] merged = new byte[1024];
+                for (int a = 0 ; a < 1024 ; a++) {
+                    merged[a] = arr[sprPos + a];
+                    // Is there another sprite, if yes merge it?
+                    if ( (sprPos + 1024) < arr.length) {
+                        merged[a] |= arr[sprPos + 1024 + a] << 4;
+                    }
+                }
+
+                if ( (sprPos + 1024) < arr.length) {
+                    sprPos += 1024;
+                }
+                if (fc == null) {
+                    fc = new FileOutputStream(outputScaled + index + ".bin").getChannel();
+                    index++;
+                }
+                fc.write(ByteBuffer.wrap(merged));
+                if (fc.size() >= 8192) {
+                    fc.close();
+                    fc = null;
+                }
+
+                sprPos += 1024;
             }
         } else {
             for (int bp = 0; bp < numBitplanes; bp++) {

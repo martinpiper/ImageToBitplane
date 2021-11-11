@@ -60,6 +60,8 @@ public class Main {
     static boolean useStacking = false;
     static boolean fitPalettes = false;
     static boolean extraCharsBits = false;
+    static boolean splitMaps = false;
+
     static TreeMap<String , TileIndexFlip> tileToIndexFlip = new TreeMap<String , TileIndexFlip>();
 
     public static void main(String[] args) throws Exception {
@@ -329,6 +331,12 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--fitpalettes") == 0) {
                 fitPalettes = true;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--nosplitmaps") == 0) {
+                splitMaps = false;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--splitmaps") == 0) {
+                splitMaps = true;
                 continue;
             } else if (args[i].compareToIgnoreCase("--chars") == 0) {
                 extraCharsBits = true;
@@ -657,6 +665,9 @@ public class Main {
             screenTileData.flip();
             fc.write(screenTileData);
             if (outputTileBytes == null) {
+                if (splitMaps) {
+                    fc = new FileOutputStream(outputScreenData + "2").getChannel();
+                }
                 screenColourData.flip();
                 fc.write(screenColourData);
             }

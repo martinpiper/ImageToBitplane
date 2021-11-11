@@ -72,11 +72,25 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build.tools" />
   </component>
-  <component name="RunManager" selected="Application.Turrican Scaled">
+  <component name="RunManager" selected="Application.VideoHardware 6 SotB chars 1024">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
       <option name="PROGRAM_PARAMETERS" value="--planestoscaled C:\Work\C64\VideoHardware\tmp\TurricanSprites_plane0.bin C:\Work\C64\VideoHardware\tmp\TurricanSprites_plane1.bin C:\Work\C64\VideoHardware\tmp\TurricanSprites_plane2.bin C:\Work\C64\VideoHardware\tmp\TurricanSprites_plane3.bin C:\Work\C64\VideoHardware\tmp\TurricanSprites_scaled" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Building Scaled" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --palettesize 16 --forcergb 255 0 255 --image target\testconcat4.png --imagequantize 16 --tilewh 32 32 --imagequantize 16 --nostacking --outputscaled target\testconcat4ScaledSprites --outputsprites target\testconcat4ScaledSpritesSheet.txt --outputpalettes target\testconcat4PaletteData.bin --convertwritepass" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cli.*" />
@@ -404,10 +418,53 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="VideoHardware 6 SotB chars 1024" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--palettesize 16 --rgbshift 4 4 4 --splitmaps --chars --newpalettes --loadpalette ../tmp/ShadowBeastPaletteData.bin --numbitplanes 4 --image &quot;ShadowBeast/beast_attract_playfield_1_1024.png&quot; --tilewh 8 8 --fitpalettes --nostacking --outputplanes ../tmp/ShadowBeastChars_plane --outputscrcol ../tmp/ShadowBeastChars_map.bin --convertwritepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="buildings concat" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--concat &quot;C:\Work\C64\VideoHardware\assets\building top 1.png&quot; &quot;C:\Work\C64\VideoHardware\assets\building top 2.png&quot; target/testconcat2.png --concat &quot;C:\Work\C64\VideoHardware\assets\building top 3.png&quot; &quot;C:\Work\C64\VideoHardware\assets\building top 4.png&quot; target/testconcat3.png --concat target/testconcat2.png target/testconcat3.png target/testconcat4.png" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="map_9 - Copy - chars.png char screen" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 0 0 0 --paletteoffset 0 --palettesize 8 --startxy 0 0 --image &quot;src/test/resources/map_9 - Copy - chars.png&quot; --tilewh 8 8 --imagequantize 8 --nowritepass --palettequantize 16 --image &quot;src/test/resources/map_9 - Copy - chars.png&quot; --tilewh 8 8 --fitpalettes --outputplanes target/chars_plane --outputscrcol target/chars_scr.bin --outputpalettes target/chars_paletteData.bin --nostacking --numbitplanes 3 --convertwritepass " />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="oldbridge char screen concat" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--concat src/test/resources/TestImage1.png src/test/resources/TestImage2.png target/testconcat.png" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cli.*" />
@@ -450,20 +507,6 @@
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
       <option name="PROGRAM_PARAMETERS" value="--chars --rgbshift 4 4 4 --rgbfactor 255 196 112 10 --rgbfactor 255 255 214 50 --rgbfactor 236 98 96 50 --newpalettes --forcergb 0 0 0 --paletteoffset 0 --palettesize 8 --startxy 0 0 --image &quot;src/test/resources/oldbridge cropped_chars.bmp&quot; --tilewh 8 8 --imagequantize 8 --nowritepass --palettequantize 16 --image &quot;src/test/resources/oldbridge cropped_chars.bmp&quot; --tilewh 8 8 --fitpalettes --outputplanes target/chars_plane --outputscrcol target/chars_scr.bin --outputpalettes target/chars_paletteData.bin --nostacking --numbitplanes 3 --convertwritepass " />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="cli.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="oldbridge char screen" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="cli.Main" />
-      <module name="main" />
-      <option name="PROGRAM_PARAMETERS" value="--concat src/test/resources/TestImage1.png src/test/resources/TestImage2.png target/testconcat.png" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cli.*" />
@@ -518,7 +561,9 @@
       <item itemvalue="Application.Demo7" />
       <item itemvalue="Application.Turrican" />
       <item itemvalue="Application.Turrican Scaled" />
+      <item itemvalue="Application.Building Scaled" />
       <item itemvalue="Application.VideoHardware 1 a (turrican)" />
+      <item itemvalue="Application.VideoHardware 6 SotB chars 1024" />
       <item itemvalue="Application.VideoHardware 1 a" />
       <item itemvalue="Application.VideoHardware 1" />
       <item itemvalue="Application.VideoHardware 2" />
@@ -527,7 +572,8 @@
       <item itemvalue="Application.oldbridge char screen with rgbfactor no force colour 0" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor 512" />
-      <item itemvalue="Application.oldbridge char screen" />
+      <item itemvalue="Application.oldbridge char screen concat" />
+      <item itemvalue="Application.buildings concat" />
       <item itemvalue="Application.Main background nowritepass" />
       <item itemvalue="Maven.clean install" />
     </list>
@@ -577,12 +623,12 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>339</line>
+          <line>347</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>427</line>
+          <line>435</line>
           <option name="timeStamp" value="88" />
         </line-breakpoint>
       </breakpoints>

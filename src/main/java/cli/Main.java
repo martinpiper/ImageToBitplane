@@ -652,10 +652,12 @@ public class Main {
         } else {
             for (int bp = 0; bp < numBitplanes; bp++) {
                 if (outputScreenData != null || outputSprites != null) {
-                    fc = new FileOutputStream(outputPlanes + bp + ".bin").getChannel();
-                    bitplaneData[bp].flip();
-                    fc.write(bitplaneData[bp]);
-                    fc.close();
+                    if (outputPlanes != null) {
+                        fc = new FileOutputStream(outputPlanes + bp + ".bin").getChannel();
+                        bitplaneData[bp].flip();
+                        fc.write(bitplaneData[bp]);
+                        fc.close();
+                    }
                 }
             }
         }

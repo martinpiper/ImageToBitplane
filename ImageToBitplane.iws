@@ -72,7 +72,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build.tools" />
   </component>
-  <component name="RunManager" selected="Application.VideoHardware 6 SotB chars 1024">
+  <component name="RunManager" selected="Application.oldbridge char screen with rgbfactor 1024">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -475,6 +475,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="oldbridge char screen with rgbfactor 1024" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--splitmaps --chars --rgbshift 4 4 4 --rgbfactor 255 196 112 10 --rgbfactor 255 255 214 50 --rgbfactor 236 98 96 50 --newpalettes --forcergb 0 0 0 --paletteoffset 0 --palettesize 16 --startxy 0 0 --image &quot;src/test/resources/oldbridge cropped_chars 512.bmp&quot; --tilewh 8 8 --imagequantize 16 --nowritepass --palettequantize 16 --image &quot;src/test/resources/oldbridge cropped_chars 1024.bmp&quot; --tilewh 8 8 --fitpalettes --outputplanes target/chars1024_plane --outputscrcol target/chars1024_scr.bin --outputpalettes target/chars1024_paletteData.bin --nostacking --numbitplanes 4 --convertwritepass " />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="oldbridge char screen with rgbfactor 512" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -572,6 +586,7 @@
       <item itemvalue="Application.oldbridge char screen with rgbfactor no force colour 0" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor 512" />
+      <item itemvalue="Application.oldbridge char screen with rgbfactor 1024" />
       <item itemvalue="Application.oldbridge char screen concat" />
       <item itemvalue="Application.buildings concat" />
       <item itemvalue="Application.Main background nowritepass" />

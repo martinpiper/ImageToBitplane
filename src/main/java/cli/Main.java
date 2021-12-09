@@ -61,6 +61,12 @@ public class Main {
     static boolean fitPalettes = false;
     static boolean extraCharsBits = false;
     static boolean splitMaps = false;
+    static int vectorLeftPalette = 0;
+    static int vectorLeftLength = 0;
+    static int vectorRightPalette = 0;
+    static int vectorRightLength = 0;
+    static String outputVectors = null;
+    static ByteBuffer vectorData = null;
 
     static TreeMap<String , TileIndexFlip> tileToIndexFlip = new TreeMap<String , TileIndexFlip>();
 
@@ -266,6 +272,7 @@ public class Main {
                 outputTileBytes = null;
                 currentTile = 0;
                 outputScaled = null;
+                outputVectors = null;
                 continue;
             } else if (args[i].compareToIgnoreCase("--nowritepass") == 0) {
                 outputScreenData = null;
@@ -276,34 +283,52 @@ public class Main {
                 outputTileBytes = null;
                 currentTile = 0;
                 outputScaled = null;
+                outputVectors = null;
                 TileConvert();
                 continue;
+            } else if (args[i].compareToIgnoreCase("--outputvectors") == 0) {
+                vectorLeftPalette = ParseValueFrom(args[i+1]);
+                i++;
+                vectorLeftLength = ParseValueFrom(args[i+1]);
+                i++;
+                vectorRightPalette = ParseValueFrom(args[i+1]);
+                i++;
+                vectorRightLength = ParseValueFrom(args[i+1]);
+                i++;
+                outputVectors = args[i+1];
+                vectorData = ByteBuffer.allocate(16384);
+                i++;
             } else if (args[i].compareToIgnoreCase("--outputplanes") == 0) {
                 outputPlanes = args[i+1];
                 outputTileBytes = null;
                 outputScaled = null;
+                outputVectors = null;
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputscaled") == 0) {
                 outputPlanes = null;
                 outputTileBytes = null;
                 outputScaled = args[i+1];
+                outputVectors = null;
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputtilebytes") == 0) {
                 outputTileBytes = args[i+1];
                 outputPlanes = null;
                 outputScaled = null;
+                outputVectors = null;
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputscrcol") == 0) {
                 outputScreenData = args[i+1];
                 outputScaled = null;
+                outputVectors = null;
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputsprites") == 0) {
                 outputSprites = new PrintStream(new FileOutputStream(args[i+1]));
                 outputSprites2 = new PrintStream(new FileOutputStream(args[i+1] + ".a"));
+                outputVectors = null;
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputpalettes") == 0) {
@@ -617,7 +642,9 @@ public class Main {
                 fc.write(tileByteData);
                 fc.close();
             }
-        } if (outputScaled != null) {
+        }
+
+        if (outputScaled != null) {
             tileByteData.flip();
             byte[] arr = new byte[tileByteData.remaining()];
             tileByteData.get(arr);
@@ -649,17 +676,24 @@ public class Main {
 
                 sprPos += 1024;
             }
-        } else {
+        }
+
+        if (outputScreenData != null || outputSprites != null) {
             for (int bp = 0; bp < numBitplanes; bp++) {
-                if (outputScreenData != null || outputSprites != null) {
-                    if (outputPlanes != null) {
-                        fc = new FileOutputStream(outputPlanes + bp + ".bin").getChannel();
-                        bitplaneData[bp].flip();
-                        fc.write(bitplaneData[bp]);
-                        fc.close();
-                    }
+                if (outputPlanes != null) {
+                    fc = new FileOutputStream(outputPlanes + bp + ".bin").getChannel();
+                    bitplaneData[bp].flip();
+                    fc.write(bitplaneData[bp]);
+                    fc.close();
                 }
             }
+        }
+
+        if (outputVectors != null) {
+            fc = new FileOutputStream(outputVectors).getChannel();
+            vectorData.flip();
+            fc.write(vectorData);
+            fc.close();
         }
 
         if (outputScreenData != null) {
@@ -965,6 +999,36 @@ public class Main {
                                 shiftedPixels = 0;
                                 shiftedPixelsCount = 0;
                             }
+                        }
+                    }
+                }
+
+                if (outputVectors != null) {
+                    for (int ys = 0 ; ys < tileHeight ; ys++) {
+                        if (vectorLeftLength > 0) {
+                            vectorData.put((byte)vectorLeftPalette);
+                            vectorData.put((byte)(vectorLeftLength - 2));
+                        }
+                        byte lastColour = theTile[ys * tileWidth];
+                        int lastPos = 0;
+                        for (int xs = 1 ; xs < tileWidth ; xs++) {
+                            if ((lastColour != theTile[xs + (ys * tileWidth)]) || ((xs - lastPos) >= 254)) {
+                                vectorData.put(lastColour);
+                                vectorData.put((byte)((xs - lastPos) -2));
+
+                                lastColour = theTile[xs + (ys * tileWidth)];
+                                lastPos = xs;
+                            }
+                        }
+                        // Output any remaining
+                        if ((tileWidth - lastPos) > 0) {
+                            vectorData.put(lastColour);
+                            vectorData.put((byte)((tileWidth - lastPos)-2));
+                        }
+
+                        if (vectorRightLength > 0) {
+                            vectorData.put((byte)vectorRightPalette);
+                            vectorData.put((byte)(vectorRightLength - 2));
                         }
                     }
                 }

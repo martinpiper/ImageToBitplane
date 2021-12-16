@@ -1,3 +1,15 @@
+* Add option to specify multiple rectangle areas and search for the best X/Y pixel offsets within those areas to get the optimal empty tile packing
+	Sprite sections with position search
+	Extracted main tile conversion to cli.Main.processTileImageAt()
+		All demos work
+	Change two for loops to use computed list of coordinates, or coordinates from command line
+	If using coordinates from command line, the larger area can be shifted in its bounding box
+		This would need to take into account transparent pixels, those that match forcedColourIndexTransparent
+	Use text identifier for each coordinate input
+
+
+
+
 * Option to favour palette creation from existing char/tile/sprite definition.
 	This is useful for re-use of an existing char/tile/sprite as a shadow or silhouette.
 	Steps:

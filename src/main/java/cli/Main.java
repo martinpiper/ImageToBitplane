@@ -36,6 +36,7 @@ public class Main {
     static int paletteMaxQuantize = 32;
     static ArrayList<HashMap<Integer,Integer>> palettes = new ArrayList<>();
     static HashMap<Integer , Integer> forcedColourIndex = new HashMap<>();
+    static int forcedColourIndexTransparent = -1;
     static HashMap<Integer , Double> factorColourIndex = new HashMap<>();
     static int tileWidth = 16 , tileHeight = 16;
     static int startX = 0 , startY = 0;
@@ -47,6 +48,8 @@ public class Main {
     static int numBitplanes = 3;
     static ByteBuffer[] bitplaneData = null;
     static ByteBuffer tileByteData = null;
+    static SortedSet<Integer> usedColours = null;
+
     static int currentTile = 0;
     static ByteBuffer screenTileData = null;
     static ByteBuffer screenColourData = null;
@@ -89,9 +92,14 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--resetforcergb") == 0) {
                 forcedColourIndex.clear();
+                forcedColourIndexTransparent = -1;
                 continue;
             } else if (args[i].compareToIgnoreCase("--forcergb") == 0) {
-                forcedColourIndex.put(ApplyColorLimitsFromColour(new Color(ParseValueFrom(args[i+1]), ParseValueFrom(args[i+2]), ParseValueFrom(args[i+3]))).getRGB() , forcedColourIndex.size());
+                int theColour = ApplyColorLimitsFromColour(new Color(ParseValueFrom(args[i+1]), ParseValueFrom(args[i+2]), ParseValueFrom(args[i+3]))).getRGB();
+                if (forcedColourIndex.size() == 0) {
+                    forcedColourIndexTransparent = theColour;
+                }
+                forcedColourIndex.put(theColour , forcedColourIndex.size());
                 i+=3;
                 continue;
             } else if (args[i].compareToIgnoreCase("--rgbfactor") == 0) {
@@ -752,424 +760,9 @@ public class Main {
 
         for (int y = startY ; y < imageHeight ; y+=tileHeight) {
             for (int x = startX ; x < imageWidth ; ) {
-                System.out.println(";Process x=" + x + " y=" + y);
-                if (outputSprites != null) {
-                    outputSprites.println(";Process x=" + x + " y=" + y);
-                    if (newSprite) {
-                        outputSprites2.println("EmitSpriteFrame"+ x +"_" + y);
-                        outputSprites2.println("\t+MEmitSpriteFrame_Preserve");
-                        newSprite = false;
-                    }
-                }
-                // First collect all unique colours used in the tile
-                SortedSet<Integer> usedColours = new TreeSet<>();
-                usedColours.addAll(forcedColourIndex.keySet());
-                for (int ty = 0 ; ty < tileHeight ; ty++) {
-                    if (usedColours.size() >= paletteMaxLen) {
-                        break;
-                    }
-                    for (int tx = 0 ; tx < tileWidth ; tx++) {
-                        if (usedColours.size() >= paletteMaxLen) {
-                            break;
-                        }
-                        Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
-                        if (colour != null) {
-                            usedColours.add(colour);
-                        }
-                    }
-                }
 
-                // Find the best fit existing palette index
-                HashMap<Integer, Integer> resultPalette = null;
-                int bestFoundPaletteIndex = 0;
-                if (fitPalettes) {
-                    int currentPaletteIndex = 0;
-                    resultPalette = null;
-                    double bestDistance = 0;
-                    for (HashMap<Integer, Integer> palette : palettes) {
-                        // This calculates the total distance for all pixels in the tile using the closest matched colour for the palette
-                        double colourDifference = 0;
-                        boolean ignorePalette = false;
-                        for (int ty = 0 ; ty < tileHeight && !ignorePalette ; ty++) {
-                            for (int tx = 0 ; tx < tileWidth && !ignorePalette ; tx++) {
-                                Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
-                                if (colour != null) {
-                                    if (forcedColourIndex.containsKey(colour)) {
-                                        // If we are considering a forced index colour
-                                        if (forcedColourIndex.get(colour) == palette.get(colour)) {
-                                            // ... and its loaded index precisely matches the forced index
-                                            // Then it is a very good match, so skip it
-                                            continue;
-                                        }
-                                        // Otherwise ignore the palette
-                                        ignorePalette = true;
-                                        break;
-                                    }
-                                    Integer closestColour = getBestPaletteColour(palette, colour);
-                                    colourDifference += getColourDifference(new Color(closestColour) , new Color(colour));
-                                }
-                            }
-                        }
+                newSprite = processTileImageAt(newSprite, x, y);
 
-
-                        if (resultPalette == null || (!ignorePalette && (colourDifference < bestDistance))) {
-                            resultPalette = palette;
-                            bestDistance = colourDifference;
-                            bestFoundPaletteIndex = currentPaletteIndex;
-                        }
-                        currentPaletteIndex++;
-                    }
-                } else {
-                    int currentPaletteIndex = 0;
-                    HashMap<Integer,Integer> bestFoundPalette = null;
-                    int bestFoundNum = -1;
-                    for (HashMap<Integer, Integer> palette : palettes) {
-                        int numColoursMatching = 0;
-                        int numColoursMissing = usedColours.size();
-                        boolean rejectPalette = false;
-                        for (Integer colour : usedColours) {
-                            if (palette.containsKey(colour)) {
-                                Integer colourIndex = palette.get(colour);
-                                if (forcedColourIndex.containsKey(colour)) {
-                                    if (!forcedColourIndex.get(colour).equals(colourIndex)) {
-                                        // Reject the colour choice if the colour is in the forced colour table and the colour doesn't match the index
-                                        rejectPalette = true;
-                                        continue;
-                                    }
-                                }
-                                numColoursMatching++;
-                                numColoursMissing--;
-                            }
-                        }
-                        if (rejectPalette) {
-                            currentPaletteIndex++;
-                            continue;
-                        }
-
-                        // If all the colours are found in a palette, then early out
-                        if (numColoursMatching == usedColours.size() || numColoursMatching >= palette.size()) {
-                            bestFoundNum = numColoursMatching;
-                            bestFoundPalette = palette;
-                            bestFoundPaletteIndex = currentPaletteIndex;
-                            break;
-                        }
-
-                        // Choose the best palette to extend if possible, greedy fill
-                        if (numColoursMatching > bestFoundNum) {
-                            // If there is room to extend the existing palette
-                            // The "numColoursMatching > numColoursMissing" will favour palette reuse and sprite stacking instead of creating new palettes
-                            if (useStacking) {
-                                if (numColoursMatching > numColoursMissing || numColoursMissing <= (paletteMaxLen - palette.size())) {
-                                    bestFoundNum = numColoursMatching;
-                                    bestFoundPalette = palette;
-                                    bestFoundPaletteIndex = currentPaletteIndex;
-                                    // Continue searching...
-                                }
-                            } else {
-                                if (numColoursMissing <= (paletteMaxLen - palette.size())) {
-                                    bestFoundNum = numColoursMatching;
-                                    bestFoundPalette = palette;
-                                    bestFoundPaletteIndex = currentPaletteIndex;
-                                    // Continue searching...
-                                }
-                            }
-                        }
-
-                        currentPaletteIndex++;
-                    }
-
-                    if (bestFoundPalette == null) {
-                        bestFoundPaletteIndex = palettes.size();
-                        resultPalette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
-                        palettes.add(resultPalette);
-                    } else {
-                        resultPalette = bestFoundPalette;
-                    }
-
-                    // Update any new colours into the best palette
-                    for (Integer colour : usedColours) {
-                        if (resultPalette.size() >= paletteMaxLen) {
-                            break;
-                        }
-                        if (!resultPalette.containsKey(colour)) {
-                            resultPalette.put(colour, resultPalette.size());
-                        }
-                    }
-                }
-
-                assert resultPalette.size() <= paletteMaxLen;
-
-                // Now convert the tile to bitplane data based on the colours in the palette and the index values
-                byte[] theTile = new byte[tileWidth * tileHeight];
-                boolean theTileHasContents = false;
-                for (int ty = 0 ; ty < tileHeight ; ty++) {
-                    for (int tx = 0 ; tx < tileWidth ; tx++) {
-                        // If there is no colour then assume it's the first palette entry, which should be transparent
-                        theTile[tx + (ty * tileWidth)] = 0;
-
-                        // Then try to map the colour if it exists
-                        Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
-                        if (colour != null) {
-                            Integer value = getBestPaletteIndex(resultPalette, colour);
-                            if (value != null) {
-                                theTile[tx + (ty * tileWidth)] = value.byteValue();
-                                // Remove the pixel, since it has been processed
-                                imageColours[x + tx + ((y + ty) * imageWidth)] = null;
-                                if(value > 0) {
-                                    theTileHasContents = true;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // The pattern of pixels to pull from the linear row/column tile data into the bitplane data
-                int[] indexPick16_16 = {
-                        0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
-                        0x10,0x11,0x12,0x13,0x14,0x15,0x16,0x17,
-                        0x20,0x21,0x22,0x23,0x24,0x25,0x26,0x27,
-                        0x30,0x31,0x32,0x33,0x34,0x35,0x36,0x37,
-                        0x40,0x41,0x42,0x43,0x44,0x45,0x46,0x47,
-                        0x50,0x51,0x52,0x53,0x54,0x55,0x56,0x57,
-                        0x60,0x61,0x62,0x63,0x64,0x65,0x66,0x67,
-                        0x70,0x71,0x72,0x73,0x74,0x75,0x76,0x77,
-
-                        0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f,
-                        0x18,0x19,0x1a,0x1b,0x1c,0x1d,0x1e,0x1f,
-                        0x28,0x29,0x2a,0x2b,0x2c,0x2d,0x2e,0x2f,
-                        0x38,0x39,0x3a,0x3b,0x3c,0x3d,0x3e,0x3f,
-                        0x48,0x49,0x4a,0x4b,0x4c,0x4d,0x4e,0x4f,
-                        0x58,0x59,0x5a,0x5b,0x5c,0x5d,0x5e,0x5f,
-                        0x68,0x69,0x6a,0x6b,0x6c,0x6d,0x6e,0x6f,
-                        0x78,0x79,0x7a,0x7b,0x7c,0x7d,0x7e,0x7f,
-
-                        0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,
-                        0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,
-                        0xa0,0xa1,0xa2,0xa3,0xa4,0xa5,0xa6,0xa7,
-                        0xb0,0xb1,0xb2,0xb3,0xb4,0xb5,0xb6,0xb7,
-                        0xc0,0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,0xc7,
-                        0xd0,0xd1,0xd2,0xd3,0xd4,0xd5,0xd6,0xd7,
-                        0xe0,0xe1,0xe2,0xe3,0xe4,0xe5,0xe6,0xe7,
-                        0xf0,0xf1,0xf2,0xf3,0xf4,0xf5,0xf6,0xf7,
-
-                        0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x8f,
-                        0x98,0x99,0x9a,0x9b,0x9c,0x9d,0x9e,0x9f,
-                        0xa8,0xa9,0xaa,0xab,0xac,0xad,0xae,0xaf,
-                        0xb8,0xb9,0xba,0xbb,0xbc,0xbd,0xbe,0xbf,
-                        0xc8,0xc9,0xca,0xcb,0xcc,0xcd,0xce,0xcf,
-                        0xd8,0xd9,0xda,0xdb,0xdc,0xdd,0xde,0xdf,
-                        0xe8,0xe9,0xea,0xeb,0xec,0xed,0xee,0xef,
-                        0xf8,0xf9,0xfa,0xfb,0xfc,0xfd,0xfe,0xff
-                };
-
-                int[] indexPick8_8 = {
-                        0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
-                        0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f,
-                        0x10,0x11,0x12,0x13,0x14,0x15,0x16,0x17,
-                        0x18,0x19,0x1a,0x1b,0x1c,0x1d,0x1e,0x1f,
-                        0x20,0x21,0x22,0x23,0x24,0x25,0x26,0x27,
-                        0x28,0x29,0x2a,0x2b,0x2c,0x2d,0x2e,0x2f,
-                        0x30,0x31,0x32,0x33,0x34,0x35,0x36,0x37,
-                        0x38,0x39,0x3a,0x3b,0x3c,0x3d,0x3e,0x3f
-                };
-
-                int[] indexPick = indexPick16_16;
-                if (tileWidth == 8 && tileHeight == 8) {
-                    indexPick = indexPick8_8;
-                }
-                byte[][] bitplaneDataTemp = new byte[numBitplanes][(indexPick.length)/8];
-
-                boolean tileHasData = false;
-                if (outputScreenData != null || outputSprites != null) {
-                    for (int bp = 0; bp < numBitplanes; bp++) {
-                        int shiftedPixels = 0;
-                        int shiftedPixelsCount = 0;
-                        int pi = 0;
-                        for (int index = 0; index < indexPick.length; index++) {
-                            shiftedPixels = shiftedPixels << 1;
-                            if ((theTile[indexPick[index]] & (1 << bp)) > 0) {
-                                shiftedPixels = shiftedPixels | 1;
-                                tileHasData = true;
-                            }
-                            shiftedPixelsCount++;
-
-                            if (shiftedPixelsCount == 8) {
-                                bitplaneDataTemp[bp][pi] = (byte) shiftedPixels;
-                                pi++;
-                                shiftedPixels = 0;
-                                shiftedPixelsCount = 0;
-                            }
-                        }
-                    }
-                }
-
-                if (outputVectors != null) {
-                    for (int ys = 0 ; ys < tileHeight ; ys++) {
-                        if (vectorLeftLength > 0) {
-                            vectorData.put((byte)vectorLeftPalette);
-                            vectorData.put((byte)(vectorLeftLength - 2));
-                        }
-                        byte lastColour = theTile[ys * tileWidth];
-                        int lastPos = 0;
-                        for (int xs = 1 ; xs < tileWidth ; xs++) {
-                            if ((lastColour != theTile[xs + (ys * tileWidth)]) || ((xs - lastPos) >= 254)) {
-                                vectorData.put(lastColour);
-                                vectorData.put((byte)((xs - lastPos) -2));
-
-                                lastColour = theTile[xs + (ys * tileWidth)];
-                                lastPos = xs;
-                            }
-                        }
-                        // Output any remaining
-                        if ((tileWidth - lastPos) > 0) {
-                            vectorData.put(lastColour);
-                            vectorData.put((byte)((tileWidth - lastPos)-2));
-                        }
-
-                        if (vectorRightLength > 0) {
-                            vectorData.put((byte)vectorRightPalette);
-                            vectorData.put((byte)(vectorRightLength - 2));
-                        }
-                    }
-                }
-
-                if (outputTileBytes != null) {
-                    tileHasData = theTileHasContents;
-                }
-
-                int bestTileIndex = currentTile;
-                boolean bestFlipX = false;
-                boolean bestFlipY = false;
-                if ((outputScreenData != null) || ((outputSprites != null) && tileHasData)) {
-                    String testTile = Base64.getEncoder().encodeToString(theTile);
-                    TileIndexFlip existingIndexFlip = tileToIndexFlip.get(testTile);
-
-                    if (existingIndexFlip != null) {
-                        bestFlipX = existingIndexFlip.flipX;
-                        bestFlipY = existingIndexFlip.flipY;
-                        bestTileIndex = existingIndexFlip.index;
-                        System.out.println("Found existing tile: " + bestTileIndex + " " + (bestFlipX?"H":"") + (bestFlipY?"V":""));
-                    } else {
-                        // Advances the tile number, could do with duplicate check here
-                        tileByteData.put(theTile);
-                        if (outputPlanes != null) {
-                            System.out.println("New tile needed: Bitplane remaining size " + bitplaneData[0].remaining());
-                            for (int bp = 0; bp < numBitplanes; bp++) {
-                                bitplaneData[bp].put(bitplaneDataTemp[bp]);
-                            }
-                        }
-
-                        existingIndexFlip = new TileIndexFlip();
-                        existingIndexFlip.flipX = false;
-                        existingIndexFlip.flipY = false;
-                        existingIndexFlip.index = currentTile;
-                        tileToIndexFlip.put(testTile , existingIndexFlip);
-
-                        // Now register the flips
-                        byte[] theTileFlipped = new byte[tileWidth * tileHeight];
-                        for (int ty = 0; ty < tileHeight ; ty++) {
-                            for (int tx = 0; tx < tileWidth ; tx++) {
-                                theTileFlipped[(tileWidth-1-tx) + (ty*tileWidth)] = theTile[tx + (ty*tileWidth)];
-                            }
-                        }
-                        existingIndexFlip = new TileIndexFlip();
-                        existingIndexFlip.flipX = true;
-                        existingIndexFlip.flipY = false;
-                        existingIndexFlip.index = currentTile;
-                        testTile = Base64.getEncoder().encodeToString(theTileFlipped);
-                        // Because the flipped versions might be symmetrical
-                        if (!tileToIndexFlip.containsKey(testTile)) {
-                            tileToIndexFlip.put(testTile, existingIndexFlip);
-                        }
-
-                        for (int ty = 0; ty < tileHeight ; ty++) {
-                            for (int tx = 0; tx < tileWidth ; tx++) {
-                                theTileFlipped[(tileWidth-1-tx) + ((tileHeight-1-ty)*tileWidth)] = theTile[tx + (ty*tileWidth)];
-                            }
-                        }
-                        existingIndexFlip = new TileIndexFlip();
-                        existingIndexFlip.flipX = true;
-                        existingIndexFlip.flipY = true;
-                        existingIndexFlip.index = currentTile;
-                        testTile = Base64.getEncoder().encodeToString(theTileFlipped);
-                        // Because the flipped versions might be symmetrical
-                        if (!tileToIndexFlip.containsKey(testTile)) {
-                            tileToIndexFlip.put(testTile, existingIndexFlip);
-                        }
-
-                        for (int ty = 0; ty < tileHeight ; ty++) {
-                            for (int tx = 0; tx < tileWidth ; tx++) {
-                                theTileFlipped[tx + ((tileHeight-1-ty)*tileWidth)] = theTile[tx + (ty*tileWidth)];
-                            }
-                        }
-                        existingIndexFlip = new TileIndexFlip();
-                        existingIndexFlip.flipX = false;
-                        existingIndexFlip.flipY = true;
-                        existingIndexFlip.index = currentTile;
-                        testTile = Base64.getEncoder().encodeToString(theTileFlipped);
-                        // Because the flipped versions might be symmetrical
-                        if (!tileToIndexFlip.containsKey(testTile)) {
-                            tileToIndexFlip.put(testTile, existingIndexFlip);
-                        }
-
-                        currentTile++;
-                    }
-                }
-
-                if (bestFlipX) {
-                    bestFoundPaletteIndex = bestFoundPaletteIndex | 0x40;
-                    // Mode7 tiles want the flip in screen data
-                    if (outputTileBytes != null) {
-                        bestTileIndex = bestTileIndex  | 0x40;
-                    }
-                }
-                if (bestFlipY) {
-                    bestFoundPaletteIndex = bestFoundPaletteIndex | 0x80;
-                    // Mode7 tiles want the flip in screen data
-                    if (outputTileBytes != null) {
-                        bestTileIndex = bestTileIndex  | 0x80;
-                    }
-                }
-
-                byte theTileIndex = (byte) bestTileIndex;
-                byte theColour = (byte) (bestFoundPaletteIndex & (0x1f | 0x80 | 0x40));
-                // Chars are handled, for their chosen palette range
-                if (extraCharsBits) {
-                    theColour |= (bestTileIndex & 0x300) >> 4;
-                }
-                if (outputScreenData != null) {
-                    screenTileData.put(theTileIndex);
-                    screenColourData.put((byte)(theColour + paletteOffset));
-                } else if (outputSprites != null) {
-                    if (tileHasData) {
-                        if (currentTile >= 24) {
-                            outputSprites.print(";");
-                        }
-                        outputSprites.println("b" + theTileIndex + ",b" + (theColour + paletteOffset) + ",b" + spriteYPos + ",b" + spriteXPos);
-                        outputSprites2.println("\t+MEmitSpriteFrame " + theTileIndex + " , " + (theColour + paletteOffset));
-
-                    } else {
-                        outputSprites.println(";Empty");
-                    }
-                }
-
-
-                // Now calculate if there is any data left
-                usedColours.clear();
-                for (int ty = 0 ; ty < tileHeight ; ty++) {
-                    for (int tx = 0 ; tx < tileWidth ; tx++) {
-                        Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
-                        if (colour != null) {
-                            // Transparent forced colours should be ignored
-                            if (forcedColourIndex.containsKey(colour)) {
-                                if (forcedColourIndex.get(colour) == 0) {
-                                    continue;
-                                }
-                            }
-                            usedColours.add(colour);
-                        }
-                    }
-                }
                 if (useStacking && usedColours.size() > 0) {
                     System.out.println("usedColours size=" + usedColours.size());
                     System.out.println(";Stacked x=" + x + " y=" + y);
@@ -1209,6 +802,428 @@ public class Main {
             System.out.println("palette size=" + palette.size());
         }
         System.out.println("num tiles=" + currentTile);
+    }
+
+    private static boolean processTileImageAt(boolean newSprite, int x, int y) {
+        System.out.println(";Process x=" + x + " y=" + y);
+        if (outputSprites != null) {
+            outputSprites.println(";Process x=" + x + " y=" + y);
+            if (newSprite) {
+                outputSprites2.println("EmitSpriteFrame"+ x +"_" + y);
+                outputSprites2.println("\t+MEmitSpriteFrame_Preserve");
+                newSprite = false;
+            }
+        }
+        // First collect all unique colours used in the tile
+        usedColours = new TreeSet<>();
+        usedColours.addAll(forcedColourIndex.keySet());
+        for (int ty = 0 ; ty < tileHeight ; ty++) {
+            if (usedColours.size() >= paletteMaxLen) {
+                break;
+            }
+            for (int tx = 0 ; tx < tileWidth ; tx++) {
+                if (usedColours.size() >= paletteMaxLen) {
+                    break;
+                }
+                Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                if (colour != null) {
+                    usedColours.add(colour);
+                }
+            }
+        }
+
+        // Find the best fit existing palette index
+        HashMap<Integer, Integer> resultPalette = null;
+        int bestFoundPaletteIndex = 0;
+        if (fitPalettes) {
+            int currentPaletteIndex = 0;
+            resultPalette = null;
+            double bestDistance = 0;
+            for (HashMap<Integer, Integer> palette : palettes) {
+                // This calculates the total distance for all pixels in the tile using the closest matched colour for the palette
+                double colourDifference = 0;
+                boolean ignorePalette = false;
+                for (int ty = 0 ; ty < tileHeight && !ignorePalette ; ty++) {
+                    for (int tx = 0 ; tx < tileWidth && !ignorePalette ; tx++) {
+                        Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                        if (colour != null) {
+                            if (forcedColourIndex.containsKey(colour)) {
+                                // If we are considering a forced index colour
+                                if (forcedColourIndex.get(colour) == palette.get(colour)) {
+                                    // ... and its loaded index precisely matches the forced index
+                                    // Then it is a very good match, so skip it
+                                    continue;
+                                }
+                                // Otherwise ignore the palette
+                                ignorePalette = true;
+                                break;
+                            }
+                            Integer closestColour = getBestPaletteColour(palette, colour);
+                            colourDifference += getColourDifference(new Color(closestColour) , new Color(colour));
+                        }
+                    }
+                }
+
+
+                if (resultPalette == null || (!ignorePalette && (colourDifference < bestDistance))) {
+                    resultPalette = palette;
+                    bestDistance = colourDifference;
+                    bestFoundPaletteIndex = currentPaletteIndex;
+                }
+                currentPaletteIndex++;
+            }
+        } else {
+            int currentPaletteIndex = 0;
+            HashMap<Integer,Integer> bestFoundPalette = null;
+            int bestFoundNum = -1;
+            for (HashMap<Integer, Integer> palette : palettes) {
+                int numColoursMatching = 0;
+                int numColoursMissing = usedColours.size();
+                boolean rejectPalette = false;
+                for (Integer colour : usedColours) {
+                    if (palette.containsKey(colour)) {
+                        Integer colourIndex = palette.get(colour);
+                        if (forcedColourIndex.containsKey(colour)) {
+                            if (!forcedColourIndex.get(colour).equals(colourIndex)) {
+                                // Reject the colour choice if the colour is in the forced colour table and the colour doesn't match the index
+                                rejectPalette = true;
+                                continue;
+                            }
+                        }
+                        numColoursMatching++;
+                        numColoursMissing--;
+                    }
+                }
+                if (rejectPalette) {
+                    currentPaletteIndex++;
+                    continue;
+                }
+
+                // If all the colours are found in a palette, then early out
+                if (numColoursMatching == usedColours.size() || numColoursMatching >= palette.size()) {
+                    bestFoundNum = numColoursMatching;
+                    bestFoundPalette = palette;
+                    bestFoundPaletteIndex = currentPaletteIndex;
+                    break;
+                }
+
+                // Choose the best palette to extend if possible, greedy fill
+                if (numColoursMatching > bestFoundNum) {
+                    // If there is room to extend the existing palette
+                    // The "numColoursMatching > numColoursMissing" will favour palette reuse and sprite stacking instead of creating new palettes
+                    if (useStacking) {
+                        if (numColoursMatching > numColoursMissing || numColoursMissing <= (paletteMaxLen - palette.size())) {
+                            bestFoundNum = numColoursMatching;
+                            bestFoundPalette = palette;
+                            bestFoundPaletteIndex = currentPaletteIndex;
+                            // Continue searching...
+                        }
+                    } else {
+                        if (numColoursMissing <= (paletteMaxLen - palette.size())) {
+                            bestFoundNum = numColoursMatching;
+                            bestFoundPalette = palette;
+                            bestFoundPaletteIndex = currentPaletteIndex;
+                            // Continue searching...
+                        }
+                    }
+                }
+
+                currentPaletteIndex++;
+            }
+
+            if (bestFoundPalette == null) {
+                bestFoundPaletteIndex = palettes.size();
+                resultPalette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
+                palettes.add(resultPalette);
+            } else {
+                resultPalette = bestFoundPalette;
+            }
+
+            // Update any new colours into the best palette
+            for (Integer colour : usedColours) {
+                if (resultPalette.size() >= paletteMaxLen) {
+                    break;
+                }
+                if (!resultPalette.containsKey(colour)) {
+                    resultPalette.put(colour, resultPalette.size());
+                }
+            }
+        }
+
+        assert resultPalette.size() <= paletteMaxLen;
+
+        // Now convert the tile to bitplane data based on the colours in the palette and the index values
+        byte[] theTile = new byte[tileWidth * tileHeight];
+        boolean theTileHasContents = false;
+        for (int ty = 0 ; ty < tileHeight ; ty++) {
+            for (int tx = 0 ; tx < tileWidth ; tx++) {
+                // If there is no colour then assume it's the first palette entry, which should be transparent
+                theTile[tx + (ty * tileWidth)] = 0;
+
+                // Then try to map the colour if it exists
+                Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                if (colour != null) {
+                    Integer value = getBestPaletteIndex(resultPalette, colour);
+                    if (value != null) {
+                        theTile[tx + (ty * tileWidth)] = value.byteValue();
+                        // Remove the pixel, since it has been processed
+                        imageColours[x + tx + ((y + ty) * imageWidth)] = null;
+                        if(value > 0) {
+                            theTileHasContents = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        // The pattern of pixels to pull from the linear row/column tile data into the bitplane data
+        int[] indexPick16_16 = {
+                0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
+                0x10,0x11,0x12,0x13,0x14,0x15,0x16,0x17,
+                0x20,0x21,0x22,0x23,0x24,0x25,0x26,0x27,
+                0x30,0x31,0x32,0x33,0x34,0x35,0x36,0x37,
+                0x40,0x41,0x42,0x43,0x44,0x45,0x46,0x47,
+                0x50,0x51,0x52,0x53,0x54,0x55,0x56,0x57,
+                0x60,0x61,0x62,0x63,0x64,0x65,0x66,0x67,
+                0x70,0x71,0x72,0x73,0x74,0x75,0x76,0x77,
+
+                0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f,
+                0x18,0x19,0x1a,0x1b,0x1c,0x1d,0x1e,0x1f,
+                0x28,0x29,0x2a,0x2b,0x2c,0x2d,0x2e,0x2f,
+                0x38,0x39,0x3a,0x3b,0x3c,0x3d,0x3e,0x3f,
+                0x48,0x49,0x4a,0x4b,0x4c,0x4d,0x4e,0x4f,
+                0x58,0x59,0x5a,0x5b,0x5c,0x5d,0x5e,0x5f,
+                0x68,0x69,0x6a,0x6b,0x6c,0x6d,0x6e,0x6f,
+                0x78,0x79,0x7a,0x7b,0x7c,0x7d,0x7e,0x7f,
+
+                0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,
+                0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,
+                0xa0,0xa1,0xa2,0xa3,0xa4,0xa5,0xa6,0xa7,
+                0xb0,0xb1,0xb2,0xb3,0xb4,0xb5,0xb6,0xb7,
+                0xc0,0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,0xc7,
+                0xd0,0xd1,0xd2,0xd3,0xd4,0xd5,0xd6,0xd7,
+                0xe0,0xe1,0xe2,0xe3,0xe4,0xe5,0xe6,0xe7,
+                0xf0,0xf1,0xf2,0xf3,0xf4,0xf5,0xf6,0xf7,
+
+                0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x8f,
+                0x98,0x99,0x9a,0x9b,0x9c,0x9d,0x9e,0x9f,
+                0xa8,0xa9,0xaa,0xab,0xac,0xad,0xae,0xaf,
+                0xb8,0xb9,0xba,0xbb,0xbc,0xbd,0xbe,0xbf,
+                0xc8,0xc9,0xca,0xcb,0xcc,0xcd,0xce,0xcf,
+                0xd8,0xd9,0xda,0xdb,0xdc,0xdd,0xde,0xdf,
+                0xe8,0xe9,0xea,0xeb,0xec,0xed,0xee,0xef,
+                0xf8,0xf9,0xfa,0xfb,0xfc,0xfd,0xfe,0xff
+        };
+
+        int[] indexPick8_8 = {
+                0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
+                0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f,
+                0x10,0x11,0x12,0x13,0x14,0x15,0x16,0x17,
+                0x18,0x19,0x1a,0x1b,0x1c,0x1d,0x1e,0x1f,
+                0x20,0x21,0x22,0x23,0x24,0x25,0x26,0x27,
+                0x28,0x29,0x2a,0x2b,0x2c,0x2d,0x2e,0x2f,
+                0x30,0x31,0x32,0x33,0x34,0x35,0x36,0x37,
+                0x38,0x39,0x3a,0x3b,0x3c,0x3d,0x3e,0x3f
+        };
+
+        int[] indexPick = indexPick16_16;
+        if (tileWidth == 8 && tileHeight == 8) {
+            indexPick = indexPick8_8;
+        }
+        byte[][] bitplaneDataTemp = new byte[numBitplanes][(indexPick.length)/8];
+
+        boolean tileHasData = false;
+        if (outputScreenData != null || outputSprites != null) {
+            for (int bp = 0; bp < numBitplanes; bp++) {
+                int shiftedPixels = 0;
+                int shiftedPixelsCount = 0;
+                int pi = 0;
+                for (int index = 0; index < indexPick.length; index++) {
+                    shiftedPixels = shiftedPixels << 1;
+                    if ((theTile[indexPick[index]] & (1 << bp)) > 0) {
+                        shiftedPixels = shiftedPixels | 1;
+                        tileHasData = true;
+                    }
+                    shiftedPixelsCount++;
+
+                    if (shiftedPixelsCount == 8) {
+                        bitplaneDataTemp[bp][pi] = (byte) shiftedPixels;
+                        pi++;
+                        shiftedPixels = 0;
+                        shiftedPixelsCount = 0;
+                    }
+                }
+            }
+        }
+
+        if (outputVectors != null) {
+            for (int ys = 0 ; ys < tileHeight ; ys++) {
+                if (vectorLeftLength > 0) {
+                    vectorData.put((byte)vectorLeftPalette);
+                    vectorData.put((byte)(vectorLeftLength - 2));
+                }
+                byte lastColour = theTile[ys * tileWidth];
+                int lastPos = 0;
+                for (int xs = 1 ; xs < tileWidth ; xs++) {
+                    if ((lastColour != theTile[xs + (ys * tileWidth)]) || ((xs - lastPos) >= 254)) {
+                        vectorData.put(lastColour);
+                        vectorData.put((byte)((xs - lastPos) -2));
+
+                        lastColour = theTile[xs + (ys * tileWidth)];
+                        lastPos = xs;
+                    }
+                }
+                // Output any remaining
+                if ((tileWidth - lastPos) > 0) {
+                    vectorData.put(lastColour);
+                    vectorData.put((byte)((tileWidth - lastPos)-2));
+                }
+
+                if (vectorRightLength > 0) {
+                    vectorData.put((byte)vectorRightPalette);
+                    vectorData.put((byte)(vectorRightLength - 2));
+                }
+            }
+        }
+
+        if (outputTileBytes != null) {
+            tileHasData = theTileHasContents;
+        }
+
+        int bestTileIndex = currentTile;
+        boolean bestFlipX = false;
+        boolean bestFlipY = false;
+        if ((outputScreenData != null) || ((outputSprites != null) && tileHasData)) {
+            String testTile = Base64.getEncoder().encodeToString(theTile);
+            TileIndexFlip existingIndexFlip = tileToIndexFlip.get(testTile);
+
+            if (existingIndexFlip != null) {
+                bestFlipX = existingIndexFlip.flipX;
+                bestFlipY = existingIndexFlip.flipY;
+                bestTileIndex = existingIndexFlip.index;
+                System.out.println("Found existing tile: " + bestTileIndex + " " + (bestFlipX?"H":"") + (bestFlipY?"V":""));
+            } else {
+                // Advances the tile number, could do with duplicate check here
+                tileByteData.put(theTile);
+                if (outputPlanes != null) {
+                    System.out.println("New tile needed: Bitplane remaining size " + bitplaneData[0].remaining());
+                    for (int bp = 0; bp < numBitplanes; bp++) {
+                        bitplaneData[bp].put(bitplaneDataTemp[bp]);
+                    }
+                }
+
+                existingIndexFlip = new TileIndexFlip();
+                existingIndexFlip.flipX = false;
+                existingIndexFlip.flipY = false;
+                existingIndexFlip.index = currentTile;
+                tileToIndexFlip.put(testTile , existingIndexFlip);
+
+                // Now register the flips
+                byte[] theTileFlipped = new byte[tileWidth * tileHeight];
+                for (int ty = 0; ty < tileHeight ; ty++) {
+                    for (int tx = 0; tx < tileWidth ; tx++) {
+                        theTileFlipped[(tileWidth-1-tx) + (ty*tileWidth)] = theTile[tx + (ty*tileWidth)];
+                    }
+                }
+                existingIndexFlip = new TileIndexFlip();
+                existingIndexFlip.flipX = true;
+                existingIndexFlip.flipY = false;
+                existingIndexFlip.index = currentTile;
+                testTile = Base64.getEncoder().encodeToString(theTileFlipped);
+                // Because the flipped versions might be symmetrical
+                if (!tileToIndexFlip.containsKey(testTile)) {
+                    tileToIndexFlip.put(testTile, existingIndexFlip);
+                }
+
+                for (int ty = 0; ty < tileHeight ; ty++) {
+                    for (int tx = 0; tx < tileWidth ; tx++) {
+                        theTileFlipped[(tileWidth-1-tx) + ((tileHeight-1-ty)*tileWidth)] = theTile[tx + (ty*tileWidth)];
+                    }
+                }
+                existingIndexFlip = new TileIndexFlip();
+                existingIndexFlip.flipX = true;
+                existingIndexFlip.flipY = true;
+                existingIndexFlip.index = currentTile;
+                testTile = Base64.getEncoder().encodeToString(theTileFlipped);
+                // Because the flipped versions might be symmetrical
+                if (!tileToIndexFlip.containsKey(testTile)) {
+                    tileToIndexFlip.put(testTile, existingIndexFlip);
+                }
+
+                for (int ty = 0; ty < tileHeight ; ty++) {
+                    for (int tx = 0; tx < tileWidth ; tx++) {
+                        theTileFlipped[tx + ((tileHeight-1-ty)*tileWidth)] = theTile[tx + (ty*tileWidth)];
+                    }
+                }
+                existingIndexFlip = new TileIndexFlip();
+                existingIndexFlip.flipX = false;
+                existingIndexFlip.flipY = true;
+                existingIndexFlip.index = currentTile;
+                testTile = Base64.getEncoder().encodeToString(theTileFlipped);
+                // Because the flipped versions might be symmetrical
+                if (!tileToIndexFlip.containsKey(testTile)) {
+                    tileToIndexFlip.put(testTile, existingIndexFlip);
+                }
+
+                currentTile++;
+            }
+        }
+
+        if (bestFlipX) {
+            bestFoundPaletteIndex = bestFoundPaletteIndex | 0x40;
+            // Mode7 tiles want the flip in screen data
+            if (outputTileBytes != null) {
+                bestTileIndex = bestTileIndex  | 0x40;
+            }
+        }
+        if (bestFlipY) {
+            bestFoundPaletteIndex = bestFoundPaletteIndex | 0x80;
+            // Mode7 tiles want the flip in screen data
+            if (outputTileBytes != null) {
+                bestTileIndex = bestTileIndex  | 0x80;
+            }
+        }
+
+        byte theTileIndex = (byte) bestTileIndex;
+        byte theColour = (byte) (bestFoundPaletteIndex & (0x1f | 0x80 | 0x40));
+        // Chars are handled, for their chosen palette range
+        if (extraCharsBits) {
+            theColour |= (bestTileIndex & 0x300) >> 4;
+        }
+        if (outputScreenData != null) {
+            screenTileData.put(theTileIndex);
+            screenColourData.put((byte)(theColour + paletteOffset));
+        } else if (outputSprites != null) {
+            if (tileHasData) {
+                if (currentTile >= 24) {
+                    outputSprites.print(";");
+                }
+                outputSprites.println("b" + theTileIndex + ",b" + (theColour + paletteOffset) + ",b" + spriteYPos + ",b" + spriteXPos);
+                outputSprites2.println("\t+MEmitSpriteFrame " + theTileIndex + " , " + (theColour + paletteOffset));
+
+            } else {
+                outputSprites.println(";Empty");
+            }
+        }
+
+
+        // Now calculate if there is any data left
+        usedColours.clear();
+        for (int ty = 0 ; ty < tileHeight ; ty++) {
+            for (int tx = 0 ; tx < tileWidth ; tx++) {
+                Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                if (colour != null) {
+                    // Transparent forced colours should be ignored
+                    if (forcedColourIndex.containsKey(colour)) {
+                        if (forcedColourIndex.get(colour) == 0) {
+                            continue;
+                        }
+                    }
+                    usedColours.add(colour);
+                }
+            }
+        }
+        return newSprite;
     }
 
     private static Integer getBestPaletteIndex(HashMap<Integer, Integer> resultPalette, Integer colour) {

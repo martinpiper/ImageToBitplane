@@ -81,7 +81,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build.tools" />
   </component>
-  <component name="RunManager" selected="Application.Sprite sections with position search">
+  <component name="RunManager" selected="Application.Sprite 73181 regions">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -307,7 +307,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Sprite sections with position search" type="Application" factoryName="Application">
+    <configuration name="Sprite 73181 regions" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 63 72 204 --paletteoffset 0 --spritexy 0 0xd0 --startxy 0 0 --palettesize 16 --nostacking --numbitplanes 4 --image &quot;src\test\resources\73181 reduced.png&quot; --tilewh 16 16 --region redframe1 29 39 -1 -11 32 32 --region redframe2 70 40 -1 -11 32 32 --region redframe3 110 41 -1 -11 32 32 --region redframe4 152 40 -1 -11 32 32 --region redframe5 192 40 -1 -11 32 32 --region redframe6 229 40 -1 -11 32 32 --region bullet1 274 39 -8 -8 16 16 --imagequantize 16 --outputplanes target/spriteWithPos_planes --outputsprites target/spriteWithPos.txt --outputpalettes target/spriteWithPos.pal --convertwritepass" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Sprite 73181" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 63 72 204 --paletteoffset 0 --spritexy 0 0xd0 --startxy 0 0 --palettesize 16 --nostacking --numbitplanes 4 --image &quot;src\test\resources\73181 reduced.png&quot; --tilewh 16 16 --imagequantize 16 --outputplanes target/spriteWithPos_planes --outputsprites target/spriteWithPos.txt --outputpalettes target/spriteWithPos.pal --convertwritepass" />
@@ -627,7 +641,8 @@
       <item itemvalue="Application.oldbridge char screen concat" />
       <item itemvalue="Application.buildings concat" />
       <item itemvalue="Application.Vectors" />
-      <item itemvalue="Application.Sprite sections with position search" />
+      <item itemvalue="Application.Sprite 73181" />
+      <item itemvalue="Application.Sprite 73181 regions" />
       <item itemvalue="Application.Main background nowritepass" />
       <item itemvalue="Maven.clean install" />
     </list>
@@ -677,23 +692,28 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>380</line>
+          <line>392</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>721</line>
+          <line>755</line>
           <option name="timeStamp" value="94" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>700</line>
+          <line>734</line>
           <option name="timeStamp" value="100" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>763</line>
+          <line>805</line>
           <option name="timeStamp" value="103" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>855</line>
+          <option name="timeStamp" value="104" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

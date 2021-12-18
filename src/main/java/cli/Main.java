@@ -12,6 +12,15 @@ import java.util.*;
 
 public class Main {
 
+    static class Region {
+        String name = "";
+        Rectangle rect = new Rectangle();
+        boolean start = true;
+        boolean end = true;
+        int offsetX = 0;
+        int offsetY = 0;
+    }
+
     static int colourShiftRed = 0 , colourShiftGreen = 0 , colourShiftBlue = 0;
     public static Color ApplyColorLimitsFromColour(Color colour) {
         Color newColour = new Color((colour.getRed()>>colourShiftRed)<<colourShiftRed , (colour.getGreen()>>colourShiftGreen)<<colourShiftGreen , (colour.getBlue()>>colourShiftBlue)<<colourShiftBlue );
@@ -70,6 +79,8 @@ public class Main {
     static int vectorRightLength = 0;
     static String outputVectors = null;
     static ByteBuffer vectorData = null;
+
+    static ArrayList<Region> regions = null;
 
     static TreeMap<String , TileIndexFlip> tileToIndexFlip = new TreeMap<String , TileIndexFlip>();
 
@@ -242,6 +253,7 @@ public class Main {
                 i+=2;
                 continue;
             } else if (args[i].compareToIgnoreCase("--image") == 0) {
+                regions = null;
                 img = ImageIO.read(new File(args[i+1]));
                 i++;
 
@@ -498,8 +510,30 @@ public class Main {
 
                 output.close();
                 continue;
-            }
+            } else if (args[i].compareToIgnoreCase("--region") == 0) {
+                // --region redframe2 70 40 -1 -11 32 32
+                Region region = new Region();
+                i++;
+                region.name = args[i];
+                i++;
+                int hotX = ParseValueFrom(args[i]);
+                i++;
+                int hotY = ParseValueFrom(args[i]);
+                i++;
+                region.rect.x = hotX + ParseValueFrom(args[i]);
+                i++;
+                region.rect.y = hotY + ParseValueFrom(args[i]);
+                i++;
+                region.rect.width = ParseValueFrom(args[i]);
+                i++;
+                region.rect.height = ParseValueFrom(args[i]);
 
+                if (regions == null) {
+                    regions = new ArrayList<>();
+                }
+                regions.add(region);
+                continue;
+            }
             System.err.println("Unknown option: " + args[i]);
         }
 
@@ -758,38 +792,51 @@ public class Main {
 
         boolean newSprite = true;
 
-        for (int y = startY ; y < imageHeight ; y+=tileHeight) {
-            for (int x = startX ; x < imageWidth ; ) {
+        ensureRegions();
 
-                newSprite = processTileImageAt(newSprite, x, y);
+        int prevY = regions.get(0).rect.y;
 
-                if (useStacking && usedColours.size() > 0) {
-                    System.out.println("usedColours size=" + usedColours.size());
-                    System.out.println(";Stacked x=" + x + " y=" + y);
-                    if (outputSprites != null) {
-                        outputSprites.println(";Stacked x=" + x + " y=" + y);
-                    }
-                    continue;
-                }
+        int regionIndex = 0;
+
+        while (regionIndex < regions.size()) {
+            Region region = regions.get(regionIndex);
+            int x = region.rect.x;
+            int y = region.rect.y;
+
+            newSprite = processTileImageAt(newSprite, x, y, region);
+
+            if (useStacking && usedColours.size() > 0) {
+                System.out.println("usedColours size=" + usedColours.size());
+                System.out.println(";Stacked x=" + x + " y=" + y);
                 if (outputSprites != null) {
-                    outputSprites2.println("\t+MEmitSpriteFrame_RestoreExit");
-                    outputSprites2.println("");
-                    newSprite = true;
+                    outputSprites.println(";Stacked x=" + x + " y=" + y);
                 }
+                continue;
+            }
+            if (outputSprites != null && region.end) {
+                outputSprites2.println("\t+MEmitSpriteFrame_RestoreExit");
+                outputSprites2.println("");
+                newSprite = true;
+            }
 
-                x+=tileWidth;
+            regionIndex++;
+            x+=tileWidth;
 
-                if (outputSprites != null) {
-                    spriteXPos += tileWidth;
-                    if (spriteXPos >= 256) {
-                        spriteXPos = 0;
-                        spriteYPos -= tileHeight;
-                    }
+            if (outputSprites != null) {
+                spriteXPos += tileWidth;
+                if (spriteXPos >= 256) {
+                    spriteXPos = 0;
+                    spriteYPos -= tileHeight;
                 }
             }
-            if (outputSprites != null) {
-                spriteXPos = 0;
-                spriteYPos -= tileHeight;
+
+            // Detect a new row being converted
+            if (prevY != region.rect.y) {
+                prevY = region.rect.y;
+                if (outputSprites != null) {
+                    spriteXPos = 0;
+                    spriteYPos -= tileHeight;
+                }
             }
         }
 
@@ -804,12 +851,70 @@ public class Main {
         System.out.println("num tiles=" + currentTile);
     }
 
-    private static boolean processTileImageAt(boolean newSprite, int x, int y) {
+    private static void ensureRegions() {
+        // If there are existing regions, then ensure we have enough regions at the tile size to cover all the data
+        if (regions != null && !regions.isEmpty()) {
+
+            // TODO: If region optimisation is enabled, move the region to the top left to the transparent colour rules
+
+            ArrayList<Region> newRegions = new ArrayList<>();
+
+            for (Region region : regions) {
+                if (region.rect.width > tileWidth || region.rect.height > tileHeight) {
+                    Region newRegion = new Region();
+                    // Split any large regions
+                    for (int ys = 0; ys < region.rect.height; ys += tileHeight) {
+                        for (int xs = 0; xs < region.rect.width; xs += tileWidth) {
+                            newRegion = new Region();
+                            newRegion.end = false;
+                            if (xs != 0 || ys == 0) {
+                                newRegion.start = false;
+                            }
+                            newRegion.name = region.name;// + "_" + Integer.toString(xs) + "_" + Integer.toString(ys);
+                            newRegion.rect.x = region.rect.x + xs;
+                            newRegion.rect.y = region.rect.y + ys;
+                            newRegion.rect.width = tileWidth;
+                            newRegion.rect.height = tileHeight;
+                            newRegion.offsetX = xs;
+                            newRegion.offsetY = ys;
+                            newRegions.add(newRegion);
+                        }
+                    }
+                    // Update the last output region
+                    newRegion.end = true;
+                } else {
+                    // No region change, so just add it to the list
+                    newRegions.add(region);
+                }
+            }
+
+            regions = newRegions;
+        }
+
+        // If there aren't any regions then automatically create them assuming a regular tile grid
+        if (regions == null || regions.isEmpty()) {
+            regions = new ArrayList<>();
+
+            for (int y = startY ; y < imageHeight ; y+=tileHeight) {
+                for (int x = startX ; x < imageWidth ; x+=tileWidth) {
+                    Region region = new Region();
+                    region.name = Integer.toString(x) + "_" + Integer.toString(y);
+                    region.rect.x = x;
+                    region.rect.y = y;
+                    region.rect.width = tileWidth;
+                    region.rect.width = tileHeight;
+                    regions.add(region);
+                }
+            }
+        }
+    }
+
+    private static boolean processTileImageAt(boolean newSprite, int x, int y, Region region) {
         System.out.println(";Process x=" + x + " y=" + y);
         if (outputSprites != null) {
             outputSprites.println(";Process x=" + x + " y=" + y);
             if (newSprite) {
-                outputSprites2.println("EmitSpriteFrame"+ x +"_" + y);
+                outputSprites2.println("EmitSpriteFrame"+ region.name);
                 outputSprites2.println("\t+MEmitSpriteFrame_Preserve");
                 newSprite = false;
             }
@@ -1199,7 +1304,15 @@ public class Main {
                     outputSprites.print(";");
                 }
                 outputSprites.println("b" + theTileIndex + ",b" + (theColour + paletteOffset) + ",b" + spriteYPos + ",b" + spriteXPos);
-                outputSprites2.println("\t+MEmitSpriteFrame " + theTileIndex + " , " + (theColour + paletteOffset));
+                if (region.offsetX != 0 && region.offsetY != 0) {
+                    outputSprites2.println("\t+MEmitSpriteFrameOffsetXY " + theTileIndex + " , " + (theColour + paletteOffset) + " , " + region.offsetX + " , " + region.offsetY);
+                } else if (region.offsetX != 0) {
+                    outputSprites2.println("\t+MEmitSpriteFrameOffsetX " + theTileIndex + " , " + (theColour + paletteOffset) + " , " + region.offsetX);
+                } else if (region.offsetY != 0) {
+                    outputSprites2.println("\t+MEmitSpriteFrameOffsetY " + theTileIndex + " , " + (theColour + paletteOffset) + " , " + region.offsetY);
+                } else {
+                    outputSprites2.println("\t+MEmitSpriteFrame " + theTileIndex + " , " + (theColour + paletteOffset));
+                }
 
             } else {
                 outputSprites.println(";Empty");
@@ -1278,73 +1391,75 @@ public class Main {
     private static void ImageQuantize() {
         System.out.println("Quantize...");
 
+        ensureRegions();
+
         // Quantize tiles down to a maximum number of colours
-        for (int y = startY ; y < imageHeight ; y+=tileHeight) {
-            for (int x = startX ; x < imageWidth ; x+= tileWidth) {
-                HashMap<Integer,Double> usedColours = new HashMap<>();
-                for (Integer colour : forcedColourIndex.keySet()) {
-                    usedColours.put(colour , (double) (tileWidth*tileHeight)*10000);    // Significant weighting
+        for (Region region : regions) {
+            int x = region.rect.x;
+            int y = region.rect.y;
+            HashMap<Integer,Double> usedColours = new HashMap<>();
+            for (Integer colour : forcedColourIndex.keySet()) {
+                usedColours.put(colour , (double) (tileWidth*tileHeight)*10000);    // Significant weighting
+            }
+            for (int ty = 0 ; ty < tileHeight ; ty++) {
+                for (int tx = 0 ; tx < tileWidth ; tx++) {
+                    Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
+                    if (colour != null) {
+                        if (!usedColours.containsKey(colour)) {
+                            usedColours.put(colour, 0.0);
+                        } else {
+                            Double num = usedColours.get(colour);
+                            usedColours.put(colour, num+factorColourIndex.getOrDefault(colour, 1.0));
+                        }
+                    }
                 }
+            }
+            // Reduce until it fits
+            while (usedColours.size() > paletteMaxQuantize) {
+                System.out.println("Reduce x=" + x + " y=" + y + " has colours " + usedColours.size());
+                // Find the least used colour
+                Integer chosenMinColour = null;
+                double count = 0;
+                for (Map.Entry<Integer,Double> entry: usedColours.entrySet()) {
+                    if (chosenMinColour == null || entry.getValue() < count) {
+                        chosenMinColour = entry.getKey();
+                        count = entry.getValue();
+                    }
+                }
+
+                Color source = new Color(chosenMinColour);
+                Integer closestColourToMin = null;
+                double difference = -1;
+                for (Map.Entry<Integer,Double> entry: usedColours.entrySet()) {
+                    // Skip the same colour
+                    if (chosenMinColour.equals(entry.getKey())) {
+                        continue;
+                    }
+
+                    Color destination = new Color(entry.getKey());
+                    double thisDifference = getColourDifference(source, destination);
+
+                    if (closestColourToMin == null || thisDifference < difference) {
+                        closestColourToMin = entry.getKey();
+                        difference = thisDifference;
+                    }
+                }
+
+                // Replace colours in the tile
                 for (int ty = 0 ; ty < tileHeight ; ty++) {
                     for (int tx = 0 ; tx < tileWidth ; tx++) {
                         Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                         if (colour != null) {
-                            if (!usedColours.containsKey(colour)) {
-                                usedColours.put(colour, 0.0);
-                            } else {
-                                Double num = usedColours.get(colour);
-                                usedColours.put(colour, num+factorColourIndex.getOrDefault(colour, 1.0));
+                            if (colour.equals(chosenMinColour)) {
+                                imageColours[x + tx + ((y + ty) * imageWidth)] = closestColourToMin;
                             }
                         }
                     }
                 }
-                // Reduce until it fits
-                while (usedColours.size() > paletteMaxQuantize) {
-                    System.out.println("Reduce x=" + x + " y=" + y + " has colours " + usedColours.size());
-                    // Find the least used colour
-                    Integer chosenMinColour = null;
-                    double count = 0;
-                    for (Map.Entry<Integer,Double> entry: usedColours.entrySet()) {
-                        if (chosenMinColour == null || entry.getValue() < count) {
-                            chosenMinColour = entry.getKey();
-                            count = entry.getValue();
-                        }
-                    }
 
-                    Color source = new Color(chosenMinColour);
-                    Integer closestColourToMin = null;
-                    double difference = -1;
-                    for (Map.Entry<Integer,Double> entry: usedColours.entrySet()) {
-                        // Skip the same colour
-                        if (chosenMinColour.equals(entry.getKey())) {
-                            continue;
-                        }
-
-                        Color destination = new Color(entry.getKey());
-                        double thisDifference = getColourDifference(source, destination);
-
-                        if (closestColourToMin == null || thisDifference < difference) {
-                            closestColourToMin = entry.getKey();
-                            difference = thisDifference;
-                        }
-                    }
-
-                    // Replace colours in the tile
-                    for (int ty = 0 ; ty < tileHeight ; ty++) {
-                        for (int tx = 0 ; tx < tileWidth ; tx++) {
-                            Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
-                            if (colour != null) {
-                                if (colour.equals(chosenMinColour)) {
-                                    imageColours[x + tx + ((y + ty) * imageWidth)] = closestColourToMin;
-                                }
-                            }
-                        }
-                    }
-
-                    // Update the used totals
-                    usedColours.put(closestColourToMin , usedColours.get(closestColourToMin) + usedColours.get(chosenMinColour));
-                    usedColours.remove(chosenMinColour);
-                }
+                // Update the used totals
+                usedColours.put(closestColourToMin , usedColours.get(closestColourToMin) + usedColours.get(chosenMinColour));
+                usedColours.remove(chosenMinColour);
             }
         }
     }

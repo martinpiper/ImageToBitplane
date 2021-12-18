@@ -6,6 +6,10 @@
 	If using coordinates from command line, the larger area can be shifted in its bounding box
 		This would need to take into account transparent pixels, those that match forcedColourIndexTransparent
 	Use text identifier for each coordinate input
+	* Done: Only output a new sprite "EmitSpriteFramered*" if it's the start of a region
+		Otherwise output x/y offset values for the +MEmitSpriteFrame
+		No need for: region.name + "_" + Integer.toString(xs) + "_" + Integer.toString(ys);
+	// TODO: If region optimisation is enabled, move the region to the top left to the transparent colour rules
 
 
 

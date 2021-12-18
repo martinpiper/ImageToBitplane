@@ -124,3 +124,8 @@
 		No need for: region.name + "_" + Integer.toString(xs) + "_" + Integer.toString(ys);
 	// Done: If region optimisation is enabled, move the region to the top left to the transparent colour rules
 		Output the sprite offset combined into the rest of the region
+
+
+
+* --regionshift : Each region to have independent shift or no shift, the boss animation is mirrored horizontally
+	--noregionshift

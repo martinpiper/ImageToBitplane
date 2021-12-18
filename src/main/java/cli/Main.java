@@ -19,6 +19,7 @@ public class Main {
         boolean end = true;
         int offsetX = 0;
         int offsetY = 0;
+        boolean regionShift = false;
     }
 
     static int colourShiftRed = 0 , colourShiftGreen = 0 , colourShiftBlue = 0;
@@ -529,6 +530,7 @@ public class Main {
                 region.rect.width = ParseValueFrom(args[i]);
                 i++;
                 region.rect.height = ParseValueFrom(args[i]);
+                region.regionShift = regionShift;
 
                 if (regions == null) {
                     regions = new ArrayList<>();
@@ -537,6 +539,9 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--regionshift") == 0) {
                 regionShift = true;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--noregionshift") == 0) {
+                regionShift = false;
                 continue;
             }
             System.err.println("Unknown option: " + args[i]);
@@ -866,7 +871,7 @@ public class Main {
 
                 if (region.rect.width > tileWidth || region.rect.height > tileHeight) {
                     // If region optimisation is enabled, move the region to the top left to the transparent colour rules
-                    if (regionShift) {
+                    if (region.regionShift) {
                         // --regionshift
                         // Check left shift for region width maximum attempts
                         for (int s = 0 ; s < region.rect.width - 1 ; s++) {
@@ -925,6 +930,7 @@ public class Main {
                             newRegion.rect.height = tileHeight;
                             newRegion.offsetX = xs + region.offsetX;
                             newRegion.offsetY = ys + region.offsetY;
+                            newRegion.regionShift = region.regionShift;
                             newRegions.add(newRegion);
                         }
                     }

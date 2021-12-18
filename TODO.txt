@@ -1,6 +1,5 @@
-* --regionshift : Each region to have independent shift or no shift, the boss animation is mirrored horizontally
-
 * --regionshift : Could look at shifting each tile row/column independently
+	Complex though since the separate rows/columns would need to have their shifts split into the tile sized regions
 
 
 

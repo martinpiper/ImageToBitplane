@@ -81,6 +81,7 @@ public class Main {
     static ByteBuffer vectorData = null;
 
     static ArrayList<Region> regions = null;
+    static boolean regionShift = false;
 
     static TreeMap<String , TileIndexFlip> tileToIndexFlip = new TreeMap<String , TileIndexFlip>();
 
@@ -254,6 +255,7 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--image") == 0) {
                 regions = null;
+                regionShift = false;
                 img = ImageIO.read(new File(args[i+1]));
                 i++;
 
@@ -532,6 +534,9 @@ public class Main {
                     regions = new ArrayList<>();
                 }
                 regions.add(region);
+                continue;
+            } else if (args[i].compareToIgnoreCase("--regionshift") == 0) {
+                regionShift = true;
                 continue;
             }
             System.err.println("Unknown option: " + args[i]);
@@ -855,12 +860,55 @@ public class Main {
         // If there are existing regions, then ensure we have enough regions at the tile size to cover all the data
         if (regions != null && !regions.isEmpty()) {
 
-            // TODO: If region optimisation is enabled, move the region to the top left to the transparent colour rules
-
             ArrayList<Region> newRegions = new ArrayList<>();
 
             for (Region region : regions) {
+
                 if (region.rect.width > tileWidth || region.rect.height > tileHeight) {
+                    // If region optimisation is enabled, move the region to the top left to the transparent colour rules
+                    if (regionShift) {
+                        // --regionshift
+                        // Check left shift for region width maximum attempts
+                        for (int s = 0 ; s < region.rect.width - 1 ; s++) {
+                            boolean isTransparent = true;
+                            for (int i = 0; isTransparent && i < region.rect.height; i++) {
+                                if (imageColours[region.rect.x + ((region.rect.y + i) * imageWidth)] != forcedColourIndexTransparent) {
+                                    isTransparent = false;
+                                }
+                            }
+                            if (isTransparent) {
+                                for (int i = 0; i < region.rect.height; i++) {
+                                    for (int j = 0; j < region.rect.width - 1; j++) {
+                                        imageColours[region.rect.x  + j + ((region.rect.y + i) * imageWidth)] = imageColours[region.rect.x + j + 1 + ((region.rect.y + i) * imageWidth)];
+                                    }
+                                    imageColours[region.rect.x  + region.rect.width-1 + ((region.rect.y + i) * imageWidth)] = forcedColourIndexTransparent;
+                                }
+                                region.offsetX++;
+                            }
+                        }
+
+                        // Check up shift for region height maximum attempts
+                        for (int s = 0 ; s < region.rect.height - 1 ; s++) {
+                            boolean isTransparent = true;
+                            for (int i = 0; isTransparent && i < region.rect.width; i++) {
+                                if (imageColours[region.rect.x + i + (region.rect.y * imageWidth)] != forcedColourIndexTransparent) {
+                                    isTransparent = false;
+                                }
+                            }
+                            if (isTransparent) {
+                                for (int i = 0; i < region.rect.height - 1; i++) {
+                                    for (int j = 0; j < region.rect.width - 1; j++) {
+                                        imageColours[region.rect.x  + j + ((region.rect.y + i) * imageWidth)] = imageColours[region.rect.x + j + ((region.rect.y + i + 1) * imageWidth)];
+                                    }
+                                }
+                                for (int j = 0; j < region.rect.width - 1; j++) {
+                                    imageColours[region.rect.x + j + ((region.rect.y + region.rect.height - 1) * imageWidth)] = forcedColourIndexTransparent;
+                                }
+                                region.offsetY++;
+                            }
+                        }
+
+                    }
                     Region newRegion = new Region();
                     // Split any large regions
                     for (int ys = 0; ys < region.rect.height; ys += tileHeight) {
@@ -875,8 +923,8 @@ public class Main {
                             newRegion.rect.y = region.rect.y + ys;
                             newRegion.rect.width = tileWidth;
                             newRegion.rect.height = tileHeight;
-                            newRegion.offsetX = xs;
-                            newRegion.offsetY = ys;
+                            newRegion.offsetX = xs + region.offsetX;
+                            newRegion.offsetY = ys + region.offsetY;
                             newRegions.add(newRegion);
                         }
                     }

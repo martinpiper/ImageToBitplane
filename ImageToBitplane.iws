@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Done.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Done.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
@@ -81,7 +82,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build.tools" />
   </component>
-  <component name="RunManager" selected="Application.Sprite 73181 regions">
+  <component name="RunManager" selected="Application.Sprite 73181 regions shift">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -297,6 +298,20 @@
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 255 0 255 --paletteoffset 5 --palettesize 8 --spritexy 0 0xd0 --startxy 0 0 --image src/test/resources/TestImage1.png --tilewh 16 16 --imagequantize 32 --outputplanes target/sprite_plane --outputsprites target/spriteSheet.txt --outputpalettes target/PaletteDataSprites.bin --usestacking --numbitplanes 3 --convertwritepass" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Sprite 73181 regions shift" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 63 72 204 --paletteoffset 0 --spritexy 0 0xd0 --startxy 0 0 --palettesize 16 --nostacking --numbitplanes 4 --image &quot;src\test\resources\73181 reduced.png&quot; --tilewh 16 16 --regionshift --region redframe1 29 39 -1 -11 32 32 --region redframe2 70 40 -1 -11 32 32 --region redframe3 110 41 -1 -11 32 32 --region redframe4 152 40 -1 -11 32 32 --region redframe5 192 40 -1 -11 32 32 --region redframe6 229 40 -1 -11 32 32 --region bullet1 274 39 -8 -8 16 16 --imagequantize 16 --outputplanes target/spriteWithPos_planes --outputsprites target/spriteWithPos.txt --outputpalettes target/spriteWithPos.pal --convertwritepass" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cli.*" />
@@ -643,6 +658,7 @@
       <item itemvalue="Application.Vectors" />
       <item itemvalue="Application.Sprite 73181" />
       <item itemvalue="Application.Sprite 73181 regions" />
+      <item itemvalue="Application.Sprite 73181 regions shift" />
       <item itemvalue="Application.Main background nowritepass" />
       <item itemvalue="Maven.clean install" />
     </list>
@@ -692,34 +708,36 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>392</line>
+          <line>394</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>755</line>
-          <option name="timeStamp" value="94" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>734</line>
+          <line>739</line>
           <option name="timeStamp" value="100" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>805</line>
-          <option name="timeStamp" value="103" />
+          <line>911</line>
+          <option name="timeStamp" value="111" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>855</line>
-          <option name="timeStamp" value="104" />
+          <line>906</line>
+          <option name="timeStamp" value="112" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>885</line>
+          <option name="timeStamp" value="113" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
-        <watch expression="imageColours" language="JAVA" />
+        <watch expression="forcedColourIndexTransparent" language="JAVA" />
+        <watch expression="imageColours[region.rect.x + ((region.rect.y + i) * imageWidth)]" language="JAVA" />
+        <watch expression="region" />
       </configuration>
     </watches-manager>
   </component>

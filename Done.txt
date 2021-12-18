@@ -107,3 +107,20 @@
 		Add command line flag
 
 * // TODO: Chars will need to be handled, for their chosen palette range
+
+
+
+
+* Add option to specify multiple rectangle areas and search for the best X/Y pixel offsets within those areas to get the optimal empty tile packing
+	Sprite sections with position search
+	Extracted main tile conversion to cli.Main.processTileImageAt()
+		All demos work
+	Change two for loops to use computed list of coordinates, or coordinates from command line
+	If using coordinates from command line, the larger area can be shifted in its bounding box
+		This would need to take into account transparent pixels, those that match forcedColourIndexTransparent
+	Use text identifier for each coordinate input
+	* Done: Only output a new sprite "EmitSpriteFramered*" if it's the start of a region
+		Otherwise output x/y offset values for the +MEmitSpriteFrame
+		No need for: region.name + "_" + Integer.toString(xs) + "_" + Integer.toString(ys);
+	// Done: If region optimisation is enabled, move the region to the top left to the transparent colour rules
+		Output the sprite offset combined into the rest of the region

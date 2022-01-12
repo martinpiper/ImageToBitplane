@@ -537,6 +537,30 @@ public class Main {
                 }
                 regions.add(region);
                 continue;
+            } else if (args[i].compareToIgnoreCase("--regionxy") == 0) {
+                // --regionxy redframe2 70 40 69 29 100 60
+                Region region = new Region();
+                i++;
+                region.name = args[i];
+                i++;
+                int hotX = ParseValueFrom(args[i]);
+                i++;
+                int hotY = ParseValueFrom(args[i]);
+                i++;
+                region.rect.x = ParseValueFrom(args[i]);
+                i++;
+                region.rect.y = ParseValueFrom(args[i]);
+                i++;
+                region.rect.width = (ParseValueFrom(args[i]) - region.rect.x) + 1;
+                i++;
+                region.rect.height = (ParseValueFrom(args[i]) - region.rect.y) + 1;
+                region.regionShift = regionShift;
+
+                if (regions == null) {
+                    regions = new ArrayList<>();
+                }
+                regions.add(region);
+                continue;
             } else if (args[i].compareToIgnoreCase("--regionshift") == 0) {
                 regionShift = true;
                 continue;

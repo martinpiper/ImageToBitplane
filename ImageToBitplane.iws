@@ -7,7 +7,9 @@
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/Done.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Done.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +83,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build.tools" />
   </component>
-  <component name="RunManager" selected="Application.Sprite 73181 regions shift">
+  <component name="RunManager" selected="Application.Sprite 73181 regions shift --imagescale">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -297,6 +299,20 @@
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 255 0 255 --paletteoffset 5 --palettesize 8 --spritexy 0 0xd0 --startxy 0 0 --image src/test/resources/TestImage1.png --tilewh 16 16 --imagequantize 32 --outputplanes target/sprite_plane --outputsprites target/spriteSheet.txt --outputpalettes target/PaletteDataSprites.bin --usestacking --numbitplanes 3 --convertwritepass" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Sprite 73181 regions shift --imagescale" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 63 72 204 --paletteoffset 0 --spritexy 0 0xd0 --startxy 0 0 --palettesize 16 --nostacking --numbitplanes 4 --image &quot;src\test\resources\73181 reduced.png&quot; --tilewh 16 16 --regionshift --region redframe1 29 39 -1 -11 32 32 --region redframe2 70 40 -1 -11 32 32 --region redframe3 110 41 -1 -11 32 32 --region redframe4 152 40 -1 -11 32 32 --region redframe5 192 40 -1 -11 32 32 --region redframe6 229 40 -1 -11 32 32 --region bullet1 274 39 -8 -8 16 16 --region boss1 77 749 -47 -32 96 96 --imagescale 0.5 0.5 --imagequantize 16 --outputplanes target/spriteWithPos_planes --outputsprites target/spriteWithPos.txt --outputpalettes target/spriteWithPos.pal --convertwritepass" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cli.*" />
@@ -526,6 +542,36 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="cammy no scale" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--paletteoffset 8 --palettesize 16 --rgbshift 4 4 4 --usestacking --newpalettes --loadpaletteraw ../tmp/Demo10PaletteData3.bin --resetforcergb --forcergb 248 0 248 --numbitplanes 4 --image &quot;C:\Users\Martin Piper\Downloads\117307-nomask.png&quot; --tilewh 16 16 --regionxy cammy_idle1 45 209 1 114 80 209 --regionxy cammy_idle2 126 209 82 114 161 209 --regionxy cammy_idle3 207 209 163 114 242 209 --regionxy cammy_idle4 288 209 244 114 323 209 --regionxy cammy_idle5 369 209 325 114 404 209 --regionxy cammy_idle6 450 209 406 114 485 209 --regionxy cammy_idle7 531 209 487 114 566 209 --regionxy cammy_idle8 612 209 568 114 647 209 --imagequantize 32 --fitpalettes --outputplanes ../tmp/Demo10Sprites_plane --outputsprites ../tmp/Demo10SpritesSheet.txt --convertwritepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets/" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="cammy scale" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--paletteoffset 8 --palettesize 16 --rgbshift 4 4 4 --usestacking --newpalettes --loadpaletteraw ../tmp/Demo10PaletteData3.bin --resetforcergb --forcergb 248 0 248 --numbitplanes 4 --image &quot;C:\Users\Martin Piper\Downloads\117307-nomask.png&quot; --tilewh 16 16 --regionxy cammy_idle1 45 209 1 114 80 209 --regionxy cammy_idle2 126 209 82 114 161 209 --regionxy cammy_idle3 207 209 163 114 242 209 --regionxy cammy_idle4 288 209 244 114 323 209 --regionxy cammy_idle5 369 209 325 114 404 209 --regionxy cammy_idle6 450 209 406 114 485 209 --regionxy cammy_idle7 531 209 487 114 566 209 --regionxy cammy_idle8 612 209 568 114 647 209 --imagescale 0.85 0.85 --imagequantize 32 --fitpalettes --outputplanes ../tmp/Demo10Sprites_plane --outputsprites ../tmp/Demo10SpritesSheet.txt --convertwritepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets/" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="map_9 - Copy - chars.png char screen" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -637,10 +683,13 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Application.--planestoscaled" />
+      <item itemvalue="Application.Building Scaled" />
+      <item itemvalue="Application.Demo7" />
       <item itemvalue="Application.Main all conv (1)" />
       <item itemvalue="Application.Main all conv" />
-      <item itemvalue="Application.--planestoscaled" />
       <item itemvalue="Application.Main background convertwritepass" />
+      <item itemvalue="Application.Main background nowritepass" />
       <item itemvalue="Application.Main mode7 &quot;map_9 - mode7 test.png&quot;" />
       <item itemvalue="Application.Main mode7" />
       <item itemvalue="Application.Main old bridge RGB 0 0 0 full image quant" />
@@ -650,30 +699,30 @@
       <item itemvalue="Application.Main old bridge RGB 0 0 0" />
       <item itemvalue="Application.Main old bridge RGB 119 122 133" />
       <item itemvalue="Application.Main sprites convertwritepass" />
-      <item itemvalue="Application.Turrican (1)" />
-      <item itemvalue="Application.Demo7" />
-      <item itemvalue="Application.Turrican" />
+      <item itemvalue="Application.Sprite 73181 regions shift --imagescale" />
+      <item itemvalue="Application.Sprite 73181 regions shift no boss shift" />
+      <item itemvalue="Application.Sprite 73181 regions shift" />
+      <item itemvalue="Application.Sprite 73181 regions" />
+      <item itemvalue="Application.Sprite 73181" />
       <item itemvalue="Application.Turrican Scaled" />
-      <item itemvalue="Application.Building Scaled" />
+      <item itemvalue="Application.Turrican (1)" />
+      <item itemvalue="Application.Turrican" />
+      <item itemvalue="Application.Vectors" />
       <item itemvalue="Application.VideoHardware 1 a (turrican)" />
-      <item itemvalue="Application.VideoHardware 6 SotB chars 1024" />
       <item itemvalue="Application.VideoHardware 1 a" />
       <item itemvalue="Application.VideoHardware 1" />
       <item itemvalue="Application.VideoHardware 2" />
       <item itemvalue="Application.VideoHardware 3" />
+      <item itemvalue="Application.VideoHardware 6 SotB chars 1024" />
+      <item itemvalue="Application.buildings concat" />
+      <item itemvalue="Application.cammy no scale" />
+      <item itemvalue="Application.cammy scale" />
       <item itemvalue="Application.map_9 - Copy - chars.png char screen" />
+      <item itemvalue="Application.oldbridge char screen concat" />
+      <item itemvalue="Application.oldbridge char screen with rgbfactor 1024" />
+      <item itemvalue="Application.oldbridge char screen with rgbfactor 512" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor no force colour 0" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor" />
-      <item itemvalue="Application.oldbridge char screen with rgbfactor 512" />
-      <item itemvalue="Application.oldbridge char screen with rgbfactor 1024" />
-      <item itemvalue="Application.oldbridge char screen concat" />
-      <item itemvalue="Application.buildings concat" />
-      <item itemvalue="Application.Vectors" />
-      <item itemvalue="Application.Sprite 73181" />
-      <item itemvalue="Application.Sprite 73181 regions" />
-      <item itemvalue="Application.Sprite 73181 regions shift" />
-      <item itemvalue="Application.Sprite 73181 regions shift no boss shift" />
-      <item itemvalue="Application.Main background nowritepass" />
       <item itemvalue="Maven.clean install" />
     </list>
     <recent_temporary>
@@ -722,36 +771,29 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>395</line>
+          <line>415</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>768</line>
+          <line>794</line>
           <option name="timeStamp" value="100" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>940</line>
-          <option name="timeStamp" value="111" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>935</line>
-          <option name="timeStamp" value="112" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>911</line>
+          <line>937</line>
           <option name="timeStamp" value="113" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>1520</line>
+          <option name="timeStamp" value="115" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
-        <watch expression="forcedColourIndexTransparent" language="JAVA" />
-        <watch expression="imageColours[region.rect.x + ((region.rect.y + i) * imageWidth)]" language="JAVA" />
-        <watch expression="region" />
+        <watch expression="regions" />
       </configuration>
     </watches-manager>
   </component>

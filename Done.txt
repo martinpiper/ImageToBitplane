@@ -133,3 +133,11 @@
 
 
 * --region uses hotx hoty offsetx offsety width height : Add --regionxy hotx hoty topx topy bottomx bottomy (inclusive)
+
+
+
+* Region offsets need to be factored in from the command line data
+
+
+
+* --region : offsets need to be factored in

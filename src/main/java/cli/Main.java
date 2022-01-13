@@ -38,9 +38,19 @@ public class Main {
         return Integer.parseInt(value);
     }
 
+    public static double ParseDoubleValueFrom(String value) {
+        if (value.startsWith("0x")) {
+            return (double)Integer.parseInt(value.substring(2) , 16);
+        } else if (value.startsWith("$")) {
+            return (double)Integer.parseInt(value.substring(1) , 16);
+        }
+        return Double.parseDouble(value);
+    }
+
     static boolean useSquaredModel = true;
     static int paletteOffset = 0;
     static int paletteMaxLen = 8;
+    static int paletteMinLen = 0;
     static int spriteXPos = 0;
     static int spriteYPos = 0xd0;
     static int paletteMaxQuantize = 32;
@@ -129,6 +139,10 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--palettesize") == 0) {
                 paletteMaxLen = ParseValueFrom(args[i+1]);
+                i++;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--minpalettesize") == 0) {
+                paletteMinLen = ParseValueFrom(args[i+1]);
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--loadpaletteraw") == 0) {
@@ -237,6 +251,12 @@ public class Main {
             } else if (args[i].compareToIgnoreCase("--spritexy") == 0) {
                 spriteXPos = ParseValueFrom(args[i+1]);
                 spriteYPos = ParseValueFrom(args[i+2]);
+                i+=2;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--imagescale") == 0) {
+                double scaleX = ParseDoubleValueFrom(args[i+1]);
+                double scaleY = ParseDoubleValueFrom(args[i+2]);
+                ImageScale(scaleX , scaleY);
                 i+=2;
                 continue;
             } else if (args[i].compareToIgnoreCase("--imagequantize") == 0) {
@@ -524,13 +544,16 @@ public class Main {
                 int hotY = ParseValueFrom(args[i]);
                 i++;
                 region.rect.x = hotX + ParseValueFrom(args[i]);
+                region.offsetX = ParseValueFrom(args[i]);
                 i++;
                 region.rect.y = hotY + ParseValueFrom(args[i]);
+                region.offsetY = ParseValueFrom(args[i]);
                 i++;
                 region.rect.width = ParseValueFrom(args[i]);
                 i++;
                 region.rect.height = ParseValueFrom(args[i]);
                 region.regionShift = regionShift;
+
 
                 if (regions == null) {
                     regions = new ArrayList<>();
@@ -555,6 +578,9 @@ public class Main {
                 i++;
                 region.rect.height = (ParseValueFrom(args[i]) - region.rect.y) + 1;
                 region.regionShift = regionShift;
+
+                region.offsetX = -(hotX - region.rect.x);
+                region.offsetY = -(hotY - region.rect.y);
 
                 if (regions == null) {
                     regions = new ArrayList<>();
@@ -793,7 +819,7 @@ public class Main {
             for (HashMap<Integer, Integer> palette : palettes) {
                 System.out.println("palette size=" + palette.size());
                 if (outNum < 32) {
-                    int maxEntryIndex = 0;
+                    int maxEntryIndex = paletteMinLen;
                     if (palettes.size() == 1) {
                         for (Map.Entry<Integer, Integer> entry : palette.entrySet()) {
                             if ((entry.getValue()+1) > maxEntryIndex) {
@@ -1367,14 +1393,16 @@ public class Main {
             }
         }
 
-        byte theTileIndex = (byte) bestTileIndex;
-        byte theColour = (byte) (bestFoundPaletteIndex & (0x1f | 0x80 | 0x40));
+        int theTileIndex = bestTileIndex;
+        int theColour = (bestFoundPaletteIndex & (0x1f | 0x80 | 0x40));
         // Chars are handled, for their chosen palette range
         if (extraCharsBits) {
             theColour |= (bestTileIndex & 0x300) >> 4;
         }
+        theTileIndex &= 0xff;
+        theColour &= 0xff;
         if (outputScreenData != null) {
-            screenTileData.put(theTileIndex);
+            screenTileData.put((byte)theTileIndex);
             screenColourData.put((byte)(theColour + paletteOffset));
         } else if (outputSprites != null) {
             if (tileHasData) {
@@ -1465,6 +1493,42 @@ public class Main {
         return result;
     }
 
+    private static void ImageScale(double scaleX , double scaleY) {
+        System.out.println("Scale...");
+        // Calculate the new image size
+//        int dw = ((int) ((imageWidth+tileWidth-1) * scaleX)/tileWidth) * tileWidth;
+//        int dh = ((int) ((imageHeight+tileHeight-1) * scaleY)/tileHeight) * tileHeight;
+        int dw = ((int) (((imageWidth * scaleX)+tileWidth-1)/tileWidth)) * tileWidth;
+        int dh = ((int) (((imageHeight * scaleY)+tileHeight-1)/tileHeight)) * tileHeight;
+
+        Integer[] newImageColours = new Integer[dw*dh];
+
+        for (int y = 0 ; y < dh ; y++) {
+            int dy = (int)(y/scaleY);
+            dy = Math.min(dy, imageHeight-1);
+            for (int x = 0 ; x < dw ; x++) {
+                int dx = (int)(x/scaleX);
+                dx = Math.min(dx, imageWidth-1);
+                newImageColours[x + (y*dw)] = imageColours[dx + (dy * imageWidth)];
+            }
+        }
+
+        imageWidth = dw;
+        imageHeight = dh;
+        imageColours = newImageColours;
+
+        // Scale any regions that exist already, usually these are user input regions
+        if (regions != null) {
+            for (Region region : regions) {
+                region.rect.x = (int) (region.rect.x * scaleX);
+                region.rect.y = (int) (region.rect.y * scaleY);
+                region.rect.width = (int) (region.rect.width * scaleX);
+                region.rect.height = (int) (region.rect.height * scaleY);
+                region.offsetX = (int) (region.offsetX * scaleX);
+                region.offsetY = (int) (region.offsetY * scaleY);
+            }
+        }
+    }
 
     private static void ImageQuantize() {
         System.out.println("Quantize...");

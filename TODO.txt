@@ -1,3 +1,8 @@
+* --imagescale : If there are regions, scale the data inside the regions, not the whole image
+	Preserving the region bounding box TL, but altering the width and offsets
+	This will avoid data from elesewhere being picked up
+
+
 * --regionshift : Could look at shifting each tile row/column independently
 	Complex though since the separate rows/columns would need to have their shifts split into the tile sized regions
 

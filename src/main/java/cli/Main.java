@@ -78,6 +78,7 @@ public class Main {
     static String outputScreenData = null;
     static PrintStream outputSprites = null;
     static PrintStream outputSprites2 = null;
+    static PrintStream outputSprites3 = null;
     static String outputPalettes = null;
     static String outputScaled = null;
     static boolean useStacking = false;
@@ -93,6 +94,8 @@ public class Main {
 
     static ArrayList<Region> regions = null;
     static boolean regionShift = false;
+
+    static String nameSuffix = "";
 
     static TreeMap<String , TileIndexFlip> tileToIndexFlip = new TreeMap<String , TileIndexFlip>();
 
@@ -310,6 +313,7 @@ public class Main {
                 outputScreenData = null;
                 outputSprites = null;
                 outputSprites2 = null;
+                outputSprites3 = null;
                 outputPlanes = null;
                 outputPalettes = null;
                 outputTileBytes = null;
@@ -321,6 +325,8 @@ public class Main {
                 outputScreenData = null;
                 outputSprites = null;
                 outputSprites2 = null;
+                outputSprites3 = null;
+                cumulativeSpriteCount = 0;
                 outputPlanes = null;
                 outputPalettes = null;
                 outputTileBytes = null;
@@ -371,6 +377,8 @@ public class Main {
             } else if (args[i].compareToIgnoreCase("--outputsprites") == 0) {
                 outputSprites = new PrintStream(new FileOutputStream(args[i+1]));
                 outputSprites2 = new PrintStream(new FileOutputStream(args[i+1] + ".a"));
+                outputSprites3 = new PrintStream(new FileOutputStream(args[i+1] + "Vars.a"));
+                cumulativeSpriteCount = 0;
                 outputVectors = null;
                 i++;
                 continue;
@@ -592,6 +600,13 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--noregionshift") == 0) {
                 regionShift = false;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--namesuffix") == 0) {
+                i++;
+                nameSuffix = args[i];
+                continue;
+            } else if (args[i].compareToIgnoreCase("--nonamesuffix") == 0) {
+                nameSuffix = "";
                 continue;
             }
             System.err.println("Unknown option: " + args[i]);
@@ -877,6 +892,10 @@ public class Main {
                 outputSprites2.println("\t+MEmitSpriteFrame_RestoreExit");
                 outputSprites2.println("");
                 newSprite = true;
+
+                outputSprites3.println(lastGoodSpriteName + "_count = " + cumulativeSpriteCount);
+                cumulativeSpriteCount = 0;
+
             }
 
             regionIndex++;
@@ -1013,13 +1032,24 @@ public class Main {
         }
     }
 
+    static int cumulativeSpriteCount = 0;
+    static String lastGoodSpriteName;
     private static boolean processTileImageAt(boolean newSprite, int x, int y, Region region) {
         System.out.println(";Process x=" + x + " y=" + y);
         if (outputSprites != null) {
             outputSprites.println(";Process x=" + x + " y=" + y);
             if (newSprite) {
-                outputSprites2.println("EmitSpriteFrame"+ region.name);
+                outputSprites2.println("EmitSpriteFrame"+ nameSuffix + region.name);
                 outputSprites2.println("\t+MEmitSpriteFrame_Preserve");
+
+                lastGoodSpriteName = "kVarsEmitSpriteFrame"+ nameSuffix + region.name;
+                outputSprites3.println("; New sprite: " + region.name);
+                cumulativeSpriteCount = 0;
+
+                if (region.name.compareToIgnoreCase("0_64") == 0) {
+                    boolean foo = false;
+                }
+
                 newSprite = false;
             }
         }
@@ -1235,10 +1265,19 @@ public class Main {
                 0x38,0x39,0x3a,0x3b,0x3c,0x3d,0x3e,0x3f
         };
 
-        int[] indexPick = indexPick16_16;
+        int[] indexPick = null;
         if (tileWidth == 8 && tileHeight == 8) {
             indexPick = indexPick8_8;
+        } else if (tileWidth == 16 && tileHeight == 16) {
+            indexPick = indexPick16_16;
+        } else {
+            // Other sizes just use a linear scan for now
+            indexPick = new int[tileWidth*tileHeight];
+            for (int i = 0 ; i < indexPick.length ; i++) {
+                indexPick[i] = i;
+            }
         }
+
         byte[][] bitplaneDataTemp = new byte[numBitplanes][(indexPick.length)/8];
 
         boolean tileHasData = false;
@@ -1419,6 +1458,11 @@ public class Main {
                 } else {
                     outputSprites2.println("\t+MEmitSpriteFrame " + theTileIndex + " , " + (theColour + paletteOffset));
                 }
+                outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileIndex=" + theTileIndex);
+                outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_colour=" + (theColour + paletteOffset));
+                outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_offsetX=" + region.offsetX);
+                outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_offsetY=" + region.offsetY);
+                cumulativeSpriteCount++;
 
             } else {
                 outputSprites.println(";Empty");

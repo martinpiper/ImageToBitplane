@@ -141,3 +141,21 @@
 
 
 * --region : offsets need to be factored in
+
+
+
+
+* Add command line option to include a name (or reset to no name) for "EmitSpriteFrame"
+	This is to allow multiple sprite sheets to be included
+	True this could use the "region" mechanism to define the sprites however. See "EmitSpriteFramecammy_idle1"
+	* Added --namesuffix <name> and --nonamesuffix to improve the sprite sheet data, where multiple sheets are used in the same source
+
+
+
+* Add option to include variable defined structure in addition to "outputSprites2", for a new file
+	This would allow code for sprites to be dynamic and immediate values to be used, especially for Demo9
+
+
+
+
+* Fixed tileHasData check when using 32x32 sprites/tiles

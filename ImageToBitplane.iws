@@ -67,6 +67,9 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="1atmZFSFobtnUZP3K7eREBjnhZj" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -83,7 +86,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build.tools" />
   </component>
-  <component name="RunManager" selected="Application.Sprite 73181 regions shift --imagescale">
+  <component name="RunManager" selected="Application.Demo9 Sprites2">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -116,6 +119,21 @@
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
       <option name="PROGRAM_PARAMETERS" value="--paletteoffset 0 --palettesize 16 --rgbshift 4 4 4 --usestacking --newpalettes --loadpaletteraw ../tmp/Demo7PaletteData.bin --resetforcergb --forcergb 63 72 204 --numbitplanes 4 --image &quot;Demo7/sprites1.png&quot; --tilewh 16 16 --imagequantize 32 --fitpalettes --outputplanes ../tmp/Demo7Sprites_plane --outputsprites ../tmp/Demo7SpritesSheet.txt --convertwritepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo9 Sprites2" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="main" />
+      <option name="PROGRAM_PARAMETERS" value="--paletteoffset 0 --palettesize 16 --rgbshift 4 4 4 --nostacking --newpalettes --loadpaletteraw ../tmp/Demo9PaletteData.bin --resetforcergb --forcergb 255 0 255 --numbitplanes 4 --image &quot;Demo9/sprites2.png&quot; --tilewh 32 32 --fitpalettes --outputscaled ../tmp/Demo9Sprites2 --outputsprites ../tmp/Demo9Sprites2Sheet.txt --namesuffix _scaled_  --convertwritepass" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
       <extension name="coverage">
         <pattern>
@@ -312,7 +330,7 @@
     <configuration name="Sprite 73181 regions shift --imagescale" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
-      <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 63 72 204 --paletteoffset 0 --spritexy 0 0xd0 --startxy 0 0 --palettesize 16 --nostacking --numbitplanes 4 --image &quot;src\test\resources\73181 reduced.png&quot; --tilewh 16 16 --regionshift --region redframe1 29 39 -1 -11 32 32 --region redframe2 70 40 -1 -11 32 32 --region redframe3 110 41 -1 -11 32 32 --region redframe4 152 40 -1 -11 32 32 --region redframe5 192 40 -1 -11 32 32 --region redframe6 229 40 -1 -11 32 32 --region bullet1 274 39 -8 -8 16 16 --region boss1 77 749 -47 -32 96 96 --imagescale 0.5 0.5 --imagequantize 16 --outputplanes target/spriteWithPos_planes --outputsprites target/spriteWithPos.txt --outputpalettes target/spriteWithPos.pal --convertwritepass" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 63 72 204 --paletteoffset 0 --spritexy 0 0xd0 --startxy 0 0 --palettesize 16 --nostacking --numbitplanes 4 --image &quot;src\test\resources\73181 reduced.png&quot; --tilewh 16 16 --regionshift --region redframe1 29 39 -1 -11 32 32 --region redframe2 70 40 -1 -11 32 32 --region redframe3 110 41 -1 -11 32 32 --region redframe4 152 40 -1 -11 32 32 --region redframe5 192 40 -1 -11 32 32 --region redframe6 229 40 -1 -11 32 32 --region bullet1 274 39 -8 -8 16 16 --region boss1 77 749 -47 -32 96 96 --imagescale 0.5 0.5 --imagequantize 16 --outputplanes target/spriteWithPos_planes --outputsprites target/spriteWithPos.txt --outputpalettes target/spriteWithPos.pal --namesuffix _aSuffix_ --convertwritepass" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cli.*" />
@@ -683,13 +701,13 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Application.Demo9 Sprites2" />
       <item itemvalue="Application.--planestoscaled" />
       <item itemvalue="Application.Building Scaled" />
       <item itemvalue="Application.Demo7" />
       <item itemvalue="Application.Main all conv (1)" />
       <item itemvalue="Application.Main all conv" />
       <item itemvalue="Application.Main background convertwritepass" />
-      <item itemvalue="Application.Main background nowritepass" />
       <item itemvalue="Application.Main mode7 &quot;map_9 - mode7 test.png&quot;" />
       <item itemvalue="Application.Main mode7" />
       <item itemvalue="Application.Main old bridge RGB 0 0 0 full image quant" />
@@ -723,6 +741,7 @@
       <item itemvalue="Application.oldbridge char screen with rgbfactor 512" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor no force colour 0" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor" />
+      <item itemvalue="Application.Main background nowritepass" />
       <item itemvalue="Maven.clean install" />
     </list>
     <recent_temporary>
@@ -771,29 +790,35 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>415</line>
+          <line>423</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>794</line>
+          <line>809</line>
           <option name="timeStamp" value="100" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>937</line>
+          <line>956</line>
           <option name="timeStamp" value="113" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1520</line>
+          <line>1564</line>
           <option name="timeStamp" value="115" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>1049</line>
+          <option name="timeStamp" value="116" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="regions" />
+        <watch expression="theTile" />
       </configuration>
     </watches-manager>
   </component>

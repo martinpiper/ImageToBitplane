@@ -1,3 +1,12 @@
+* convert9.bat colour picking bug in @Demo9
+	echo Convert chars2
+	This chars screen, which should use only one palette, was not converting the colours correctly?
+	--paletteoffset 15 had to be used along with --loadpaletteraw ../tmp/Demo9PaletteData5.bin
+	> When using the --loadpaletteraw ../tmp/Demo9PaletteData.bin and --paletteoffset 0
+		Then --fitpalettes seemed to be picking the wrong palette index for some chars?
+	Compare the data in tmp/Demo9Chars2_map.bin2 between the two conversion options
+		The extra --imagequantize 16 didn't seem to help either
+
 
 
 

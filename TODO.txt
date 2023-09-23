@@ -6,6 +6,7 @@
 		Then --fitpalettes seemed to be picking the wrong palette index for some chars?
 	Compare the data in tmp/Demo9Chars2_map.bin2 between the two conversion options
 		The extra --imagequantize 16 didn't seem to help either
+	> A guess is that it's not picking the best palette. It's not picking the one where the highest number of pixels match.
 
 
 

@@ -64,9 +64,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="1atmZFSFobtnUZP3K7eREBjnhZj" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -79,15 +79,23 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Work/ImageToBitplane/ImageToBitplane.ipr",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveInnerDialog.RECENTS_KEY">
+      <recent name="cli" />
+    </key>
+  </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="vectorRightLength" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Vectors">
+  <component name="RunManager" selected="Application.VideoHardware convert9 Convert chars2 with --paletteoffset 0">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -519,7 +527,7 @@
     </configuration>
     <configuration name="VideoHardware 3" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
-      <module name="main" />
+      <module name="imagetobitplane" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 255 0 255 --palettesize 256 --loadpalette tmp/PaletteData.bin --image &quot;assets/clouds.png&quot; --tilewh 16 16 --fitpalettes --outputtilebytes tmp/clouds_tiles.bin --outputscrcol tmp/clouds_screen.bin --nostacking --convertwritepass" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware" />
       <extension name="coverage">
@@ -534,8 +542,38 @@
     </configuration>
     <configuration name="VideoHardware 6 SotB chars 1024" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
-      <module name="main" />
+      <module name="imagetobitplane" />
       <option name="PROGRAM_PARAMETERS" value="--palettesize 16 --rgbshift 4 4 4 --splitmaps --chars --newpalettes --loadpalette ../tmp/ShadowBeastPaletteData.bin --numbitplanes 4 --image &quot;ShadowBeast/beast_attract_playfield_1_1024.png&quot; --tilewh 8 8 --fitpalettes --nostacking --outputplanes ../tmp/ShadowBeastChars_plane --outputscrcol ../tmp/ShadowBeastChars_map.bin --convertwritepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VideoHardware convert9 Convert chars2 with --paletteoffset 0" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="imagetobitplane" />
+      <option name="PROGRAM_PARAMETERS" value="--splitmaps --paletteoffset 0 --palettesize 16 --rgbshift 4 4 4 --nostacking --newpalettes --loadpaletteraw ../tmp/Demo9PaletteData.bin --chars --resetforcergb --forcergb 63 72 204 --numbitplanes 4 --image &quot;Demo9/foreground2.png&quot; --imagequantize 16 --tilewh 8 8 --fitpalettes --outputplanes ../tmp/po0Demo9Chars2_plane --outputscrcol ../tmp/po0Demo9Chars2_map.bin --convertwritepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VideoHardware convert9 Convert chars2 with --paletteoffset 15" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="imagetobitplane" />
+      <option name="PROGRAM_PARAMETERS" value="--splitmaps --paletteoffset 15 --palettesize 16 --rgbshift 4 4 4 --nostacking --newpalettes --loadpaletteraw ../tmp/Demo9PaletteData5.bin --chars --resetforcergb --forcergb 63 72 204 --numbitplanes 4 --image &quot;Demo9/foreground2.png&quot; --imagequantize 16 --tilewh 8 8 --fitpalettes --outputplanes ../tmp/po15Demo9Chars2_plane --outputscrcol ../tmp/po15Demo9Chars2_map.bin --convertwritepass" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
       <extension name="coverage">
         <pattern>
@@ -737,6 +775,8 @@
       <item itemvalue="Application.VideoHardware 2" />
       <item itemvalue="Application.VideoHardware 3" />
       <item itemvalue="Application.VideoHardware 6 SotB chars 1024" />
+      <item itemvalue="Application.VideoHardware convert9 Convert chars2 with --paletteoffset 0" />
+      <item itemvalue="Application.VideoHardware convert9 Convert chars2 with --paletteoffset 15" />
       <item itemvalue="Application.buildings concat" />
       <item itemvalue="Application.cammy no scale" />
       <item itemvalue="Application.cammy scale" />
@@ -795,35 +835,47 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>423</line>
+          <line>413</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>809</line>
+          <line>799</line>
           <option name="timeStamp" value="100" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>956</line>
+          <line>946</line>
           <option name="timeStamp" value="113" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1564</line>
+          <line>1565</line>
           <option name="timeStamp" value="115" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1049</line>
-          <option name="timeStamp" value="116" />
+          <line>1352</line>
+          <option name="timeStamp" value="117" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>1033</line>
+          <option name="timeStamp" value="118" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>1189</line>
+          <option name="timeStamp" value="124" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
+        <watch expression="bestFoundPaletteIndex" language="JAVA" />
         <watch expression="regions" />
         <watch expression="theTile" />
+        <watch expression="dataOffset" />
       </configuration>
     </watches-manager>
   </component>

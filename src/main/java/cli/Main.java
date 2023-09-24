@@ -12,16 +12,6 @@ import java.util.*;
 
 public class Main {
 
-    static class Region {
-        String name = "";
-        Rectangle rect = new Rectangle();
-        boolean start = true;
-        boolean end = true;
-        int offsetX = 0;
-        int offsetY = 0;
-        boolean regionShift = false;
-    }
-
     static int colourShiftRed = 0 , colourShiftGreen = 0 , colourShiftBlue = 0;
     public static Color ApplyColorLimitsFromColour(Color colour) {
         Color newColour = new Color((colour.getRed()>>colourShiftRed)<<colourShiftRed , (colour.getGreen()>>colourShiftGreen)<<colourShiftGreen , (colour.getBlue()>>colourShiftBlue)<<colourShiftBlue );
@@ -1034,8 +1024,16 @@ public class Main {
 
     static int cumulativeSpriteCount = 0;
     static String lastGoodSpriteName;
+
+    static int getOffsetForXY(int x , int y) {
+        return (x/tileWidth) + ((y/tileHeight) * (imageWidth/tileHeight));
+    }
     private static boolean processTileImageAt(boolean newSprite, int x, int y, Region region) {
-        System.out.println(";Process x=" + x + " y=" + y);
+        int dataOffset = getOffsetForXY(x,y);
+        if (dataOffset == 0x291) {
+            dataOffset = dataOffset;
+        }
+        System.out.println(";Process x=" + x + " y=" + y + " offset=$" + Integer.toHexString(dataOffset));
         if (outputSprites != null) {
             outputSprites.println(";Process x=" + x + " y=" + y);
             if (newSprite) {
@@ -1045,10 +1043,6 @@ public class Main {
                 lastGoodSpriteName = "kVarsEmitSpriteFrame"+ nameSuffix + region.name;
                 outputSprites3.println("; New sprite: " + region.name);
                 cumulativeSpriteCount = 0;
-
-                if (region.name.compareToIgnoreCase("0_64") == 0) {
-                    boolean foo = false;
-                }
 
                 newSprite = false;
             }
@@ -1103,6 +1097,10 @@ public class Main {
                     }
                 }
 
+                // If we are ignore the palette then score it really badly, so it is used as a last resort, if at all
+                if (ignorePalette) {
+                    colourDifference = 256 * tileWidth * tileHeight * 2;
+                }
 
                 if (resultPalette == null || (!ignorePalette && (colourDifference < bestDistance))) {
                     resultPalette = palette;
@@ -1349,12 +1347,15 @@ public class Main {
                 bestFlipX = existingIndexFlip.flipX;
                 bestFlipY = existingIndexFlip.flipY;
                 bestTileIndex = existingIndexFlip.index;
-                System.out.println("Found existing tile: " + bestTileIndex + " " + (bestFlipX?"H":"") + (bestFlipY?"V":""));
+                System.out.println("Found existing tile: " + bestTileIndex + " ($" + Integer.toHexString(bestTileIndex)+ ")" + " " + (bestFlipX?"H":"") + (bestFlipY?"V":""));
             } else {
+                if (currentTile == 53) {
+                    currentTile = currentTile;
+                }
                 // Advances the tile number, could do with duplicate check here
                 tileByteData.put(theTile);
                 if (outputPlanes != null) {
-                    System.out.println("New tile needed: Bitplane remaining size " + bitplaneData[0].remaining());
+                    System.out.println("New tile needed: " + currentTile + " ($" + Integer.toHexString(currentTile) + ")" + "Bitplane remaining size " + bitplaneData[0].remaining());
                     for (int bp = 0; bp < numBitplanes; bp++) {
                         bitplaneData[bp].put(bitplaneDataTemp[bp]);
                     }

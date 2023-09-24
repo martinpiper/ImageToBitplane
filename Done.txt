@@ -159,3 +159,33 @@
 
 
 * Fixed tileHasData check when using 32x32 sprites/tiles
+
+
+
+
+
+* convert9.bat colour picking bug in @Demo9
+	echo Convert chars2
+	This chars screen, which should use only one palette, was not converting the colours correctly?
+	--paletteoffset 15 had to be used along with --loadpaletteraw ../tmp/Demo9PaletteData5.bin
+	> When using the --loadpaletteraw ../tmp/Demo9PaletteData.bin and --paletteoffset 0
+		Then --fitpalettes seemed to be picking the wrong palette index for some chars?
+	Compare the data in tmp/Demo9Chars2_map.bin2 between the two conversion options
+		The extra --imagequantize 16 didn't seem to help either
+	> A guess is that it's not picking the best palette. It's not picking the one where the highest number of pixels match.
+	>> Configs:
+	    VideoHardware convert9 Convert chars2 with --paletteoffset 0
+	        ../tmp/po0Demo9Chars2_plane
+	        ../tmp/po0Demo9Chars2_map.bin
+	    VideoHardware convert9 Convert chars2 with --paletteoffset 15
+	        ../tmp/po15Demo9Chars2_plane
+	        ../tmp/po15Demo9Chars2_map.bin
+	> Inspecting the files they seem sensible. The correct palettes seem to be generated.
+	* Going to need a standalone test, that just loads this data and draws the screen, to find a specific coordinate that is wrong.
+    >> TestRunner TestVideoHardware.feature  @TC-15
+    >> When using: VideoHardware convert9 Convert chars2 with --paletteoffset 0
+        At dataOffset = 0x291
+            >> bestFoundPaletteIndex = 0 when it should be = 15
+        But when dataOffset = 0x290 then it is = 15 as it should be
+            fitPalettes = true
+	Fixed - All demos tested.

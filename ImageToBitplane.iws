@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/ImageToBitplane.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.ipr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imagetobitplane.iml" beforeDir="false" afterPath="$PROJECT_DIR$/imagetobitplane.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +54,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="JUnit4 Test Class" />
       </list>
     </option>
   </component>
@@ -75,21 +81,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Work/ImageToBitplane/ImageToBitplane.ipr",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit4&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Work/ImageToBitplane/ImageToBitplane.ipr&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
     <key name="MoveInnerDialog.RECENTS_KEY">
+      <recent name="cli" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
       <recent name="cli" />
     </key>
   </component>
@@ -98,7 +112,7 @@
       <command value="vectorRightLength" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.VideoHardware convert9 Convert chars2 with --paletteoffset 0">
+  <component name="RunManager" selected="JUnit.MainTest.main1_oldbridge">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -716,6 +730,38 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MainTest.main1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="imagetobitplane" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="cli" />
+      <option name="MAIN_CLASS_NAME" value="cli.MainTest" />
+      <option name="METHOD_NAME" value="main1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainTest.main1_oldbridge" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="imagetobitplane" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="cli" />
+      <option name="MAIN_CLASS_NAME" value="cli.MainTest" />
+      <option name="METHOD_NAME" value="main1_oldbridge" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="clean install" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -790,10 +836,14 @@
       <item itemvalue="Application.oldbridge char screen with rgbfactor no force colour 0" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor" />
       <item itemvalue="Application.Main background nowritepass" />
+      <item itemvalue="JUnit.MainTest.main1_oldbridge" />
+      <item itemvalue="JUnit.MainTest.main1" />
       <item itemvalue="Maven.clean install" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.MainTest.main1_oldbridge" />
+        <item itemvalue="JUnit.MainTest.main1" />
         <item itemvalue="Application.Main background nowritepass" />
       </list>
     </recent_temporary>

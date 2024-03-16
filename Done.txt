@@ -195,3 +195,7 @@
 
 * --rgbshift values will need to be used for the palette save and load...
 	As well as handling the cross byte boundary split
+
+
+
+* Add: -imagewh width height

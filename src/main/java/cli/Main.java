@@ -265,6 +265,11 @@ public class Main {
                 startY = ParseValueFrom(args[i+2]);
                 i+=2;
                 continue;
+            } else if (args[i].compareToIgnoreCase("--imagewh") == 0) {
+                imageWidth = ParseValueFrom(args[i+1]);
+                imageHeight = ParseValueFrom(args[i+2]);
+                i+=2;
+                continue;
             } else if (args[i].compareToIgnoreCase("--image") == 0) {
                 regions = null;
                 regionShift = false;

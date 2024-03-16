@@ -8,7 +8,6 @@
       <change beforePath="$PROJECT_DIR$/Done.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Done.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
     </list>
@@ -793,10 +792,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Application.Demo9 Sprites2" />
       <item itemvalue="Application.--planestoscaled" />
       <item itemvalue="Application.Building Scaled" />
       <item itemvalue="Application.Demo7" />
+      <item itemvalue="Application.Demo9 Sprites2" />
       <item itemvalue="Application.Main all conv (1)" />
       <item itemvalue="Application.Main all conv" />
       <item itemvalue="Application.Main background convertwritepass" />
@@ -836,8 +835,8 @@
       <item itemvalue="Application.oldbridge char screen with rgbfactor no force colour 0" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor" />
       <item itemvalue="Application.Main background nowritepass" />
-      <item itemvalue="JUnit.MainTest.main1_oldbridge" />
       <item itemvalue="JUnit.MainTest.main1" />
+      <item itemvalue="JUnit.MainTest.main1_oldbridge" />
       <item itemvalue="Maven.clean install" />
     </list>
     <recent_temporary>
@@ -888,27 +887,27 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>411</line>
+          <line>416</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>814</line>
+          <line>819</line>
           <option name="timeStamp" value="100" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>974</line>
+          <line>979</line>
           <option name="timeStamp" value="113" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1593</line>
+          <line>1598</line>
           <option name="timeStamp" value="115" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>612</line>
+          <line>617</line>
           <option name="timeStamp" value="126" />
         </line-breakpoint>
       </breakpoints>

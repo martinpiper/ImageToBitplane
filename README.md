@@ -39,6 +39,8 @@
   * Sets the output tile/sprite size
 * --startxy x y
   * The start x/y coordinates to use for image conversion
+* --imagewh width height
+  * Set new image width and height values after an image has been given.
 * --image filename
   * The input image filename to use for conversion.
 * --numbitplanes count

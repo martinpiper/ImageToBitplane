@@ -12,7 +12,10 @@ import java.util.*;
 
 public class Main {
 
-    static int colourShiftRed = 0 , colourShiftGreen = 0 , colourShiftBlue = 0;
+    static int colourBitsRed = 4 , colourBitsGreen = 4 , colourBitsBlue = 4;
+    static int colourShiftRed = 4 , colourShiftGreen = 4 , colourShiftBlue = 4;
+    static int colourMaskRed = 0x0f , colourMaskGreen = 0x0f , colourMaskBlue = 0x0f;
+    static int bytesPerColourPaletteEntry = 2;
     public static Color ApplyColorLimitsFromColour(Color colour) {
         Color newColour = new Color((colour.getRed()>>colourShiftRed)<<colourShiftRed , (colour.getGreen()>>colourShiftGreen)<<colourShiftGreen , (colour.getBlue()>>colourShiftBlue)<<colourShiftBlue );
         return newColour;
@@ -98,9 +101,20 @@ public class Main {
                 System.out.println("Considering argument: " + args[i]);
             }
             if (args[i].compareToIgnoreCase("--rgbshift") == 0) {
-                colourShiftRed = ParseValueFrom(args[i+1]);
-                colourShiftGreen = ParseValueFrom(args[i+2]);
-                colourShiftBlue = ParseValueFrom(args[i+3]);
+                colourBitsRed = ParseValueFrom(args[i+1]);
+                colourBitsGreen = ParseValueFrom(args[i+2]);
+                colourBitsBlue = ParseValueFrom(args[i+3]);
+
+                colourMaskRed = (1 << colourBitsRed) - 1;
+                colourMaskGreen = (1 << colourBitsGreen) - 1;
+                colourMaskBlue = (1 << colourBitsBlue) - 1;
+
+                colourShiftRed = 8 - colourBitsRed;
+                colourShiftGreen = 8 - colourBitsGreen;
+                colourShiftBlue = 8 - colourBitsBlue;
+
+                bytesPerColourPaletteEntry = ((colourBitsRed + colourBitsGreen + colourBitsBlue) + 7) / 8;
+
                 i+=3;
                 continue;
             } else if (args[i].compareToIgnoreCase("--newpalettes") == 0) {
@@ -143,12 +157,8 @@ public class Main {
 
                 HashMap<Integer, Integer> palette = new HashMap<Integer, Integer>();
                 int counter = 0;
-                for (int j = 0; j < bytes.length; j += 2) {
-                    int red = (bytes[j] & 0xf) << colourShiftRed;
-                    int green = ((bytes[j] >> 4) & 0xf) << colourShiftRed;
-                    int blue = (bytes[j + 1] & 0xf) << colourShiftBlue;
-
-                    int rgb = ApplyColorLimitsFromColour(new Color(red, green, blue)).getRGB();
+                for (int j = 0; j < bytes.length; j += bytesPerColourPaletteEntry) {
+                    int rgb = getRGBFromPaletteBytes(bytes, j);
                     palette.put(rgb, palette.size());
                     counter++;
                     if (counter >= paletteMaxLen) {
@@ -166,29 +176,21 @@ public class Main {
             } else if (args[i].compareToIgnoreCase("--loadpalette") == 0) {
                 byte[] bytes = Files.readAllBytes(Paths.get(args[i+1]));
 
-                if (bytes.length / 2 <= paletteMaxLen) {
+                if (bytes.length / bytesPerColourPaletteEntry <= paletteMaxLen) {
                     HashMap<Integer, Integer> palette = new HashMap<Integer, Integer>();
                     // TODO: palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
-                    for (int j = 0; j < bytes.length; j += 2) {
-                        int red = (bytes[j] & 0xf) << colourShiftRed;
-                        int green = ((bytes[j] >> 4) & 0xf) << colourShiftRed;
-                        int blue = (bytes[j + 1] & 0xf) << colourShiftBlue;
-
-                        int rgb = ApplyColorLimitsFromColour(new Color(red, green, blue)).getRGB();
+                    for (int j = 0; j < bytes.length; j += bytesPerColourPaletteEntry) {
+                        int rgb = getRGBFromPaletteBytes(bytes, j);
                         if (!palette.containsKey(rgb)) {
-                            palette.put(rgb, j / 2);
+                            palette.put(rgb, j / bytesPerColourPaletteEntry);
                         }
                     }
                     palettes.add(palette);
                 } else {
                     HashMap<Integer, Integer> palette = new HashMap<Integer, Integer>();
                     // TODO: palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
-                    for (int j = 0; j < bytes.length; j += 2) {
-                        int red = (bytes[j] & 0xf) << colourShiftRed;
-                        int green = ((bytes[j] >> 4) & 0xf) << colourShiftRed;
-                        int blue = (bytes[j + 1] & 0xf) << colourShiftBlue;
-
-                        int rgb = ApplyColorLimitsFromColour(new Color(red, green, blue)).getRGB();
+                    for (int j = 0; j < bytes.length; j += bytesPerColourPaletteEntry) {
+                        int rgb = getRGBFromPaletteBytes(bytes, j);
                         if (!palette.containsKey(rgb)) {
                             palette.put(rgb, palette.size());
                         }
@@ -209,12 +211,8 @@ public class Main {
                 byte[] bytes = Files.readAllBytes(Paths.get(args[i+1]));
 
                 // TODO: palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
-                for (int j = 0; j < bytes.length; j += 2) {
-                    int red = (bytes[j] & 0xf) << colourShiftRed;
-                    int green = ((bytes[j] >> 4) & 0xf) << colourShiftRed;
-                    int blue = (bytes[j + 1] & 0xf) << colourShiftBlue;
-
-                    int rgb = ApplyColorLimitsFromColour(new Color(red, green, blue)).getRGB();
+                for (int j = 0; j < bytes.length; j += bytesPerColourPaletteEntry) {
+                    int rgb = getRGBFromPaletteBytes(bytes, j);
 
                     boolean found = false;
                     for (HashMap<Integer, Integer> palette : palettes) {
@@ -611,6 +609,23 @@ public class Main {
         return;
     }
 
+    private static int getRGBFromPaletteBytes(byte[] bytes, int j) {
+        int colour = ((int)bytes[j]) & 0xff;
+        if (bytesPerColourPaletteEntry > 1) {
+            colour |= (((int)bytes[j + 1]) & 0xff) << 8;
+            if (bytesPerColourPaletteEntry > 2) {
+                colour |= (((int)bytes[j + 2]) & 0xff) << 16;
+            }
+        }
+
+        int red = (colour & colourMaskRed) << colourShiftRed;
+        int green = ((colour >> colourBitsRed) & colourMaskGreen) << colourShiftGreen;
+        int blue = ((colour >> (colourBitsRed + colourBitsGreen)) & colourMaskBlue) << colourShiftBlue;
+
+        int rgb = new Color(red, green, blue).getRGB();
+        return rgb;
+    }
+
     private static void PaletteQuantize(int targetPalettes) {
         while (palettes.size() > targetPalettes) {
             System.out.println("Palette quantize pass. Size = " + palettes.size());
@@ -834,12 +849,25 @@ public class Main {
                     } else {
                         maxEntryIndex = paletteMaxLen;
                     }
-                    byte[] thisPalette = new byte[maxEntryIndex * 2];
+                    byte[] thisPalette = new byte[maxEntryIndex * bytesPerColourPaletteEntry];
                     for (Map.Entry<Integer, Integer> entry : palette.entrySet()) {
                         Color colour = new Color(entry.getKey());
-                        thisPalette[(entry.getValue() * 2)] = (byte) ((colour.getGreen() >> 4) << 4);
-                        thisPalette[(entry.getValue() * 2)] |= (byte) (colour.getRed() >> 4);
-                        thisPalette[(entry.getValue() * 2) + 1] = (byte) (colour.getBlue() >> 4);
+
+                        // Construct the packed value in the correct order
+                        int theColourValue = colour.getRed() >> colourShiftRed;
+                        theColourValue |= (colour.getGreen() >> colourShiftGreen) << colourBitsRed;
+                        theColourValue |= (colour.getBlue() >> colourShiftBlue) << (colourBitsRed + colourBitsGreen);
+
+                        // Add to the palette data
+                        thisPalette[(entry.getValue() * bytesPerColourPaletteEntry)] = (byte) (theColourValue & 0xff);
+                        if (bytesPerColourPaletteEntry > 1) {
+                            theColourValue >>= 8;
+                            thisPalette[(entry.getValue() * bytesPerColourPaletteEntry)+1] = (byte) (theColourValue & 0xff);
+                            if (bytesPerColourPaletteEntry > 2) {
+                                theColourValue >>= 8;
+                                thisPalette[(entry.getValue() * bytesPerColourPaletteEntry)+2] = (byte) (theColourValue & 0xff);
+                            }
+                        }
                     }
                     fc.write(ByteBuffer.wrap(thisPalette));
                 }

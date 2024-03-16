@@ -67,9 +67,3 @@
 
 
 * Make the inputs and outputs configurable via a text config file, with includes
-
-
-
-
-* --rgbshift values will need to be used for the palette save and load...
-	As well as handling the cross byte boundary split

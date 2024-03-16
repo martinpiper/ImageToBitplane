@@ -189,3 +189,9 @@
         But when dataOffset = 0x290 then it is = 15 as it should be
             fitPalettes = true
 	Fixed - All demos tested.
+
+
+
+
+* --rgbshift values will need to be used for the palette save and load...
+	As well as handling the cross byte boundary split

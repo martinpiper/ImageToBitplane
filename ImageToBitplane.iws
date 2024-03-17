@@ -111,7 +111,7 @@
       <command value="vectorRightLength" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.MainTest.main1_oldbridge">
+  <component name="RunManager" selected="Application.VideoHardware 13B">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -511,11 +511,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="VideoHardware 1" type="Application" factoryName="Application">
+    <configuration name="VideoHardware 13B" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
-      <module name="main" />
-      <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 255 0 255 --palettesize 256 --image &quot;assets/clouds.png&quot; --tilewh 16 16 --outputpalettes tmp/PaletteDataClouds.bin --outputtilebytes tmp/clouds_tiles.bin --outputscrcol tmp/clouds_screen.bin --nostacking --convertwritepass" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware" />
+      <module name="imagetobitplane" />
+      <option name="PROGRAM_PARAMETERS" value="java -jar ..\..\..\ImageToBitplane\target\imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar --paletteoffset 0 --splitmaps --palettesize 16 --rgbshift 4 4 4 --nostacking --newpalettes --loadpaletteraw ../tmp/Demo13PaletteData0.bin --chars --resetforcergb --numbitplanes 4 --image &quot;ColourWheel1.png&quot; --startxy 0 0 --imagewh 1024 128 --tilewh 8 8 --fitpalettes --outputplanes ../tmp/t --outputscrcol ../tmp/t.bin --convertpass --preservedata --newpalettes --loadpaletteraw ../tmp/Demo13PaletteData1.bin --removeregions --startxy 0 128 --imagewh 1024 512 --tilewh 8 8 --fitpalettes --outputplanes ../tmp/Demo13Chars_plane --outputscrcol ../tmp/Demo13Chars_map.bin --convertwritepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cli.*" />
@@ -673,9 +673,23 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="oldbridge char screen with rgbfactor 1024 imagewh" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="imagetobitplane" />
+      <option name="PROGRAM_PARAMETERS" value="--splitmaps --chars --rgbshift 4 4 4 --rgbfactor 255 196 112 10 --rgbfactor 255 255 214 50 --rgbfactor 236 98 96 50 --newpalettes --forcergb 0 0 0 --paletteoffset 0 --palettesize 16 --startxy 0 0 --image &quot;src/test/resources/oldbridge cropped_chars 512.bmp&quot; --imagewh 32 32 --tilewh 8 8 --imagequantize 16 --nowritepass --palettequantize 16 --image &quot;src/test/resources/oldbridge cropped_chars 1024.bmp&quot; --tilewh 8 8 --fitpalettes --outputplanes target/chars1024_plane --outputscrcol target/chars1024_scr.bin --outputpalettes target/chars1024_paletteData.bin --nostacking --numbitplanes 4 --convertwritepass " />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="oldbridge char screen with rgbfactor 1024" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
-      <module name="main" />
+      <module name="imagetobitplane" />
       <option name="PROGRAM_PARAMETERS" value="--splitmaps --chars --rgbshift 4 4 4 --rgbfactor 255 196 112 10 --rgbfactor 255 255 214 50 --rgbfactor 236 98 96 50 --newpalettes --forcergb 0 0 0 --paletteoffset 0 --palettesize 16 --startxy 0 0 --image &quot;src/test/resources/oldbridge cropped_chars 512.bmp&quot; --tilewh 8 8 --imagequantize 16 --nowritepass --palettequantize 16 --image &quot;src/test/resources/oldbridge cropped_chars 1024.bmp&quot; --tilewh 8 8 --fitpalettes --outputplanes target/chars1024_plane --outputscrcol target/chars1024_scr.bin --outputpalettes target/chars1024_paletteData.bin --nostacking --numbitplanes 4 --convertwritepass " />
       <extension name="coverage">
         <pattern>
@@ -819,7 +833,7 @@
       <item itemvalue="Application.Vectors" />
       <item itemvalue="Application.VideoHardware 1 a (turrican)" />
       <item itemvalue="Application.VideoHardware 1 a" />
-      <item itemvalue="Application.VideoHardware 1" />
+      <item itemvalue="Application.VideoHardware 13B" />
       <item itemvalue="Application.VideoHardware 2" />
       <item itemvalue="Application.VideoHardware 3" />
       <item itemvalue="Application.VideoHardware 6 SotB chars 1024" />
@@ -831,6 +845,7 @@
       <item itemvalue="Application.map_9 - Copy - chars.png char screen" />
       <item itemvalue="Application.oldbridge char screen concat" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor 1024" />
+      <item itemvalue="Application.oldbridge char screen with rgbfactor 1024 imagewh" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor 512" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor no force colour 0" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor" />
@@ -887,28 +902,38 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>416</line>
+          <line>426</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>819</line>
+          <line>829</line>
           <option name="timeStamp" value="100" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>979</line>
+          <line>1009</line>
           <option name="timeStamp" value="113" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1598</line>
+          <line>1625</line>
           <option name="timeStamp" value="115" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>617</line>
-          <option name="timeStamp" value="126" />
+          <line>1643</line>
+          <option name="timeStamp" value="127" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>1640</line>
+          <option name="timeStamp" value="128" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>901</line>
+          <option name="timeStamp" value="131" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

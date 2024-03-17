@@ -86,6 +86,7 @@ public class Main {
     static ByteBuffer vectorData = null;
 
     static ArrayList<Region> regions = null;
+    static boolean preserveData = false;
     static boolean regionShift = false;
 
     static String nameSuffix = "";
@@ -301,6 +302,15 @@ public class Main {
                 }
 
                 currentTile = 0;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--removeregions") == 0) {
+                regions = null;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--preservedata") == 0) {
+                preserveData = true;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--nopreservedata") == 0) {
+                preserveData = false;
                 continue;
             } else if (args[i].compareToIgnoreCase("--nowrite") == 0) {
                 outputScreenData = null;
@@ -884,9 +894,25 @@ public class Main {
 
     private static void TileConvert() {
         System.out.println("To tiles...");
-        screenTileData = ByteBuffer.allocate((imageWidth * imageHeight)/tileWidth/tileHeight);
-        screenColourData = ByteBuffer.allocate((imageWidth * imageHeight)/tileWidth/tileHeight);
-        tileByteData = ByteBuffer.allocate(tileWidth*tileHeight*1024);  // Ample space even for extended character data
+        if (!preserveData) {
+            screenTileData = ByteBuffer.allocate((imageWidth * imageHeight) / tileWidth / tileHeight);
+            screenColourData = ByteBuffer.allocate((imageWidth * imageHeight) / tileWidth / tileHeight);
+            tileByteData = ByteBuffer.allocate(tileWidth * tileHeight * 1024);  // Ample space even for extended character data
+        } else {
+            ByteBuffer temp = ByteBuffer.allocate((imageWidth * imageHeight) / tileWidth / tileHeight);
+            if (temp.capacity() >= screenTileData.capacity()) {
+                screenTileData.flip();
+                temp.put(screenTileData);
+                screenTileData = temp;
+            }
+
+            temp = ByteBuffer.allocate((imageWidth * imageHeight) / tileWidth / tileHeight);
+            if (temp.capacity() >= screenColourData.capacity()) {
+                screenColourData.flip();
+                temp.put(screenColourData);
+                screenColourData = temp;
+            }
+        }
 
         boolean newSprite = true;
 
@@ -900,6 +926,10 @@ public class Main {
             Region region = regions.get(regionIndex);
             int x = region.rect.x;
             int y = region.rect.y;
+
+            if (!(x >= startX && y >= startY && x < imageWidth && y < imageHeight)) {
+                continue;
+            }
 
             newSprite = processTileImageAt(newSprite, x, y, region);
 
@@ -1063,9 +1093,6 @@ public class Main {
     }
     private static boolean processTileImageAt(boolean newSprite, int x, int y, Region region) {
         int dataOffset = getOffsetForXY(x,y);
-        if (dataOffset == 0x291) {
-            dataOffset = dataOffset;
-        }
         System.out.println(";Process x=" + x + " y=" + y + " offset=$" + Integer.toHexString(dataOffset));
         if (outputSprites != null) {
             outputSprites.println(";Process x=" + x + " y=" + y);
@@ -1623,6 +1650,10 @@ public class Main {
             }
             for (int ty = 0 ; ty < tileHeight ; ty++) {
                 for (int tx = 0 ; tx < tileWidth ; tx++) {
+                    if ((tx + x) >= imageWidth || (ty + y) >= imageHeight) {
+                        continue;
+                    }
+
                     Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                     if (colour != null) {
                         if (!usedColours.containsKey(colour)) {
@@ -1668,6 +1699,10 @@ public class Main {
                 // Replace colours in the tile
                 for (int ty = 0 ; ty < tileHeight ; ty++) {
                     for (int tx = 0 ; tx < tileWidth ; tx++) {
+                        if ((tx + x) >= imageWidth || (ty + y) >= imageHeight) {
+                            continue;
+                        }
+
                         Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                         if (colour != null) {
                             if (colour.equals(chosenMinColour)) {

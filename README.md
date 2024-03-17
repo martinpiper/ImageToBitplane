@@ -99,3 +99,9 @@
   * For sprites, adds a name suffix to structures.
 * --nonamesuffix
   * Removes any name suffix.
+* --removeregions
+  * Removes any previous regions, allowing a previois image to be reused with different regions.
+* --preservedata
+  * Preserves char, colour, tile data from a previous conversion pass.
+* --nopreservedata
+  * Does not preserve previous data.

@@ -199,3 +199,8 @@
 
 
 * Add: -imagewh width height
+
+
+* Add --removeregions
+* Add --preservedata
+* Add --nopreservedata

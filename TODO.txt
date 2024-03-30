@@ -67,3 +67,9 @@
 
 
 * Make the inputs and outputs configurable via a text config file, with includes
+
+
+
+* Banded palette conversion. While scanning each row down the image, if the number of palettes for the bank overflows the maximum (16 palettes currently) then start processing the line again in a new bank.
+	This would reduce the visible horizontal bands seen in the current @Demo13
+	

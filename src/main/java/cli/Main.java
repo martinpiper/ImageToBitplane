@@ -1140,9 +1140,9 @@ public class Main {
                     for (int tx = 0 ; tx < tileWidth && !ignorePalette ; tx++) {
                         Integer colour = imageColours[x + tx + ((y + ty) * imageWidth)];
                         if (colour != null) {
-                            if (forcedColourIndex.containsKey(colour)) {
+                            if (forcedColourIndex.containsKey(colour) && palette.get(colour) != null) {
                                 // If we are considering a forced index colour
-                                if (forcedColourIndex.get(colour) == palette.get(colour)) {
+                                if (forcedColourIndex.get(colour).equals(palette.get(colour))) {
                                     // ... and its loaded index precisely matches the forced index
                                     // Then it is a very good match, so skip it
                                     continue;
@@ -1151,7 +1151,23 @@ public class Main {
                                 ignorePalette = true;
                                 break;
                             }
+
+
+                            // Now try with the closest colour...
                             Integer closestColour = getBestPaletteColour(palette, colour);
+
+                            if (forcedColourIndex.containsKey(colour) && palette.get(closestColour) != null) {
+                                // If we are considering a forced index colour
+                                if (forcedColourIndex.get(colour).equals(palette.get(closestColour))) {
+                                    // ... and its loaded index precisely matches the forced index
+                                    // Then it is a very good match, so skip it
+                                    continue;
+                                }
+                                // Otherwise ignore the palette
+                                ignorePalette = true;
+                                break;
+                            }
+
                             colourDifference += getColourDifference(new Color(closestColour) , new Color(colour));
                         }
                     }

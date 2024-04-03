@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Done.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Done.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +109,7 @@
       <command value="vectorRightLength" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.VideoHardware 13B">
+  <component name="RunManager" selected="Application.VideoHardware assets Demo9 --fitpalettes">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -526,7 +526,7 @@
     </configuration>
     <configuration name="VideoHardware 2" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
-      <module name="main" />
+      <module name="imagetobitplane" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 0 0 0 --paletteoffset 0 --palettesize 8 --startxy 0 0 --image assets/map.png --tilewh 16 16 --imagequantize 8 --nowritepass --resetforcergb --forcergb 255 0 255 --spritexy 0 0xd0 --startxy 0 0 --image assets/sprites.png --tilewh 16 16 --imagequantize 32 --usestacking --nowritepass --resetforcergb --forcergb 255 0 255 --loadpalettebestfit tmp/PaletteDataClouds.bin --resetforcergb --forcergb 0 0 0 --startxy 0 0 --image assets/map.png --tilewh 16 16 --imagequantize 8 --outputplanes tmp/background_plane --outputscrcol tmp/map.bin --nostacking --numbitplanes 3 --convertwritepass --nowrite --resetforcergb --forcergb 255 0 255 --spritexy 0 0xd0 --startxy 0 0 --image assets/sprites.png --tilewh 16 16 --imagequantize 32 --outputplanes tmp/sprite_plane --outputsprites tmp/spriteSheet.txt --outputpalettes tmp/PaletteData.bin --usestacking --numbitplanes 3 --convertwritepass" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware" />
       <extension name="coverage">
@@ -558,6 +558,21 @@
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="imagetobitplane" />
       <option name="PROGRAM_PARAMETERS" value="--palettesize 16 --rgbshift 4 4 4 --splitmaps --chars --newpalettes --loadpalette ../tmp/ShadowBeastPaletteData.bin --numbitplanes 4 --image &quot;ShadowBeast/beast_attract_playfield_1_1024.png&quot; --tilewh 8 8 --fitpalettes --nostacking --outputplanes ../tmp/ShadowBeastChars_plane --outputscrcol ../tmp/ShadowBeastChars_map.bin --convertwritepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VideoHardware assets Demo9 --fitpalettes" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="imagetobitplane" />
+      <option name="PROGRAM_PARAMETERS" value="--paletteoffset 0 --palettesize 16 --rgbshift 5 6 5 --nostacking --newpalettes --loadpaletteraw ../tmp/Demo9PaletteData.bin --resetforcergb --forcergb 255 0 255 --numbitplanes 4 --image &quot;Demo9/sprites1.png&quot; --tilewh 16 16 --fitpalettes --outputplanes ../tmp/Demo9Sprites1 --outputsprites ../tmp/Demo9Sprites1Sheet.txt --convertwritepass" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
       <extension name="coverage">
         <pattern>
@@ -833,6 +848,7 @@
       <item itemvalue="Application.VideoHardware 1 a" />
       <item itemvalue="Application.VideoHardware 13B" />
       <item itemvalue="Application.VideoHardware 2" />
+      <item itemvalue="Application.VideoHardware assets Demo9 --fitpalettes" />
       <item itemvalue="Application.VideoHardware 3" />
       <item itemvalue="Application.VideoHardware 6 SotB chars 1024" />
       <item itemvalue="Application.VideoHardware convert9 Convert chars2 with --paletteoffset 0" />
@@ -900,38 +916,23 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>426</line>
-          <option name="timeStamp" value="82" />
+          <line>1130</line>
+          <option name="timeStamp" value="132" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>829</line>
-          <option name="timeStamp" value="100" />
+          <line>1180</line>
+          <option name="timeStamp" value="133" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1009</line>
-          <option name="timeStamp" value="113" />
+          <line>1265</line>
+          <option name="timeStamp" value="134" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1625</line>
-          <option name="timeStamp" value="115" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1643</line>
-          <option name="timeStamp" value="127" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1640</line>
-          <option name="timeStamp" value="128" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>901</line>
-          <option name="timeStamp" value="131" />
+          <line>1142</line>
+          <option name="timeStamp" value="135" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -941,6 +942,10 @@
         <watch expression="regions" />
         <watch expression="theTile" />
         <watch expression="dataOffset" />
+        <watch expression="palettes" language="JAVA" />
+        <watch expression="colour" />
+        <watch expression="forcedColourIndex.get(colour)" language="JAVA" />
+        <watch expression="palette.get(colour)" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

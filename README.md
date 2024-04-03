@@ -74,7 +74,8 @@
 * --palettequantize count
   * Quantizes the current palettes to the specified number.
 * --fitpalettes
-  * Enables image processing where the current palettes are used, instead of adding new colours to palettes.
+  * Enables image processing where the current palettes are used, with best colour matching, instead of adding new colours to palettes.
+  * Generally this means images doing not need to be quantized since the palettes have already been chosen.
 * --splitmaps
   * Splits output map data, for screen and colours, into separate files.
 * --nosplitmaps

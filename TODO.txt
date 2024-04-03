@@ -73,3 +73,17 @@
 * Banded palette conversion. While scanning each row down the image, if the number of palettes for the bank overflows the maximum (16 palettes currently) then start processing the line again in a new bank.
 	This would reduce the visible horizontal bands seen in the current @Demo13
 	
+	
+	
+* Demo9
+	--fitpalettes is not finding the best match?
+	Steps to reproduce:
+	Before change:
+		java -jar ..\..\..\ImageToBitplane\target\imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar --paletteoffset 0 --palettesize 16 --rgbshift 5 6 5 --nostacking --newpalettes --loadpaletteraw ../tmp/Demo9PaletteData.bin --resetforcergb --forcergb 255 0 255 --numbitplanes 4 --rgbshift 4 4 4 --image "Demo9/sprites1.png" --rgbshift 5 6 5 --tilewh 16 16 --fitpalettes --outputplanes ../tmp/Demo9Sprites1 --outputsprites ../tmp/Demo9Sprites1Sheet.txt --convertwritepass
+	Output file: C:\Work\C64\VideoHardware\tmp\Demo9Sprites1Sheet.txtVars.a
+	Should be: kVarsEmitSpriteFrame0_0_0_colour=5
+	After change:
+		java -jar ..\..\..\ImageToBitplane\target\imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar --paletteoffset 0 --palettesize 16 --rgbshift 5 6 5 --nostacking --newpalettes --loadpaletteraw ../tmp/Demo9PaletteData.bin --resetforcergb --forcergb 255 0 255 --numbitplanes 4 --image "Demo9/sprites1.png" --tilewh 16 16 --fitpalettes --outputplanes ../tmp/Demo9Sprites1 --outputsprites ../tmp/Demo9Sprites1Sheet.txt --convertwritepass
+	Then this is wrong:
+		kVarsEmitSpriteFrame0_0_0_colour=0
+	Note, palette has not changed at all!

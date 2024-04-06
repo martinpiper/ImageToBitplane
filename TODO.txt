@@ -72,11 +72,3 @@
 
 * Banded palette conversion. While scanning each row down the image, if the number of palettes for the bank overflows the maximum (16 palettes currently) then start processing the line again in a new bank.
 	This would reduce the visible horizontal bands seen in the current @Demo13
-	
-	
-	
-* When using colour matching to output converted graphics data, it would be useful to output what the final graphics sheet looks like with the colours applied.
-	Add an option to output a debug file, which matches the input filename but writes to a target directory with optional name prefix.
-	Then this output file can be used to compare with the original.
-	> Demo9
-    >> Probably the best place to insert the actual colour used is near: imageColours[x + tx + ((y + ty) * imageWidth)] = null;

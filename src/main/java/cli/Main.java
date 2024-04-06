@@ -49,6 +49,7 @@ public class Main {
     static int paletteMaxQuantize = 32;
     static ArrayList<HashMap<Integer,Integer>> palettes = new ArrayList<>();
     static HashMap<Integer , Integer> forcedColourIndex = new HashMap<>();
+    static HashMap<Integer , Integer> forcedColourByIndex = new HashMap<>();
     static int forcedColourIndexTransparent = -1;
     static HashMap<Integer , Double> factorColourIndex = new HashMap<>();
     static int tileWidth = 16 , tileHeight = 16;
@@ -57,6 +58,7 @@ public class Main {
     static int imageWidth = 0;
     static int imageHeight = 0;
     static Integer[] imageColours = null;
+    static BufferedImage imageColoursResult = null;
     static Integer[] imageColoursOriginal = null;
     static int numBitplanes = 3;
     static ByteBuffer[] bitplaneData = null;
@@ -123,6 +125,7 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--resetforcergb") == 0) {
                 forcedColourIndex.clear();
+                forcedColourByIndex.clear();
                 forcedColourIndexTransparent = -1;
                 continue;
             } else if (args[i].compareToIgnoreCase("--forcergb") == 0) {
@@ -130,6 +133,7 @@ public class Main {
                 if (forcedColourIndex.size() == 0) {
                     forcedColourIndexTransparent = theColour;
                 }
+                forcedColourByIndex.put(forcedColourIndex.size() , theColour);
                 forcedColourIndex.put(theColour , forcedColourIndex.size());
                 i+=3;
                 continue;
@@ -280,6 +284,7 @@ public class Main {
                 imageWidth = img.getWidth();
                 imageHeight = img.getHeight();
                 imageColours = new Integer[imageWidth * imageHeight];
+                imageColoursResult = new BufferedImage(imageWidth , imageHeight , BufferedImage.TYPE_INT_RGB);
                 // Applies target platform colour limits first
                 for (int y = 0 ; y < imageHeight ; y++) {
                     for (int x = 0; x < imageWidth; x++) {
@@ -813,6 +818,9 @@ public class Main {
 
                 sprPos += 1024;
             }
+            if (outputScaled != null) {
+                ImageIO.write(imageColoursResult , "png" , new File(outputScaled + ".png"));
+            }
         }
 
         if (outputScreenData != null || outputSprites != null) {
@@ -824,6 +832,9 @@ public class Main {
                     fc.close();
                 }
             }
+            if (outputPlanes != null) {
+                ImageIO.write(imageColoursResult , "png" , new File(outputPlanes + ".png"));
+            }
         }
 
         if (outputVectors != null) {
@@ -831,6 +842,9 @@ public class Main {
             vectorData.flip();
             fc.write(vectorData);
             fc.close();
+            if (outputVectors != null) {
+                ImageIO.write(imageColoursResult , "png" , new File(outputVectors + ".png"));
+            }
         }
 
         if (outputScreenData != null) {
@@ -1264,6 +1278,16 @@ public class Main {
         }
 
         assert resultPalette.size() <= paletteMaxLen;
+        Integer coloursByIndex[] = new Integer[paletteMaxLen];
+        Arrays.fill(coloursByIndex , 0);
+        resultPalette.forEach((key, value) ->{
+            if (forcedColourByIndex.containsKey(value)) {
+                coloursByIndex[value] = forcedColourByIndex.get(value);
+            } else {
+                coloursByIndex[value] = key;
+            }
+        });
+
 
         // Now convert the tile to bitplane data based on the colours in the palette and the index values
         byte[] theTile = new byte[tileWidth * tileHeight];
@@ -1281,9 +1305,13 @@ public class Main {
                         theTile[tx + (ty * tileWidth)] = value.byteValue();
                         // Remove the pixel, since it has been processed
                         imageColours[x + tx + ((y + ty) * imageWidth)] = null;
+                        imageColoursResult.setRGB(x + tx , y + ty, coloursByIndex[value]);
                         if(value > 0) {
                             theTileHasContents = true;
                         }
+                    } else {
+                        // If it's transparent, then pick the transparent palette entry
+                        imageColoursResult.setRGB(x + tx , y + ty, coloursByIndex[0]);
                     }
                 }
             }
@@ -1637,6 +1665,7 @@ public class Main {
         imageWidth = dw;
         imageHeight = dh;
         imageColours = newImageColours;
+        imageColoursResult = new BufferedImage(dw , dh , BufferedImage.TYPE_INT_RGB);
 
         // Scale any regions that exist already, usually these are user input regions
         if (regions != null) {

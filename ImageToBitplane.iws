@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Done.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Done.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -916,23 +918,13 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1130</line>
-          <option name="timeStamp" value="132" />
+          <line>1292</line>
+          <option name="timeStamp" value="141" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1180</line>
-          <option name="timeStamp" value="133" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1265</line>
-          <option name="timeStamp" value="134" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1142</line>
-          <option name="timeStamp" value="135" />
+          <line>1282</line>
+          <option name="timeStamp" value="142" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -946,6 +938,11 @@
         <watch expression="colour" />
         <watch expression="forcedColourIndex.get(colour)" language="JAVA" />
         <watch expression="palette.get(colour)" language="JAVA" />
+        <watch expression="resultPalette" language="JAVA" />
+        <watch expression="imageColoursResult" language="JAVA" />
+        <watch expression="forcedColourIndex" language="JAVA" />
+        <watch expression="forcedColourByIndex" language="JAVA" />
+        <watch expression="coloursByIndex" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

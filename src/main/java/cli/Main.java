@@ -59,6 +59,7 @@ public class Main {
     static int imageHeight = 0;
     static Integer[] imageColours = null;
     static BufferedImage imageColoursResult = null;
+    static BufferedImage imageColoursResultPre = null;
     static Integer[] imageColoursOriginal = null;
     static int numBitplanes = 3;
     static ByteBuffer[] bitplaneData = null;
@@ -285,12 +286,14 @@ public class Main {
                 imageHeight = img.getHeight();
                 imageColours = new Integer[imageWidth * imageHeight];
                 imageColoursResult = new BufferedImage(imageWidth , imageHeight , BufferedImage.TYPE_INT_RGB);
+                imageColoursResultPre = new BufferedImage(imageWidth , imageHeight , BufferedImage.TYPE_INT_RGB);
                 // Applies target platform colour limits first
                 for (int y = 0 ; y < imageHeight ; y++) {
                     for (int x = 0; x < imageWidth; x++) {
                         Color colour = new Color(img.getRGB(x,y));
                         Color newColour = ApplyColorLimitsFromColour(colour);
                         imageColours[x+(y*imageWidth)] = newColour.getRGB();
+                        imageColoursResultPre.setRGB(x,y,newColour.getRGB());
                     }
                 }
                 imageColoursOriginal = imageColours.clone();
@@ -820,6 +823,7 @@ public class Main {
             }
             if (outputScaled != null) {
                 ImageIO.write(imageColoursResult , "png" , new File(outputScaled + ".png"));
+                ImageIO.write(imageColoursResultPre , "png" , new File(outputScaled + "_pre.png"));
             }
         }
 
@@ -834,6 +838,7 @@ public class Main {
             }
             if (outputPlanes != null) {
                 ImageIO.write(imageColoursResult , "png" , new File(outputPlanes + ".png"));
+                ImageIO.write(imageColoursResultPre , "png" , new File(outputPlanes + "_pre.png"));
             }
         }
 
@@ -844,6 +849,7 @@ public class Main {
             fc.close();
             if (outputVectors != null) {
                 ImageIO.write(imageColoursResult , "png" , new File(outputVectors + ".png"));
+                ImageIO.write(imageColoursResultPre , "png" , new File(outputVectors + "_pre.png"));
             }
         }
 
@@ -1651,6 +1657,7 @@ public class Main {
         int dh = ((int) (((imageHeight * scaleY)+tileHeight-1)/tileHeight)) * tileHeight;
 
         Integer[] newImageColours = new Integer[dw*dh];
+        imageColoursResultPre = new BufferedImage(dw , dh , BufferedImage.TYPE_INT_RGB);
 
         for (int y = 0 ; y < dh ; y++) {
             int dy = (int)(y/scaleY);
@@ -1659,6 +1666,7 @@ public class Main {
                 int dx = (int)(x/scaleX);
                 dx = Math.min(dx, imageWidth-1);
                 newImageColours[x + (y*dw)] = imageColours[dx + (dy * imageWidth)];
+                imageColoursResultPre.setRGB(x,y,imageColours[dx + (dy * imageWidth)]);
             }
         }
 

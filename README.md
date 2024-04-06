@@ -34,7 +34,7 @@
 * --imagescale x y
   * Scales the image with x/y values.
 * --imagequantize count
-  * Quantizes the loaded image down to the number of colours.
+  * Quantizes the loaded image down, or individual tiles or regions if used after --tilewh or --region, to the number of colours.
 * --tilewh w h
   * Sets the output tile/sprite size
 * --startxy x y

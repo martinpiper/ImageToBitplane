@@ -787,6 +787,9 @@ public class Main {
                 fc.write(tileByteData);
                 fc.close();
             }
+
+            ImageIO.write(imageColoursResult , "png" , new File(outputTileBytes + ".png"));
+            ImageIO.write(imageColoursResultPre , "png" , new File(outputTileBytes + "_pre.png"));
         }
 
         if (outputScaled != null) {
@@ -821,10 +824,8 @@ public class Main {
 
                 sprPos += 1024;
             }
-            if (outputScaled != null) {
-                ImageIO.write(imageColoursResult , "png" , new File(outputScaled + ".png"));
-                ImageIO.write(imageColoursResultPre , "png" , new File(outputScaled + "_pre.png"));
-            }
+            ImageIO.write(imageColoursResult , "png" , new File(outputScaled + ".png"));
+            ImageIO.write(imageColoursResultPre , "png" , new File(outputScaled + "_pre.png"));
         }
 
         if (outputScreenData != null || outputSprites != null) {
@@ -847,10 +848,8 @@ public class Main {
             vectorData.flip();
             fc.write(vectorData);
             fc.close();
-            if (outputVectors != null) {
-                ImageIO.write(imageColoursResult , "png" , new File(outputVectors + ".png"));
-                ImageIO.write(imageColoursResultPre , "png" , new File(outputVectors + "_pre.png"));
-            }
+            ImageIO.write(imageColoursResult , "png" , new File(outputVectors + ".png"));
+            ImageIO.write(imageColoursResultPre , "png" , new File(outputVectors + "_pre.png"));
         }
 
         if (outputScreenData != null) {

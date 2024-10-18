@@ -77,6 +77,7 @@ public class Main {
     static PrintStream outputSprites3 = null;
     static String outputPalettes = null;
     static String outputScaled = null;
+    static String outputScaled4 = null;
     static boolean useStacking = false;
     static boolean fitPalettes = false;
     static boolean extraCharsBits = false;
@@ -330,6 +331,7 @@ public class Main {
                 outputTileBytes = null;
                 currentTile = 0;
                 outputScaled = null;
+                outputScaled4 = null;
                 outputVectors = null;
                 continue;
             } else if (args[i].compareToIgnoreCase("--nowritepass") == 0) {
@@ -343,6 +345,7 @@ public class Main {
                 outputTileBytes = null;
                 currentTile = 0;
                 outputScaled = null;
+                outputScaled4 = null;
                 outputVectors = null;
                 TileConvert();
                 continue;
@@ -362,6 +365,7 @@ public class Main {
                 outputPlanes = args[i+1];
                 outputTileBytes = null;
                 outputScaled = null;
+                outputScaled4 = null;
                 outputVectors = null;
                 i++;
                 continue;
@@ -369,6 +373,15 @@ public class Main {
                 outputPlanes = null;
                 outputTileBytes = null;
                 outputScaled = args[i+1];
+                outputScaled4 = null;
+                outputVectors = null;
+                i++;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--outputscaled4") == 0) {
+                outputPlanes = null;
+                outputTileBytes = null;
+                outputScaled = null;
+                outputScaled4 = args[i+1];
                 outputVectors = null;
                 i++;
                 continue;
@@ -376,12 +389,14 @@ public class Main {
                 outputTileBytes = args[i+1];
                 outputPlanes = null;
                 outputScaled = null;
+                outputScaled4 = null;
                 outputVectors = null;
                 i++;
                 continue;
             } else if (args[i].compareToIgnoreCase("--outputscrcol") == 0) {
                 outputScreenData = args[i+1];
                 outputScaled = null;
+                outputScaled4 = null;
                 outputVectors = null;
                 i++;
                 continue;
@@ -826,6 +841,30 @@ public class Main {
             }
             ImageIO.write(imageColoursResult , "png" , new File(outputScaled + ".png"));
             ImageIO.write(imageColoursResultPre , "png" , new File(outputScaled + "_pre.png"));
+        }
+
+        if (outputScaled4 != null) {
+            tileByteData.flip();
+            byte[] arr = new byte[tileByteData.remaining()];
+            tileByteData.get(arr);
+            int sprPos = 0;
+
+            byte[] merged = new byte[arr.length/2];
+            int storePos = 0;
+            while (sprPos < arr.length && storePos < merged.length) {
+                merged[storePos] = (byte)(arr[sprPos] | (arr[sprPos+1] << 4));
+                storePos++;
+                sprPos += 2;
+            }
+
+            fc = new FileOutputStream(outputScaled4 + ".bin").getChannel();
+            fc.write(ByteBuffer.wrap(merged));
+
+            fc.close();
+            fc = null;
+
+            ImageIO.write(imageColoursResult , "png" , new File(outputScaled4 + ".png"));
+            ImageIO.write(imageColoursResultPre , "png" , new File(outputScaled4 + "_pre.png"));
         }
 
         if (outputScreenData != null || outputSprites != null) {
@@ -1448,6 +1487,7 @@ public class Main {
         int bestTileIndex = currentTile;
         boolean bestFlipX = false;
         boolean bestFlipY = false;
+        int currentTileAddress = -1;
         if ((outputScreenData != null) || ((outputSprites != null) && tileHasData)) {
             String testTile = Base64.getEncoder().encodeToString(theTile);
             TileIndexFlip existingIndexFlip = tileToIndexFlip.get(testTile);
@@ -1461,6 +1501,7 @@ public class Main {
                 if (currentTile == 53) {
                     currentTile = currentTile;
                 }
+                currentTileAddress = tileByteData.position();
                 // Advances the tile number, could do with duplicate check here
                 tileByteData.put(theTile);
                 if (outputPlanes != null) {
@@ -1568,7 +1609,14 @@ public class Main {
                 } else {
                     outputSprites2.println("\t+MEmitSpriteFrame " + theTileIndex + " , " + (theColour + paletteOffset));
                 }
-                outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileIndex=" + theTileIndex);
+                if (outputScaled4 != null) {
+                    outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileAddress=" + currentTileAddress);
+                    outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileWidth=" + tileWidth);
+                    outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileHeight=" + tileHeight);
+                } else {
+                    outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileIndex=" + theTileIndex);
+                }
+
                 outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_colour=" + (theColour + paletteOffset));
                 outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_offsetX=" + region.offsetX);
                 outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_offsetY=" + region.offsetY);

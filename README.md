@@ -101,7 +101,7 @@
 * --nonamesuffix
   * Removes any name suffix.
 * --removeregions
-  * Removes any previous regions, allowing a previois image to be reused with different regions.
+  * Removes any previous regions, allowing a previous image to be reused with different regions.
 * --preservedata
   * Preserves char, colour, tile data from a previous conversion pass.
 * --nopreservedata

@@ -849,11 +849,15 @@ public class Main {
             tileByteData.get(arr);
             int sprPos = 0;
 
-            byte[] merged = new byte[Math.min(arr.length , 65536)];
+            byte[] merged = new byte[Math.min((arr.length+1)/2 , 65536)];
             int storePos = 0;
             // First bank
             for (int i = 0 ; i < merged.length ; i++) {
-                merged[i] = arr[i];
+                if (((i*2)+1) < arr.length) {
+                    merged[i] = (byte) (arr[(i*2)] | (arr[(i*2)+1] << 4));
+                } else {
+                    merged[i] = (byte) arr[(i*2)];
+                }
             }
             // Now try the rest of the bank if it exists
             for (int i = 65536 ; i < arr.length ; i++) {

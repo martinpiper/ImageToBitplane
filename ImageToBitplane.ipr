@@ -182,6 +182,18 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
   <component name="libraryTable">
+    <library name="Maven: commons-io:commons-io:2.6" type="java-imported" external-system-id="Maven">
+      <properties groupId="commons-io" artifactId="commons-io" version="2.6" />
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-io/commons-io/2.6/commons-io-2.6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-io/commons-io/2.6/commons-io-2.6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-io/commons-io/2.6/commons-io-2.6-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: junit:junit:4.9" type="java-imported" external-system-id="Maven">
       <properties groupId="junit" artifactId="junit" version="4.9" />
       <CLASSES>

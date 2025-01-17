@@ -1,5 +1,7 @@
 package cli;
 
+import org.w3c.dom.css.RGBColor;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,6 +11,7 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import org.apache.commons.io.FilenameUtils;
 
 public class Main {
 
@@ -99,7 +102,107 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        boolean shiftTopLeft = false;
+        boolean minimiseArea = false;
+        boolean processNow = false;
+        int transparentRGBValue = 0;
+
         for (int i = 0 ; i < args.length ; i++) {
+            if (args[i].compareToIgnoreCase("--transparentRGB") == 0) {
+                i++;
+                Color transparentRGB = new Color(Integer.parseInt(args[i]) , Integer.parseInt(args[i+1]) , Integer.parseInt(args[i+2]));
+                transparentRGBValue = transparentRGB.getRGB();
+                i += 2;
+                continue;
+            }
+            if (args[i].compareToIgnoreCase("--shiftTopLeft") == 0) {
+                shiftTopLeft = true;
+                continue;
+            }
+            if (args[i].compareToIgnoreCase("--minimiseArea") == 0) {
+                minimiseArea = true;
+                continue;
+            }
+            if (args[i].compareToIgnoreCase("--processNow") == 0) {
+                processNow = true;
+                continue;
+            }
+            if (processNow) {
+                if (Files.exists(Paths.get(args[i]))) {
+                    boolean changed = false;
+                    BufferedImage image = ImageIO.read(new File(args[i]));
+                    if (shiftTopLeft) {
+                        boolean abort = false;
+                        while (!abort) {
+                            for (int t = 0 ; t < image.getHeight() ; t++) {
+                                if (image.getRGB(0 , t) != transparentRGBValue) {
+                                    abort = true;
+                                    break;
+                                }
+                            }
+                            if (!abort) {
+                                image = image.getSubimage(1,0,image.getWidth()-1, image.getHeight());
+                                changed = true;
+                            }
+                        }
+                        abort = false;
+                        while (!abort) {
+                            for (int t = 0 ; t < image.getWidth() ; t++) {
+                                if (image.getRGB(t , 0) != transparentRGBValue) {
+                                    abort = true;
+                                    break;
+                                }
+                            }
+                            if (!abort) {
+                                image = image.getSubimage(0,1,image.getWidth(), image.getHeight()-1);
+                                changed = true;
+                            }
+                        }
+                    }
+                    if (minimiseArea) {
+                        int minWidth = image.getWidth();
+                        int minHeight = image.getHeight();
+                        boolean abort = false;
+                        while (!abort && minWidth > 1) {
+                            for (int t = 0 ; t < image.getHeight() ; t++) {
+                                if (image.getRGB(minWidth-1 , t) != transparentRGBValue) {
+                                    abort = true;
+                                    break;
+                                }
+                            }
+                            if (!abort) {
+                                minWidth--;
+                            }
+                        }
+                        abort = false;
+                        while (!abort && minHeight > 1) {
+                            for (int t = 0 ; t < image.getWidth() ; t++) {
+                                if (image.getRGB(t , minHeight-1) != transparentRGBValue) {
+                                    abort = true;
+                                    break;
+                                }
+                            }
+                            if (!abort) {
+                                minHeight--;
+                            }
+                        }
+                        if (minWidth != image.getWidth() || minHeight != image.getHeight()) {
+                            image = image.getSubimage(0,0, minWidth, minHeight);
+                            changed = true;
+                        }
+                    }
+
+                    if (changed) {
+                        System.out.println("Changed image: " + args[i]);
+                        File file = new File(args[i]);
+                        ImageIO.write(image , FilenameUtils.getExtension(args[i]), file);
+                    } else {
+                        System.out.println("No change: " + args[i]);
+                    }
+                }
+                continue;
+            }
+
             if (i+1 < args.length) {
                 System.out.println("Considering arguments: " + args[i] + " " + args[i+1]);
             } else {

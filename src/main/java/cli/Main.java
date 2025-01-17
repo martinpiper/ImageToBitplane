@@ -1,5 +1,6 @@
 package cli;
 
+import org.apache.commons.io.FileUtils;
 import org.w3c.dom.css.RGBColor;
 
 import javax.imageio.ImageIO;
@@ -106,6 +107,8 @@ public class Main {
         boolean minimiseArea = false;
         boolean processNow = false;
         int transparentRGBValue = 0;
+        boolean removeDuplicates = false;
+        HashSet<String> removeDuplicatesNames = new HashSet<String>();
 
         for (int i = 0 ; i < args.length ; i++) {
             if (args[i].compareToIgnoreCase("--transparentRGB") == 0) {
@@ -113,6 +116,10 @@ public class Main {
                 Color transparentRGB = new Color(Integer.parseInt(args[i]) , Integer.parseInt(args[i+1]) , Integer.parseInt(args[i+2]));
                 transparentRGBValue = transparentRGB.getRGB();
                 i += 2;
+                continue;
+            }
+            if (args[i].compareToIgnoreCase("--removeDuplicates") == 0) {
+                removeDuplicates = true;
                 continue;
             }
             if (args[i].compareToIgnoreCase("--shiftTopLeft") == 0) {
@@ -125,6 +132,12 @@ public class Main {
             }
             if (args[i].compareToIgnoreCase("--processNow") == 0) {
                 processNow = true;
+                continue;
+            }
+            if (removeDuplicates) {
+                if (Files.exists(Paths.get(args[i]))) {
+                    removeDuplicatesNames.add(args[i]);
+                }
                 continue;
             }
             if (processNow) {
@@ -741,6 +754,58 @@ public class Main {
             System.err.println("Unknown option: " + args[i]);
         }
 
+
+        if (removeDuplicates) {
+            for (String filename : removeDuplicatesNames) {
+                if (!Files.exists(Paths.get(filename))) {
+                    continue;
+                }
+
+                System.out.println("Consider duplicate removal: " + filename);
+                BufferedImage image1 = ImageIO.read(new File(filename));
+                for (String otherFilename : removeDuplicatesNames) {
+                    if (!Files.exists(Paths.get(otherFilename))) {
+                        continue;
+                    }
+                    if (filename.equals(otherFilename)) {
+                        continue;
+                    }
+                    System.out.println("Consider duplicate removal with: " + otherFilename);
+                    BufferedImage image2 = ImageIO.read(new File(otherFilename));
+                    if (image1.getWidth() != image2.getWidth()) {
+                        continue;
+                    }
+                    if (image1.getHeight() != image2.getHeight()) {
+                        continue;
+                    }
+                    boolean identical = true;
+                    for (int x = 0; x < image1.getWidth(); x++) {
+                        for (int y = 0; y < image1.getHeight(); y++) {
+                            if (image1.getRGB(x, y) == image2.getRGB(x, y)) {
+                                continue;
+                            }
+                            // And flips
+                            if (image1.getRGB(x, y) == image2.getRGB(image1.getWidth() - x - 1, y)) {
+                                continue;
+                            }
+                            if (image1.getRGB(x, y) == image2.getRGB(x, image1.getHeight() - y - 1)) {
+                                continue;
+                            }
+                            if (image1.getRGB(x, y) == image2.getRGB(image1.getWidth() - x - 1, image1.getHeight() - y - 1)) {
+                                continue;
+                            }
+                            identical = false;
+                            break;
+                        }
+                    }
+                    if (identical) {
+                        FileUtils.deleteQuietly(new File(otherFilename));
+                        System.out.println("Removing identical image: " + otherFilename);
+                        break;
+                    }
+                }
+            }
+        }
 //        String inputPath = "src/test/resources/TestImage1.png";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\town_rpg_pack\\town_rpg_pack\\graphics\\tiles-map.png";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\dirt-tiles.png";

@@ -106,7 +106,7 @@
   * Preserves char, colour, tile data from a previous conversion pass.
 * --nopreservedata
   * Does not preserve previous data.
-* Image processing options 
+* Image processing options
   * --transparentRGB 255 0 255
     * For image processing (--processNow) sets the transparent colour
   * --shiftTopLeft
@@ -115,3 +115,5 @@
     * Reduces wasted space to the right and bottom considering transparent pixels
   * --processNow
     * Processes image filenames with the above options
+  * --removeDuplicates
+    * Removes identically coloured images, includes X and Y flips

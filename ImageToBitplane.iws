@@ -113,7 +113,7 @@
       <command value="vectorRightLength" />
     </option>
   </component>
-  <component name="RunManager" selected="Maven.clean install">
+  <component name="RunManager" selected="Application.Demo14 Sprites4">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -818,6 +818,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MainTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="imagetobitplane" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="cli" />
+      <option name="MAIN_CLASS_NAME" value="cli.MainTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MainTest.main1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="imagetobitplane" />
       <extension name="coverage">
@@ -930,12 +945,14 @@
       <item itemvalue="Application.oldbridge char screen with rgbfactor no force colour 0" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor" />
       <item itemvalue="Application.Main background nowritepass" />
+      <item itemvalue="JUnit.MainTest" />
       <item itemvalue="JUnit.MainTest.main1" />
       <item itemvalue="JUnit.MainTest.main1_oldbridge" />
       <item itemvalue="Maven.clean install" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.MainTest" />
         <item itemvalue="JUnit.MainTest.main1_oldbridge" />
         <item itemvalue="JUnit.MainTest.main1" />
         <item itemvalue="Application.Main background nowritepass" />

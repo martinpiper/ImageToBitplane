@@ -1046,7 +1046,7 @@ public class Main {
             tileByteData.get(arr);
             int sprPos = 0;
 
-            byte[] merged = new byte[Math.min((arr.length+1)/2 , 65536)];
+            byte[] merged = new byte[(arr.length+1)/2];
             int storePos = 0;
             // First bank
             for (int i = 0 ; i < merged.length ; i++) {
@@ -1055,10 +1055,6 @@ public class Main {
                 } else {
                     merged[i] = (byte) arr[(i*2)];
                 }
-            }
-            // Now try the rest of the bank if it exists
-            for (int i = 65536 ; i < arr.length ; i++) {
-                merged[i & 0xffff] |= (byte) (arr[i] << 4);
             }
 
             fc = new FileOutputStream(outputScaled4 + ".bin").getChannel();

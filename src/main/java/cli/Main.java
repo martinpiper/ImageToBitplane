@@ -146,7 +146,7 @@ public class Main {
                     BufferedImage image = ImageIO.read(new File(args[i]));
                     if (shiftTopLeft) {
                         boolean abort = false;
-                        while (!abort) {
+                        while (!abort && image.getWidth() >= 2) {
                             for (int t = 0 ; t < image.getHeight() ; t++) {
                                 if (image.getRGB(0 , t) != transparentRGBValue) {
                                     abort = true;
@@ -159,7 +159,7 @@ public class Main {
                             }
                         }
                         abort = false;
-                        while (!abort) {
+                        while (!abort && image.getHeight() >= 2) {
                             for (int t = 0 ; t < image.getWidth() ; t++) {
                                 if (image.getRGB(t , 0) != transparentRGBValue) {
                                     abort = true;
@@ -378,6 +378,10 @@ public class Main {
                 ImageQuantize();
                 i++;
                 continue;
+            } else if (args[i].compareToIgnoreCase("--batchimagequantize") == 0) {
+                paletteMaxQuantize = ParseValueFrom(args[i+1]);
+                i++;
+                continue;
             } else if (args[i].compareToIgnoreCase("--tilewh") == 0) {
                 tileWidth = ParseValueFrom(args[i+1]);
                 tileHeight = ParseValueFrom(args[i+2]);
@@ -394,28 +398,27 @@ public class Main {
                 i+=2;
                 continue;
             } else if (args[i].compareToIgnoreCase("--image") == 0) {
-                regions = null;
-                regionShift = false;
                 img = ImageIO.read(new File(args[i+1]));
                 i++;
 
-                imageWidth = img.getWidth();
-                imageHeight = img.getHeight();
-                imageColours = new Integer[imageWidth * imageHeight];
-                imageColoursResult = new BufferedImage(imageWidth , imageHeight , BufferedImage.TYPE_INT_RGB);
-                imageColoursResultPre = new BufferedImage(imageWidth , imageHeight , BufferedImage.TYPE_INT_RGB);
-                // Applies target platform colour limits first
-                for (int y = 0 ; y < imageHeight ; y++) {
-                    for (int x = 0; x < imageWidth; x++) {
-                        Color colour = new Color(img.getRGB(x,y));
-                        Color newColour = ApplyColorLimitsFromColour(colour);
-                        imageColours[x+(y*imageWidth)] = newColour.getRGB();
-                        imageColoursResultPre.setRGB(x,y,newColour.getRGB());
+                setupInputImage();
+                continue;
+            } else if (args[i].compareToIgnoreCase("--batchimages") == 0) {
+                i++;
+                while (Files.exists(Paths.get(args[i]))) {
+                    System.out.println("Processing: " + args[i]);
+                    img = ImageIO.read(new File(args[i]));
+                    if (paletteMaxQuantize < 32) {
+                        ImageQuantize();
                     }
+
+                    setupInputImage();
+                    TileConvert();
+
+                    preserveData = true;
+                    i++;
                 }
-                imageColoursOriginal = imageColours.clone();
-                tileWidth = imageWidth;
-                tileHeight = imageHeight;
+                i--;    // And backwards for the next command line entry
                 continue;
             } else if (args[i].compareToIgnoreCase("--numbitplanes") == 0) {
                 numBitplanes = ParseValueFrom(args[i+1]);
@@ -530,6 +533,9 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--convertwritepass") == 0) {
                 TileConvert();
+                OutputFiles();
+                continue;
+            } else if (args[i].compareToIgnoreCase("--writepass") == 0) {
                 OutputFiles();
                 continue;
             } else if (args[i].compareToIgnoreCase("--convertpass") == 0) {
@@ -813,6 +819,29 @@ public class Main {
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\oldbridge cropped.bmp";
 //        String path = "C:\\Users\\Martin Piper\\Downloads\\map_9 - Copy.png";
         return;
+    }
+
+    private static void setupInputImage() {
+        regions = null;
+        regionShift = false;
+
+        imageWidth = img.getWidth();
+        imageHeight = img.getHeight();
+        imageColours = new Integer[imageWidth * imageHeight];
+        imageColoursResult = new BufferedImage(imageWidth , imageHeight , BufferedImage.TYPE_INT_RGB);
+        imageColoursResultPre = new BufferedImage(imageWidth , imageHeight , BufferedImage.TYPE_INT_RGB);
+        // Applies target platform colour limits first
+        for (int y = 0 ; y < imageHeight ; y++) {
+            for (int x = 0; x < imageWidth; x++) {
+                Color colour = new Color(img.getRGB(x,y));
+                Color newColour = ApplyColorLimitsFromColour(colour);
+                imageColours[x+(y*imageWidth)] = newColour.getRGB();
+                imageColoursResultPre.setRGB(x,y,newColour.getRGB());
+            }
+        }
+        imageColoursOriginal = imageColours.clone();
+        tileWidth = imageWidth;
+        tileHeight = imageHeight;
     }
 
     private static int getRGBFromPaletteBytes(byte[] bytes, int j) {

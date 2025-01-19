@@ -407,7 +407,10 @@ public class Main {
                 i++;
                 while (Files.exists(Paths.get(args[i]))) {
                     System.out.println("Processing: " + args[i]);
-                    img = ImageIO.read(new File(args[i]));
+                    File file = new File(args[i]);
+                    nameSuffix = file.getName().replace(" " , "_").replace("-" , "_");
+                    nameSuffix = "_" + nameSuffix.substring(0 , nameSuffix.indexOf(".")) + "_";
+                    img = ImageIO.read(file);
                     if (paletteMaxQuantize < 32) {
                         ImageQuantize();
                     }
@@ -1849,7 +1852,7 @@ public class Main {
 
     private static Integer getBestPaletteIndex(HashMap<Integer, Integer> resultPalette, Integer colour) {
         if (forcedColourIndex.containsKey(colour)) {
-            return forcedColourIndex.get(forcedColourIndex);
+            return forcedColourIndex.get(colour);
         }
         Integer result = resultPalette.get(colour);
 

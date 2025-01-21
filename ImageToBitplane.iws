@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
-    </list>
+    <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -898,15 +894,14 @@
     <list>
       <item itemvalue="Application.--planestoscaled" />
       <item itemvalue="Application.Building Scaled" />
+      <item itemvalue="Application.Demo14 Sprites4" />
       <item itemvalue="Application.Demo7" />
       <item itemvalue="Application.Demo9 Sprites2" />
-      <item itemvalue="Application.Shift and minimise area" />
-      <item itemvalue="Application.Remove duplicates" />
       <item itemvalue="Application.Demo9 Sprites4 64x64" />
-      <item itemvalue="Application.Demo14 Sprites4" />
       <item itemvalue="Application.Main all conv (1)" />
       <item itemvalue="Application.Main all conv" />
       <item itemvalue="Application.Main background convertwritepass" />
+      <item itemvalue="Application.Main background nowritepass" />
       <item itemvalue="Application.Main mode7 &quot;map_9 - mode7 test.png&quot;" />
       <item itemvalue="Application.Main mode7" />
       <item itemvalue="Application.Main old bridge RGB 0 0 0 full image quant" />
@@ -916,6 +911,8 @@
       <item itemvalue="Application.Main old bridge RGB 0 0 0" />
       <item itemvalue="Application.Main old bridge RGB 119 122 133" />
       <item itemvalue="Application.Main sprites convertwritepass" />
+      <item itemvalue="Application.Remove duplicates" />
+      <item itemvalue="Application.Shift and minimise area" />
       <item itemvalue="Application.Sprite 73181 regions shift --imagescale" />
       <item itemvalue="Application.Sprite 73181 regions shift no boss shift" />
       <item itemvalue="Application.Sprite 73181 regions shift" />
@@ -929,9 +926,9 @@
       <item itemvalue="Application.VideoHardware 1 a" />
       <item itemvalue="Application.VideoHardware 13B" />
       <item itemvalue="Application.VideoHardware 2" />
-      <item itemvalue="Application.VideoHardware assets Demo9 --fitpalettes" />
       <item itemvalue="Application.VideoHardware 3" />
       <item itemvalue="Application.VideoHardware 6 SotB chars 1024" />
+      <item itemvalue="Application.VideoHardware assets Demo9 --fitpalettes" />
       <item itemvalue="Application.VideoHardware convert9 Convert chars2 with --paletteoffset 0" />
       <item itemvalue="Application.VideoHardware convert9 Convert chars2 with --paletteoffset 15" />
       <item itemvalue="Application.buildings concat" />
@@ -939,12 +936,11 @@
       <item itemvalue="Application.cammy scale" />
       <item itemvalue="Application.map_9 - Copy - chars.png char screen" />
       <item itemvalue="Application.oldbridge char screen concat" />
-      <item itemvalue="Application.oldbridge char screen with rgbfactor 1024" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor 1024 imagewh" />
+      <item itemvalue="Application.oldbridge char screen with rgbfactor 1024" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor 512" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor no force colour 0" />
       <item itemvalue="Application.oldbridge char screen with rgbfactor" />
-      <item itemvalue="Application.Main background nowritepass" />
       <item itemvalue="JUnit.MainTest" />
       <item itemvalue="JUnit.MainTest.main1" />
       <item itemvalue="JUnit.MainTest.main1_oldbridge" />

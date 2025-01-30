@@ -1060,11 +1060,22 @@ public class Main {
                 }
             }
 
-            fc = new FileOutputStream(outputScaled4 + ".bin").getChannel();
-            fc.write(ByteBuffer.wrap(merged));
+            int fileIndex = 0;
+            int chunkOffset = 0;
+            while (chunkOffset < merged.length) {
+                if (fileIndex == 0) {
+                    fc = new FileOutputStream(outputScaled4 + ".bin").getChannel();
+                } else {
+                    fc = new FileOutputStream(outputScaled4 + ".bin" + fileIndex).getChannel();
+                }
+                int minLength = Math.min(merged.length - chunkOffset , 0x10000);
+                fc.write(ByteBuffer.wrap(merged, chunkOffset , minLength));
 
-            fc.close();
-            fc = null;
+                fc.close();
+                fc = null;
+                chunkOffset += 0x10000;
+                fileIndex++;
+            }
 
             ImageIO.write(imageColoursResult , "png" , new File(outputScaled4 + ".png"));
             ImageIO.write(imageColoursResultPre , "png" , new File(outputScaled4 + "_pre.png"));

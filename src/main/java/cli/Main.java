@@ -1,5 +1,6 @@
 package cli;
 
+import javafx.util.Pair;
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.css.RGBColor;
 
@@ -7,6 +8,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.Inet4Address;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
@@ -79,6 +81,9 @@ public class Main {
     static PrintStream outputSprites = null;
     static PrintStream outputSprites2 = null;
     static PrintStream outputSprites3 = null;
+    static PrintStream outputSprites4 = null;
+    static LinkedList<Pair<String,Integer>> labelToValue = new LinkedList<>();
+    static HashSet<Integer> labelValues = new HashSet<Integer>();
     static String outputPalettes = null;
     static String outputScaled = null;
     static String outputScaled4 = null;
@@ -448,6 +453,7 @@ public class Main {
                 outputSprites = null;
                 outputSprites2 = null;
                 outputSprites3 = null;
+                outputSprites4 = null;
                 outputPlanes = null;
                 outputPalettes = null;
                 outputTileBytes = null;
@@ -461,6 +467,7 @@ public class Main {
                 outputSprites = null;
                 outputSprites2 = null;
                 outputSprites3 = null;
+                outputSprites4 = null;
                 cumulativeSpriteCount = 0;
                 outputPlanes = null;
                 outputPalettes = null;
@@ -526,6 +533,7 @@ public class Main {
                 outputSprites = new PrintStream(new FileOutputStream(args[i+1]));
                 outputSprites2 = new PrintStream(new FileOutputStream(args[i+1] + ".a"));
                 outputSprites3 = new PrintStream(new FileOutputStream(args[i+1] + "Vars.a"));
+                outputSprites4 = new PrintStream(new FileOutputStream(args[i+1] + "Tables.a"));
                 cumulativeSpriteCount = 0;
                 outputVectors = null;
                 i++;
@@ -1079,6 +1087,19 @@ public class Main {
 
             ImageIO.write(imageColoursResult , "png" , new File(outputScaled4 + ".png"));
             ImageIO.write(imageColoursResultPre , "png" , new File(outputScaled4 + "_pre.png"));
+
+
+            // Now output suitable ScaleTab code
+            //outputSprites4
+            for(Integer value : labelValues) {
+                for (Pair<String, Integer> entry : labelToValue) {
+                    if (entry.getValue().equals(value)) {
+                        outputSprites4.println(entry.getKey()+"ScaleTab");
+                    }
+                }
+                outputSprites4.println("\t+MGenerateSprite4ScaleTable " + value);
+            }
+
         }
 
         if (outputScreenData != null || outputSprites != null) {
@@ -1826,7 +1847,11 @@ public class Main {
                 if (outputScaled4 != null) {
                     outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileAddress=" + currentTileAddress);
                     outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileWidth=" + tileWidth);
+                    labelToValue.add(new Pair<String,Integer>(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileWidth", tileWidth));
+                    labelValues.add(tileWidth);
                     outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileHeight=" + tileHeight);
+                    labelToValue.add(new Pair<String,Integer>(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileHeight", tileHeight));
+                    labelValues.add(tileHeight);
                 } else {
                     outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileIndex=" + theTileIndex);
                 }

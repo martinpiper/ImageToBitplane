@@ -233,3 +233,7 @@
 
 
 * Write image result on image import, before any closest colour match, but after RGB bit depth
+
+
+
+* For Sprites4, could do with asm generation of width/height scale tables that remove duplicate entries

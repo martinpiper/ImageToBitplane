@@ -81,8 +81,3 @@
 
 
 * When converting outputScaled4 optionally trim left/right/top/bottom edges to squeeze as much image data as possible.
-
-
-
-
-* For Sprites4, could do with asm generation of width/height scale tables that remove duplicate entries

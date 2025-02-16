@@ -335,6 +335,25 @@ public class Main {
 
                 i++;
                 continue;
+            } else if (args[i].compareToIgnoreCase("--onlyloadwholepalettes") == 0) {
+                byte[] bytes = Files.readAllBytes(Paths.get(args[i+1]));
+
+                HashMap<Integer, Integer> palette = new HashMap<Integer, Integer>();
+                // TODO: palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
+                for (int j = 0; j < bytes.length; j += bytesPerColourPaletteEntry) {
+                    int rgb = getRGBFromPaletteBytes(bytes, j);
+                    if (!palette.containsKey(rgb)) {
+                        palette.put(rgb, palette.size());
+                    }
+                    if (palette.size() >= paletteMaxLen) {
+                        palettes.add(palette);
+                        palette = new HashMap<Integer, Integer>();
+                        // TODO: palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
+                    }
+                }
+
+                i++;
+                continue;
             } else if (args[i].compareToIgnoreCase("--loadpalettebestfit") == 0) {
                 byte[] bytes = Files.readAllBytes(Paths.get(args[i+1]));
 
@@ -987,6 +1006,7 @@ public class Main {
 
     private static void OutputFiles() throws IOException {
         FileChannel fc;
+        PrintStream fcd;
         if (outputTileBytes != null) {
             tileByteData.flip();
             if (tileByteData.limit() >= 8192) {
@@ -1142,6 +1162,7 @@ public class Main {
 
         if (outputPalettes != null) {
             fc = new FileOutputStream(outputPalettes).getChannel();
+            fcd = new PrintStream(new FileOutputStream(outputPalettes + ".debug.txt"));
             System.out.println("num palettes=" + palettes.size());
             int outNum = 0;
             for (HashMap<Integer, Integer> palette : palettes) {
@@ -1158,6 +1179,7 @@ public class Main {
                         maxEntryIndex = paletteMaxLen;
                     }
                     byte[] thisPalette = new byte[maxEntryIndex * bytesPerColourPaletteEntry];
+                    Color[] thisPaletteDebug = new Color[maxEntryIndex];
                     for (Map.Entry<Integer, Integer> entry : palette.entrySet()) {
                         Color colour = new Color(entry.getKey());
 
@@ -1168,6 +1190,7 @@ public class Main {
 
                         // Add to the palette data
                         thisPalette[(entry.getValue() * bytesPerColourPaletteEntry)] = (byte) (theColourValue & 0xff);
+                        thisPaletteDebug[entry.getValue()] = colour;
                         if (bytesPerColourPaletteEntry > 1) {
                             theColourValue >>= 8;
                             thisPalette[(entry.getValue() * bytesPerColourPaletteEntry)+1] = (byte) (theColourValue & 0xff);
@@ -1178,6 +1201,17 @@ public class Main {
                         }
                     }
                     fc.write(ByteBuffer.wrap(thisPalette));
+                    fcd.print("Palette " + outNum + " : ");
+                    int index = 0;
+                    while (index < thisPaletteDebug.length) {
+                        if (thisPaletteDebug[index] == null) {
+                            fcd.print(" " + index + ":unused");
+                        } else {
+                            fcd.print(" " + index + ":" + thisPaletteDebug[index].getRed() + "," + thisPaletteDebug[index].getGreen() + "," + thisPaletteDebug[index].getBlue());
+                        }
+                        index++;
+                    }
+                    fcd.println();
                 }
                 outNum++;
             }

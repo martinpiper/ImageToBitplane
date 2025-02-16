@@ -29,6 +29,8 @@
   * Loads colours with duplicate colour checks for the currently active palette.
 * --loadpalettebestfit filename
   * Loads colours with duplicate colours checks across all palettes.
+* --onlyloadwholepalettes filename
+  * This only loads whole palette entries and avoids creating partially filled palettes. This means --loadpalettebestfit should be used when later, when needed, to ensure any remaining colours are loaded.   
 * --spritexy x y
   * When writing sprite data structures, this is the starting output x/y position
 * --imagescale x y

@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Done.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Done.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
     </list>
@@ -115,7 +114,7 @@
       <command value="vectorRightLength" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Demo14 Sprites4">
+  <component name="RunManager" selected="Application.Demo14 Problem colour match">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -132,8 +131,23 @@
     </configuration>
     <configuration name="Building Scaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
-      <module name="main" />
+      <module name="imagetobitplane" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --palettesize 16 --forcergb 255 0 255 --image target\testconcat4.png --imagequantize 16 --tilewh 32 32 --imagequantize 16 --nostacking --outputscaled target\testconcat4ScaledSprites --outputsprites target\testconcat4ScaledSpritesSheet.txt --outputpalettes target\testconcat4PaletteData.bin --convertwritepass" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo14 Problem colour match" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="imagetobitplane" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 5 6 5 --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4Clouds.pal --forcergb 255 0 255 --forcergb 200 0 200 --forcergb 150 0 150 --forcergb 100 0 100 --nostacking --outputscaled4 ..\tmp\ScaledSprites4 --outputsprites ..\tmp\Demo14ScaledSprites4Sheet.txt --outputpalettes ..\tmp\Demo14ScaledSprites4.pal --batchimagequantize 16 --batchimages Demo14\PlayerAirplane\Level\t-10.png Demo14\PlayerAirplane\Level\t-15.png --writepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cli.*" />
@@ -148,6 +162,36 @@
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="imagetobitplane" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 5 6 5 --newpalettes --palettesize 16 --forcergb 255 0 255 --forcergb 200 0 200 --forcergb 150 0 150 --forcergb 100 0 100 --nostacking --outputscaled4 c:\temp\TScaledSprites4 --outputsprites c:\temp\TScaledSprites4Sheet.txt --outputpalettes c:\temp\t.pal --batchimagequantize 16 --batchimages &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-692.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-693.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-694.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-695.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-696.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-698.png&quot; Demo14\t-715.png --writepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo14 mode7 palette" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="imagetobitplane" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 5 6 5 --newpalettes --palettesize 256 --loadpalette ..\tmp\Demo14ScaledSprites4.pal --nostacking --image &quot;Demo14\clouds.png&quot; --tilewh 16 16 --fitpalettes --outputtilebytes ../tmp/Demo14CloudsTiles.bin --outputscrcol ../tmp/Demo14Clouds.bin --convertwritepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo14 mode7 paletteraw" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="imagetobitplane" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 5 6 5 --palettesize 256 --newpalettes --loadpaletteraw ..\tmp\Demo14ScaledSprites4.pal --nostacking --image &quot;Demo14\clouds.png&quot; --tilewh 16 16 --fitpalettes --outputtilebytes ../tmp/Demo14CloudsTiles.bin --outputscrcol ../tmp/Demo14Clouds.bin --convertwritepass" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
       <extension name="coverage">
         <pattern>
@@ -901,6 +945,9 @@
       <item itemvalue="Application.--planestoscaled" />
       <item itemvalue="Application.Building Scaled" />
       <item itemvalue="Application.Demo14 Sprites4" />
+      <item itemvalue="Application.Demo14 mode7 paletteraw" />
+      <item itemvalue="Application.Demo14 mode7 palette" />
+      <item itemvalue="Application.Demo14 Problem colour match" />
       <item itemvalue="Application.Demo7" />
       <item itemvalue="Application.Demo9 Sprites2" />
       <item itemvalue="Application.Demo9 Sprites4 64x64" />
@@ -1001,7 +1048,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1054</line>
+          <line>1074</line>
           <option name="timeStamp" value="144" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -1016,28 +1063,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1571</line>
-          <option name="timeStamp" value="159" />
+          <line>1932</line>
+          <option name="timeStamp" value="176" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1581</line>
-          <option name="timeStamp" value="160" />
+          <line>1956</line>
+          <option name="timeStamp" value="177" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1558</line>
-          <option name="timeStamp" value="161" />
+          <line>1165</line>
+          <option name="timeStamp" value="182" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1188</line>
-          <option name="timeStamp" value="162" />
+          <line>1573</line>
+          <option name="timeStamp" value="184" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>416</line>
-          <option name="timeStamp" value="163" />
+          <line>1515</line>
+          <option name="timeStamp" value="186" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1059,6 +1106,8 @@
         <watch expression="coloursByIndex" language="JAVA" />
         <watch expression="args[i]" language="JAVA" />
         <watch expression="img" language="JAVA" />
+        <watch expression="coloursByIndex[value]" language="JAVA" />
+        <watch expression="bytes.length / bytesPerColourPaletteEntry" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

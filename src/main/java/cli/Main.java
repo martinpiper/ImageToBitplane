@@ -808,10 +808,11 @@ public class Main {
                     }
                     System.out.println("Consider duplicate removal with: " + otherFilename);
                     BufferedImage image2 = ImageIO.read(new File(otherFilename));
-                    if (image1.getWidth() != image2.getWidth()) {
+                    // If image1 is a sub-image of image2 then still compare it and remove if needed
+                    if (image1.getWidth() > image2.getWidth()) {
                         continue;
                     }
-                    if (image1.getHeight() != image2.getHeight()) {
+                    if (image1.getHeight() > image2.getHeight()) {
                         continue;
                     }
                     boolean identical = true;
@@ -821,13 +822,13 @@ public class Main {
                                 continue;
                             }
                             // And flips
-                            if (image1.getRGB(x, y) == image2.getRGB(image1.getWidth() - x - 1, y)) {
+                            if (image1.getRGB(x, y) == image2.getRGB(image2.getWidth() - x - 1, y)) {
                                 continue;
                             }
-                            if (image1.getRGB(x, y) == image2.getRGB(x, image1.getHeight() - y - 1)) {
+                            if (image1.getRGB(x, y) == image2.getRGB(x, image2.getHeight() - y - 1)) {
                                 continue;
                             }
-                            if (image1.getRGB(x, y) == image2.getRGB(image1.getWidth() - x - 1, image1.getHeight() - y - 1)) {
+                            if (image1.getRGB(x, y) == image2.getRGB(image2.getWidth() - x - 1, image2.getHeight() - y - 1)) {
                                 continue;
                             }
                             identical = false;
@@ -835,8 +836,8 @@ public class Main {
                         }
                     }
                     if (identical) {
-                        FileUtils.deleteQuietly(new File(otherFilename));
-                        System.out.println("Removing identical image: " + otherFilename);
+                        FileUtils.deleteQuietly(new File(filename));
+                        System.out.println("Removing identical image: " + filename);
                         break;
                     }
                 }

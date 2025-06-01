@@ -509,6 +509,7 @@ public class Main {
                 outputVectors = args[i+1];
                 vectorData = ByteBuffer.allocate(16384);
                 i++;
+                continue;
             } else if (args[i].compareToIgnoreCase("--outputplanes") == 0) {
                 outputPlanes = args[i+1];
                 outputTileBytes = null;

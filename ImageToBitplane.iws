@@ -113,7 +113,7 @@
       <command value="vectorRightLength" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Demo14 Problem colour match">
+  <component name="RunManager" selected="Application.Vectors">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -573,8 +573,10 @@
       </method>
     </configuration>
     <configuration name="Vectors" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="corretto-1.8" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
-      <module name="main" />
+      <module name="imagetobitplane" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 0 0 0 --paletteoffset 0 --palettesize 16 --image &quot;C:\work\C64\Animation\RawFrames2\frm00001.bmp&quot; --outputpalettes target/vectors_paletteData.bin --outputvectors 1 20 2 255 target/vectors_Data.bin --convertwritepass" />
       <extension name="coverage">
         <pattern>
@@ -1047,7 +1049,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1075</line>
+          <line>1076</line>
           <option name="timeStamp" value="144" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -1062,27 +1064,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1933</line>
+          <line>1934</line>
           <option name="timeStamp" value="176" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1957</line>
+          <line>1958</line>
           <option name="timeStamp" value="177" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1166</line>
+          <line>1167</line>
           <option name="timeStamp" value="182" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1574</line>
+          <line>1575</line>
           <option name="timeStamp" value="184" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1516</line>
+          <line>1517</line>
           <option name="timeStamp" value="186" />
         </line-breakpoint>
       </breakpoints>

@@ -435,6 +435,32 @@ public class Main {
                     nameSuffix = file.getName().replace(" " , "_").replace("-" , "_");
                     nameSuffix = "_" + nameSuffix.substring(0 , nameSuffix.indexOf(".")) + "_";
                     img = ImageIO.read(file);
+                    /*
+                    int newWidth = (img.getWidth()+1)/2;
+                    newWidth = newWidth * 2;
+                    if (newWidth != img.getWidth()) {
+                        BufferedImage newImage = new BufferedImage(newWidth , img.getHeight() , img.getType());
+                        final int[] firstTransColour = {0};
+                        if (!forcedColourByIndex.isEmpty()) {
+                            firstTransColour[0] = forcedColourByIndex.get(0);
+                        } else if (!palettes.isEmpty()) {
+                            HashMap<Integer,Integer> thePalette = palettes.get(0);
+                            thePalette.forEach( (k,v) -> {if (v==0){
+                                firstTransColour[0] = k;}});
+                        }
+                        for (int x = 0 ; x < newImage.getWidth(); x++) {
+                            for (int y = 0 ; y < newImage.getHeight(); y++) {
+                                newImage.setRGB(x,y, firstTransColour[0]);
+                            }
+                        }
+                        for (int x = 0 ; x < img.getWidth(); x++) {
+                            for (int y = 0 ; y < img.getHeight(); y++) {
+                                newImage.setRGB(x,y,img.getRGB(x,y));
+                            }
+                        }
+                        img = newImage;
+                    }
+                    */
                     if (paletteMaxQuantize < 32) {
                         ImageQuantize();
                     }

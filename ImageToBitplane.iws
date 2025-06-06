@@ -113,7 +113,7 @@
       <command value="vectorRightLength" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Vectors">
+  <component name="RunManager" selected="Application.Demo14 Sprites4">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -1049,7 +1049,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1076</line>
+          <line>1102</line>
           <option name="timeStamp" value="144" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -1064,51 +1064,32 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1934</line>
+          <line>1960</line>
           <option name="timeStamp" value="176" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1958</line>
+          <line>1984</line>
           <option name="timeStamp" value="177" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1167</line>
+          <line>1193</line>
           <option name="timeStamp" value="182" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1575</line>
-          <option name="timeStamp" value="184" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1517</line>
-          <option name="timeStamp" value="186" />
+          <line>460</line>
+          <option name="timeStamp" value="189" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
-        <watch expression="bestFoundPaletteIndex" language="JAVA" />
-        <watch expression="tileByteData" language="JAVA" />
-        <watch expression="regions" />
-        <watch expression="theTile" />
-        <watch expression="dataOffset" />
-        <watch expression="palettes" language="JAVA" />
-        <watch expression="colour" />
-        <watch expression="forcedColourIndex.get(colour)" language="JAVA" />
-        <watch expression="palette.get(colour)" language="JAVA" />
-        <watch expression="resultPalette" language="JAVA" />
-        <watch expression="imageColoursResult" language="JAVA" />
-        <watch expression="forcedColourIndex" language="JAVA" />
-        <watch expression="forcedColourByIndex" language="JAVA" />
-        <watch expression="coloursByIndex" language="JAVA" />
-        <watch expression="args[i]" language="JAVA" />
+        <watch expression="firstTransColour" />
+        <watch expression="transColour" />
+        <watch expression="newImage" language="JAVA" />
         <watch expression="img" language="JAVA" />
-        <watch expression="coloursByIndex[value]" language="JAVA" />
-        <watch expression="bytes.length / bytesPerColourPaletteEntry" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

@@ -88,3 +88,8 @@
 * When saving and loading a number of palettes, make the saved unused colours use the first transparent colour in a palette. This means when it's loaded the unused colours are maintained for potential next usage by other palettes.
 	This is going to be useful for packing in extra sprite frames and changing palettes during a level or across loads.
 	When a common palette is needed for common sprites, for example.
+
+
+
+
+* "Palette quantize pass. Size =" is very slow

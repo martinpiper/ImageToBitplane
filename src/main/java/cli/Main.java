@@ -301,9 +301,12 @@ public class Main {
 
                 HashMap<Integer, Integer> palette = new HashMap<Integer, Integer>();
                 int counter = 0;
+                HashSet<Integer> alreadyLoaded = new HashSet<>();
                 for (int j = 0; j < bytes.length; j += bytesPerColourPaletteEntry) {
                     int rgb = getRGBFromPaletteBytes(bytes, j);
-                    palette.put(rgb, palette.size());
+                    if (!palette.containsKey(rgb)) {    // Fixes the load problem when black (0,0,0) appears multiple times for a palette
+                        palette.put(rgb, palette.size());
+                    }
                     counter++;
                     if (counter >= paletteMaxLen) {
                         palettes.add(palette);

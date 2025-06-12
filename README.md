@@ -17,6 +17,8 @@
   * during quantization, the RGB colour is weighted by the multiplier factor
 * --resetrgbfactor
   * Clears the RGB factor list
+* --paletteaddrgbs
+  * Adds RGB triplets separated by spaces (e.g. 255 128 64) until the next command line option starting with "--" to one palette. Any current force RGB colours are added first.
 * --paletteoffset offset
   * Adds a palette number value when writing data. Useful for adding an offset to sprite palette index structures or converting screens.
 * --palettesize size
@@ -88,6 +90,8 @@
   * Disables chars mode.
 * --concat filename1 filename2 filenameOutput
   * Vertically concatenates the two images into the third image file.
+* --concath filename1 filename2 filenameOutput
+  * Horizontally concatenates the two images into the third image file.
 * --planestoscaled filename1 filename2 filename3 filename4 filenameOutput
   * Converts sprite bitplane data to scaled sprite data format
 * --region name hotX hotY offsetX offsetY width height

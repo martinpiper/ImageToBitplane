@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
     </list>
@@ -113,7 +114,7 @@
       <command value="vectorRightLength" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Demo14 Sprites4">
+  <component name="RunManager" selected="Application.Demo14 chars">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -157,10 +158,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Demo14 Sprites4" type="Application" factoryName="Application">
+    <configuration name="Demo14 Sprites4 (1)" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="imagetobitplane" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 5 6 5 --newpalettes --palettesize 16 --forcergb 255 0 255 --forcergb 200 0 200 --forcergb 150 0 150 --forcergb 100 0 100 --nostacking --outputscaled4 c:\temp\TScaledSprites4 --outputsprites c:\temp\TScaledSprites4Sheet.txt --outputpalettes c:\temp\t.pal --batchimagequantize 16 --batchimages &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-692.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-693.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-694.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-695.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-696.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-698.png&quot; Demo14\t-715.png --writepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo14 chars" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="imagetobitplane" />
+      <option name="PROGRAM_PARAMETERS" value="--splitmaps --chars --rgbshift 5 6 5 --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4TitleScreen.pal --image &quot;..\tmp\demo14chars2.png&quot; --tilewh 8 8 --fitpalettes --outputplanes ../tmp/Demo14TitleChars_plane --outputscrcol ../tmp/Demo14TitleChars_map.bin --numbitplanes 4 --convertwritepass" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
       <extension name="coverage">
         <pattern>
@@ -517,6 +533,21 @@
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 4 4 4 --newpalettes --forcergb 63 72 204 --paletteoffset 0 --spritexy 0 0xd0 --startxy 0 0 --palettesize 16 --nostacking --numbitplanes 4 --image &quot;src\test\resources\73181 reduced.png&quot; --tilewh 16 16 --imagequantize 16 --outputplanes target/spriteWithPos_planes --outputsprites target/spriteWithPos.txt --outputpalettes target/spriteWithPos.pal --convertwritepass" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test --paletteaddrgbs" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="imagetobitplane" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 5 6 5 --newpalettes --palettesize 16 --forcergb 255 0 255 --outputpalettes c:\temp\t.pal --paletteaddrgbs 0 0 0   255 0 0   0 255 0   0 0 255 --writepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cli.*" />
@@ -912,6 +943,37 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="clean install (1)" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="-DskipTests" />
+                <option value="clean" />
+                <option value="install" />
+              </list>
+            </option>
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
     <configuration name="clean install" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -945,7 +1007,9 @@
     <list>
       <item itemvalue="Application.--planestoscaled" />
       <item itemvalue="Application.Building Scaled" />
-      <item itemvalue="Application.Demo14 Sprites4" />
+      <item itemvalue="Application.Test --paletteaddrgbs" />
+      <item itemvalue="Application.Demo14 Sprites4 (1)" />
+      <item itemvalue="Application.Demo14 chars" />
       <item itemvalue="Application.Demo14 mode7 paletteraw" />
       <item itemvalue="Application.Demo14 mode7 palette" />
       <item itemvalue="Application.Demo14 Problem colour match" />
@@ -999,6 +1063,7 @@
       <item itemvalue="JUnit.MainTest.main1" />
       <item itemvalue="JUnit.MainTest.main1_oldbridge" />
       <item itemvalue="Maven.clean install" />
+      <item itemvalue="Maven.clean install (1)" />
     </list>
     <recent_temporary>
       <list>
@@ -1049,7 +1114,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1102</line>
+          <line>1135</line>
           <option name="timeStamp" value="144" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -1064,32 +1129,52 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1960</line>
+          <line>1993</line>
           <option name="timeStamp" value="176" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1984</line>
+          <line>2017</line>
           <option name="timeStamp" value="177" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1193</line>
+          <line>1226</line>
           <option name="timeStamp" value="182" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>460</line>
+          <line>476</line>
           <option name="timeStamp" value="189" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>284</line>
+          <option name="timeStamp" value="191" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>295</line>
+          <option name="timeStamp" value="192" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>611</line>
+          <option name="timeStamp" value="193" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="firstTransColour" />
+        <watch expression="i" language="JAVA" />
         <watch expression="transColour" />
         <watch expression="newImage" language="JAVA" />
         <watch expression="img" language="JAVA" />
+        <watch expression="args[i]" language="JAVA" />
+        <watch expression="palette" language="JAVA" />
+        <watch expression="rgb" language="JAVA" />
+        <watch expression="" />
       </configuration>
     </watches-manager>
   </component>

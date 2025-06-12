@@ -280,6 +280,22 @@ public class Main {
                 paletteMinLen = ParseValueFrom(args[i+1]);
                 i++;
                 continue;
+            } else if (args[i].compareToIgnoreCase("--paletteaddrgbs") == 0) {
+                i++;
+                HashMap<Integer, Integer> palette = new HashMap<Integer, Integer>();
+                palette = (HashMap<Integer, Integer>) forcedColourIndex.clone();
+                // Process command line triplets
+                while (!args[i].startsWith("--")) {
+                    Color rgb = new Color(ParseValueFrom(args[i]) , ParseValueFrom(args[i+1]) , ParseValueFrom(args[i+2]));
+                    int theColour = ApplyColorLimitsFromColour(rgb).getRGB();
+                    if (!palette.containsKey(theColour)) {
+                        palette.put(theColour, palette.size());
+                    }
+                    i+=3;
+                }
+                palettes.add(palette);
+                i--; // Ready for the next parameter
+                continue;
             } else if (args[i].compareToIgnoreCase("--loadpaletteraw") == 0) {
                 byte[] bytes = Files.readAllBytes(Paths.get(args[i+1]));
 
@@ -641,6 +657,23 @@ public class Main {
                 Graphics g = output.getGraphics();
                 g.drawImage(image1,0,0,null);
                 g.drawImage(image2,0,image1.getHeight(),null);
+                ImageIO.write(output,"png", new File(filenameOutput));
+                continue;
+            } else if (args[i].compareToIgnoreCase("--concath") == 0) {
+                i++;
+                String filename1 = args[i];
+                i++;
+                String filename2 = args[i];
+                i++;
+                String filenameOutput = args[i];
+
+                BufferedImage image1 = ImageIO.read(new File(filename1));
+                BufferedImage image2 = ImageIO.read(new File(filename2));
+
+                BufferedImage output = new BufferedImage(image1.getWidth() + image2.getWidth(), Math.max(image1.getHeight(), image2.getHeight()), BufferedImage.TYPE_INT_RGB);
+                Graphics g = output.getGraphics();
+                g.drawImage(image1,0,0,null);
+                g.drawImage(image2,image1.getWidth(),0,null);
                 ImageIO.write(output,"png", new File(filenameOutput));
                 continue;
             } else if (args[i].compareToIgnoreCase("--planestoscaled") == 0) {

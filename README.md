@@ -112,6 +112,10 @@
   * Preserves char, colour, tile data from a previous conversion pass.
 * --nopreservedata
   * Does not preserve previous data.
+* --preferLaterPalettes
+  * Prefers searching for later palettes when tile matching.
+* --nopreferLaterPalettes
+  * Prefers searching for earlier palettes when tile matching.
 * Image processing options
   * --transparentRGB 255 0 255
     * For image processing (--processNow) sets the transparent colour

@@ -106,6 +106,8 @@ public class Main {
 
     static TreeMap<String , TileIndexFlip> tileToIndexFlip = new TreeMap<String , TileIndexFlip>();
 
+    static boolean preferLaterPalettes = false;
+
     public static void main(String[] args) throws Exception {
 
         boolean shiftTopLeft = false;
@@ -643,6 +645,12 @@ public class Main {
                 continue;
             } else if (args[i].compareToIgnoreCase("--nochars") == 0) {
                 extraCharsBits = false;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--preferLaterPalettes") == 0) {
+                preferLaterPalettes = true;
+                continue;
+            } else if (args[i].compareToIgnoreCase("--nopreferLaterPalettes") == 0) {
+                preferLaterPalettes = false;
                 continue;
             } else if (args[i].compareToIgnoreCase("--concat") == 0) {
                 i++;
@@ -1579,7 +1587,7 @@ public class Main {
                     colourDifference = 256 * tileWidth * tileHeight * 2;
                 }
 
-                if (resultPalette == null || (!ignorePalette && (colourDifference < bestDistance))) {
+                if (resultPalette == null || (!ignorePalette && !preferLaterPalettes && (colourDifference < bestDistance)) || (!ignorePalette && preferLaterPalettes && (colourDifference <= bestDistance))) {
                     resultPalette = palette;
                     bestDistance = colourDifference;
                     bestFoundPaletteIndex = currentPaletteIndex;

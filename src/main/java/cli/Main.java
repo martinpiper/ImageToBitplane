@@ -1283,8 +1283,13 @@ public class Main {
         }
     }
 
-    private static void TileConvert() {
+    static PrintStream fcdTileScreen;
+    private static void TileConvert() throws FileNotFoundException {
         System.out.println("To tiles...");
+        fcdTileScreen = null;
+        if (outputScreenData != null) {
+            fcdTileScreen = new PrintStream(new FileOutputStream(outputScreenData + ".debug.txt"));
+        }
         if (!preserveData) {
             screenTileData = ByteBuffer.allocate((imageWidth * imageHeight) / tileWidth / tileHeight);
             screenColourData = ByteBuffer.allocate((imageWidth * imageHeight) / tileWidth / tileHeight);
@@ -1483,6 +1488,11 @@ public class Main {
         return (x/tileWidth) + ((y/tileHeight) * (imageWidth/tileHeight));
     }
     private static boolean processTileImageAt(boolean newSprite, int x, int y, Region region) {
+        String tileScreenDebugName = "";
+        if (fcdTileScreen != null && outputScreenData != null) {
+            tileScreenDebugName = outputScreenData.replace(" " , "_").replace("-" , "_").replace("/" , "_").replace("\\" , "_").replace("." , "_").replace(":" , "_");
+            tileScreenDebugName = "kTileScreenDebug_" + tileScreenDebugName + "_x" + x + "_y" + y + "_";
+        }
         int dataOffset = getOffsetForXY(x,y);
         System.out.println(";Process x=" + x + " y=" + y + " offset=$" + Integer.toHexString(dataOffset));
         if (outputSprites != null) {
@@ -1830,10 +1840,12 @@ public class Main {
                 bestFlipY = existingIndexFlip.flipY;
                 bestTileIndex = existingIndexFlip.index;
                 System.out.println("Found existing tile: " + bestTileIndex + " ($" + Integer.toHexString(bestTileIndex)+ ")" + " " + (bestFlipX?"H":"") + (bestFlipY?"V":""));
-            } else {
-                if (currentTile == 53) {
-                    currentTile = currentTile;
+                if (fcdTileScreen != null && outputScreenData != null) {
+                    fcdTileScreen.println(tileScreenDebugName + "tile = " + bestTileIndex);
+                    fcdTileScreen.println(tileScreenDebugName + "colour = " + bestFoundPaletteIndex);
+                    fcdTileScreen.println(tileScreenDebugName + "reused = 1");
                 }
+            } else {
                 currentTileAddress = tileByteData.position();
                 // Advances the tile number, could do with duplicate check here
                 tileByteData.put(theTile);
@@ -1841,6 +1853,11 @@ public class Main {
                     System.out.println("New tile needed: " + currentTile + " ($" + Integer.toHexString(currentTile) + ")" + "Bitplane remaining size " + bitplaneData[0].remaining());
                     for (int bp = 0; bp < numBitplanes; bp++) {
                         bitplaneData[bp].put(bitplaneDataTemp[bp]);
+                    }
+                    if (fcdTileScreen != null && outputScreenData != null) {
+                        fcdTileScreen.println(tileScreenDebugName + "tile = " + currentTile);
+                        fcdTileScreen.println(tileScreenDebugName + "colour = " + bestFoundPaletteIndex);
+                        fcdTileScreen.println(tileScreenDebugName + "reused = 0");
                     }
                 }
 
@@ -1907,12 +1924,26 @@ public class Main {
             if (outputTileBytes != null) {
                 bestTileIndex = bestTileIndex  | 0x40;
             }
+            if (fcdTileScreen != null && outputScreenData != null) {
+                fcdTileScreen.println(tileScreenDebugName + "flipx = 1");
+            }
+        } else {
+            if (fcdTileScreen != null && outputScreenData != null) {
+                fcdTileScreen.println(tileScreenDebugName + "flipx = 0");
+            }
         }
         if (bestFlipY) {
             bestFoundPaletteIndex = bestFoundPaletteIndex | 0x80;
             // Mode7 tiles want the flip in screen data
             if (outputTileBytes != null) {
                 bestTileIndex = bestTileIndex  | 0x80;
+            }
+            if (fcdTileScreen != null && outputScreenData != null) {
+                fcdTileScreen.println(tileScreenDebugName + "flipy = 1");
+            }
+        } else {
+            if (fcdTileScreen != null && outputScreenData != null) {
+                fcdTileScreen.println(tileScreenDebugName + "flipy = 0");
             }
         }
 

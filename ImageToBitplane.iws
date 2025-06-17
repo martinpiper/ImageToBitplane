@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
     </list>
@@ -114,7 +113,7 @@
       <command value="vectorRightLength" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Demo14 chars">
+  <component name="RunManager" selected="Application.Demo14 Sprites4 batch image quantize">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -162,6 +161,21 @@
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="imagetobitplane" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 5 6 5 --newpalettes --palettesize 16 --forcergb 255 0 255 --forcergb 200 0 200 --forcergb 150 0 150 --forcergb 100 0 100 --nostacking --outputscaled4 c:\temp\TScaledSprites4 --outputsprites c:\temp\TScaledSprites4Sheet.txt --outputpalettes c:\temp\t.pal --batchimagequantize 16 --batchimages &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-692.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-693.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-694.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-695.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-696.png&quot; &quot;C:\Work\C64\VideoHardware\assets\Demo14\Intro\t-698.png&quot; Demo14\t-715.png --writepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo14 Sprites4 batch image quantize" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="imagetobitplane" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 5 6 5 --newpalettes --palettesize 16 --forcergb 255 0 255 --forcergb 200 0 200 --forcergb 150 0 150 --forcergb 100 0 100 --nostacking --outputpalettes ..\tmp\Demo14ScaledSprites4Game1.pal --batchimagequantize 16 --resetforcergb --forcergb 255 0 255 --batchimagequantize 5 --batchimages Demo14\t-241.png Demo14\t-90.png Demo14\t-90facing.png --batchimages &quot;Demo14\t-787.png&quot; Demo14\t-1565.png Demo14\t-1565rot.png Demo14\t-1607.png Demo14\t-1611.png Demo14\t-786.png &quot;Demo14\t-576.png&quot; &quot;Demo14\t-934.png&quot; &quot;Demo14\t-1039.png&quot; &quot;Demo14\t-14.png&quot; &quot;Demo14\t-14rot.png&quot; &quot;Demo14\t-42.png&quot; Demo14\BulletsExplosions\t-208.png Demo14\BulletsExplosions\t-793.png Demo14\BulletsExplosions\t-328.png &quot;Demo14\BulletsExplosions\t-231 - Copy.png&quot; &quot;Demo14\BulletsExplosions\t-231.png&quot; &quot;Demo14\BulletsExplosions\t-232 - Copy.png&quot; &quot;Demo14\BulletsExplosions\t-232.png&quot; &quot;Demo14\BulletsExplosions\t-258.png&quot; &quot;Demo14\BulletsExplosions\t-259.png&quot; &quot;Demo14\BulletsExplosions\et-317.png&quot; &quot;Demo14\BulletsExplosions\et-318.png&quot; &quot;Demo14\BulletsExplosions\et-319.png&quot; &quot;Demo14\BulletsExplosions\et-731.png&quot; &quot;Demo14\BulletsExplosions\et-300.png&quot; &quot;Demo14\BulletsExplosions\et-509.png&quot; &quot;Demo14\BulletsExplosions\et-514.png&quot; &quot;Demo14\BulletsExplosions\et-523.png&quot; &quot;Demo14\BulletsExplosions\et-501.png&quot; &quot;Demo14\BulletsExplosions\et-528.png&quot; &quot;Demo14\BulletsExplosions\et-301.png&quot; &quot;Demo14\BulletsExplosions\et-517.png&quot; &quot;Demo14\BulletsExplosions\et-365.png&quot; &quot;Demo14\BulletsExplosions\et-383.png&quot; &quot;Demo14\BulletsExplosions\et-408.png&quot; --batchimages Demo14\t-3081.png Demo14\t-3112.png --writepass" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
       <extension name="coverage">
         <pattern>
@@ -1024,6 +1038,7 @@
       <item itemvalue="Application.Building Scaled" />
       <item itemvalue="Application.Test --paletteaddrgbs" />
       <item itemvalue="Application.Demo14 Sprites4 (1)" />
+      <item itemvalue="Application.Demo14 Sprites4 batch image quantize" />
       <item itemvalue="Application.Demo14 chars" />
       <item itemvalue="Application.Demo14 chars nolaterpalettes" />
       <item itemvalue="Application.Demo14 mode7 paletteraw" />
@@ -1129,93 +1144,41 @@
           <option name="timeStamp" value="80" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
+          <condition expression="x==256 &amp;&amp; y==0" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1146</line>
-          <option name="timeStamp" value="144" />
+          <line>1499</line>
+          <option name="timeStamp" value="207" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="x==256 &amp;&amp; y==0" language="JAVA" />
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>1675</line>
+          <option name="timeStamp" value="208" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="x==256 &amp;&amp; y==0" language="JAVA" />
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>1716</line>
+          <option name="timeStamp" value="209" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>216</line>
-          <option name="timeStamp" value="149" />
+          <line>457</line>
+          <option name="timeStamp" value="211" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>151</line>
-          <option name="timeStamp" value="150" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1237</line>
-          <option name="timeStamp" value="182" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>481</line>
-          <option name="timeStamp" value="189" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>286</line>
-          <option name="timeStamp" value="191" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>297</line>
-          <option name="timeStamp" value="192" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>616</line>
-          <option name="timeStamp" value="193" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1504</line>
-          <option name="timeStamp" value="194" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1540</line>
-          <option name="timeStamp" value="199" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1585</line>
-          <option name="timeStamp" value="200" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1545</line>
-          <option name="timeStamp" value="201" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>304</line>
-          <option name="timeStamp" value="203" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>318</line>
-          <option name="timeStamp" value="204" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>313</line>
-          <option name="timeStamp" value="205" />
+          <line>487</line>
+          <option name="timeStamp" value="212" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
-        <watch expression="firstTransColour" />
-        <watch expression="i" language="JAVA" />
-        <watch expression="transColour" />
-        <watch expression="newImage" language="JAVA" />
-        <watch expression="img" language="JAVA" />
-        <watch expression="args[i]" language="JAVA" />
-        <watch expression="palette" language="JAVA" />
-        <watch expression="rgb" language="JAVA" />
         <watch expression="palettes" language="JAVA" />
+        <watch expression="theTile" language="JAVA" />
+        <watch expression="value" />
+        <watch expression="colour" />
       </configuration>
     </watches-manager>
   </component>

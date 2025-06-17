@@ -456,6 +456,8 @@ public class Main {
                     nameSuffix = file.getName().replace(" " , "_").replace("-" , "_");
                     nameSuffix = "_" + nameSuffix.substring(0 , nameSuffix.indexOf(".")) + "_";
                     img = ImageIO.read(file);
+                    setupInputImage();
+
                     /*
                     int newWidth = (img.getWidth()+1)/2;
                     newWidth = newWidth * 2;
@@ -486,7 +488,6 @@ public class Main {
                         ImageQuantize();
                     }
 
-                    setupInputImage();
                     TileConvert();
 
                     preserveData = true;

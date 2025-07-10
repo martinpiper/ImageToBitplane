@@ -1848,6 +1848,7 @@ public class Main {
                 bestFlipX = existingIndexFlip.flipX;
                 bestFlipY = existingIndexFlip.flipY;
                 bestTileIndex = existingIndexFlip.index;
+                currentTileAddress = existingIndexFlip.address;
                 System.out.println("Found existing tile: " + bestTileIndex + " ($" + Integer.toHexString(bestTileIndex)+ ")" + " " + (bestFlipX?"H":"") + (bestFlipY?"V":""));
                 if (fcdTileScreen != null && outputScreenData != null) {
                     fcdTileScreen.println(tileScreenDebugName + "tile = " + bestTileIndex);
@@ -1874,6 +1875,7 @@ public class Main {
                 existingIndexFlip.flipX = false;
                 existingIndexFlip.flipY = false;
                 existingIndexFlip.index = currentTile;
+                existingIndexFlip.address = currentTileAddress;
                 tileToIndexFlip.put(testTile , existingIndexFlip);
 
                 // Now register the flips
@@ -1887,6 +1889,7 @@ public class Main {
                 existingIndexFlip.flipX = true;
                 existingIndexFlip.flipY = false;
                 existingIndexFlip.index = currentTile;
+                existingIndexFlip.address = currentTileAddress;
                 testTile = Base64.getEncoder().encodeToString(theTileFlipped);
                 // Because the flipped versions might be symmetrical
                 if (!tileToIndexFlip.containsKey(testTile)) {
@@ -1902,6 +1905,7 @@ public class Main {
                 existingIndexFlip.flipX = true;
                 existingIndexFlip.flipY = true;
                 existingIndexFlip.index = currentTile;
+                existingIndexFlip.address = currentTileAddress;
                 testTile = Base64.getEncoder().encodeToString(theTileFlipped);
                 // Because the flipped versions might be symmetrical
                 if (!tileToIndexFlip.containsKey(testTile)) {
@@ -1917,6 +1921,7 @@ public class Main {
                 existingIndexFlip.flipX = false;
                 existingIndexFlip.flipY = true;
                 existingIndexFlip.index = currentTile;
+                existingIndexFlip.address = currentTileAddress;
                 testTile = Base64.getEncoder().encodeToString(theTileFlipped);
                 // Because the flipped versions might be symmetrical
                 if (!tileToIndexFlip.containsKey(testTile)) {

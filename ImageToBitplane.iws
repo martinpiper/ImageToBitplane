@@ -7,6 +7,7 @@
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cli/TileIndexFlip.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/TileIndexFlip.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -113,7 +114,7 @@
       <command value="vectorRightLength" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Demo14 Sprites4 batch image quantize">
+  <component name="RunManager" selected="Application.Demo14 Sprites4 existing tile issue">
     <configuration name="--planestoscaled" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="main" />
@@ -176,6 +177,21 @@
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="imagetobitplane" />
       <option name="PROGRAM_PARAMETERS" value="--rgbshift 5 6 5 --newpalettes --palettesize 16 --forcergb 255 0 255 --forcergb 200 0 200 --forcergb 150 0 150 --forcergb 100 0 100 --nostacking --outputpalettes ..\tmp\Demo14ScaledSprites4Game1.pal --batchimagequantize 16 --resetforcergb --forcergb 255 0 255 --batchimagequantize 5 --batchimages Demo14\t-241.png Demo14\t-90.png Demo14\t-90facing.png --batchimages &quot;Demo14\t-787.png&quot; Demo14\t-1565.png Demo14\t-1565rot.png Demo14\t-1607.png Demo14\t-1611.png Demo14\t-786.png &quot;Demo14\t-576.png&quot; &quot;Demo14\t-934.png&quot; &quot;Demo14\t-1039.png&quot; &quot;Demo14\t-14.png&quot; &quot;Demo14\t-14rot.png&quot; &quot;Demo14\t-42.png&quot; Demo14\BulletsExplosions\t-208.png Demo14\BulletsExplosions\t-793.png Demo14\BulletsExplosions\t-328.png &quot;Demo14\BulletsExplosions\t-231 - Copy.png&quot; &quot;Demo14\BulletsExplosions\t-231.png&quot; &quot;Demo14\BulletsExplosions\t-232 - Copy.png&quot; &quot;Demo14\BulletsExplosions\t-232.png&quot; &quot;Demo14\BulletsExplosions\t-258.png&quot; &quot;Demo14\BulletsExplosions\t-259.png&quot; &quot;Demo14\BulletsExplosions\et-317.png&quot; &quot;Demo14\BulletsExplosions\et-318.png&quot; &quot;Demo14\BulletsExplosions\et-319.png&quot; &quot;Demo14\BulletsExplosions\et-731.png&quot; &quot;Demo14\BulletsExplosions\et-300.png&quot; &quot;Demo14\BulletsExplosions\et-509.png&quot; &quot;Demo14\BulletsExplosions\et-514.png&quot; &quot;Demo14\BulletsExplosions\et-523.png&quot; &quot;Demo14\BulletsExplosions\et-501.png&quot; &quot;Demo14\BulletsExplosions\et-528.png&quot; &quot;Demo14\BulletsExplosions\et-301.png&quot; &quot;Demo14\BulletsExplosions\et-517.png&quot; &quot;Demo14\BulletsExplosions\et-365.png&quot; &quot;Demo14\BulletsExplosions\et-383.png&quot; &quot;Demo14\BulletsExplosions\et-408.png&quot; --batchimages Demo14\t-3081.png Demo14\t-3112.png --writepass" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo14 Sprites4 existing tile issue" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="cli.Main" />
+      <module name="imagetobitplane" />
+      <option name="PROGRAM_PARAMETERS" value="--rgbshift 5 6 5 --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4GameEntity0.pal --fitpalettes --nostacking --outputscaled4 ..\tmp\ScaledSprites4 --outputsprites ..\tmp\Demo14ScaledSprites4Sheet.txt --batchimagequantize 16 --batchimagequantize 16 --batchimages Demo14\t-241.png Demo14\t-104.png Demo14\t-113.png Demo14\t-279.png Demo14\t-90.png Demo14\t-177.png --batchimages Demo14\BulletsExplosions\t-208.png Demo14\BulletsExplosions\t-793.png Demo14\BulletsExplosions\t-328.png &quot;Demo14\BulletsExplosions\et-731.png&quot; &quot;Demo14\BulletsExplosions\et-300.png&quot; &quot;Demo14\BulletsExplosions\et-509.png&quot; &quot;Demo14\BulletsExplosions\et-514.png&quot; &quot;Demo14\BulletsExplosions\et-523.png&quot; &quot;Demo14\BulletsExplosions\et-501.png&quot; &quot;Demo14\BulletsExplosions\et-528.png&quot; &quot;Demo14\BulletsExplosions\et-301.png&quot; &quot;Demo14\BulletsExplosions\et-517.png&quot; &quot;Demo14\BulletsExplosions\et-365.png&quot; &quot;Demo14\BulletsExplosions\et-383.png&quot; &quot;Demo14\BulletsExplosions\et-408.png&quot; --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4Game0.pal --batchimages Demo14\t-787.png Demo14\t-1565.png Demo14\t-1565rot.png Demo14\t-1607.png Demo14\t-1611.png Demo14\t-786.png Demo14\t-576.png Demo14\t-934.png Demo14\t-1039.png Demo14\t-14.png Demo14\t-14rot.png Demo14\t-42.png &quot;Demo14\BulletsExplosions\t-231 - Copy.png&quot; &quot;Demo14\BulletsExplosions\t-231.png&quot; &quot;Demo14\BulletsExplosions\t-232 - Copy.png&quot; &quot;Demo14\BulletsExplosions\t-232.png&quot; &quot;Demo14\BulletsExplosions\t-258.png&quot; &quot;Demo14\BulletsExplosions\t-259.png&quot; &quot;Demo14\BulletsExplosions\et-317.png&quot; &quot;Demo14\BulletsExplosions\et-318.png&quot; &quot;Demo14\BulletsExplosions\et-319.png&quot; --batchimages Demo14\t-1145.png --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4TitleScreenSprites.pal --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4Game1.pal --batchimages Demo14\t-3081.png Demo14\t-3112.png --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4Game2.pal --batchimages Demo14\Canyon\t-1728.png Demo14\Canyon\t-1692.png Demo14\Canyon\t-1745.png Demo14\Canyon\t-1862.png Demo14\Canyon\t-1850.png Demo14\Canyon\t-1852.png Demo14\Canyon\t-1853.png Demo14\Canyon\t-1855.png Demo14\Canyon\t-1858.png --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4Game3.pal --batchimages Demo14\t-715.png --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4Game4.pal --batchimages Demo14\Refuel\rt-464.png Demo14\Refuel\rt-474.png Demo14\Refuel\rt-484.png Demo14\Refuel\rt-494.png Demo14\Refuel\rt-500.png Demo14\Refuel\rt-506.png Demo14\Refuel\rt-508left.png Demo14\Refuel\rt-508right.png Demo14\Refuel\rt-509left.png Demo14\Refuel\rt-511.png --writepass" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
       <extension name="coverage">
         <pattern>
@@ -1039,6 +1055,7 @@
       <item itemvalue="Application.Test --paletteaddrgbs" />
       <item itemvalue="Application.Demo14 Sprites4 (1)" />
       <item itemvalue="Application.Demo14 Sprites4 batch image quantize" />
+      <item itemvalue="Application.Demo14 Sprites4 existing tile issue" />
       <item itemvalue="Application.Demo14 chars" />
       <item itemvalue="Application.Demo14 chars nolaterpalettes" />
       <item itemvalue="Application.Demo14 mode7 paletteraw" />
@@ -1144,32 +1161,9 @@
           <option name="timeStamp" value="80" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="x==256 &amp;&amp; y==0" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1499</line>
-          <option name="timeStamp" value="207" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="x==256 &amp;&amp; y==0" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1675</line>
-          <option name="timeStamp" value="208" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="x==256 &amp;&amp; y==0" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1716</line>
-          <option name="timeStamp" value="209" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>457</line>
-          <option name="timeStamp" value="211" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>487</line>
-          <option name="timeStamp" value="212" />
+          <line>1847</line>
+          <option name="timeStamp" value="215" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

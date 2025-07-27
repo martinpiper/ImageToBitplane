@@ -1,22 +1,26 @@
 package cli;
 
 import javafx.util.Pair;
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
-import org.w3c.dom.css.RGBColor;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.Inet4Address;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.List;
+
 import org.apache.commons.io.FilenameUtils;
 
 public class Main {
+
+    static boolean[] allowedSizes = new boolean[65536];
 
     static int colourBitsRed = 4 , colourBitsGreen = 4 , colourBitsBlue = 4;
     static int colourShiftRed = 4 , colourShiftGreen = 4 , colourShiftBlue = 4;
@@ -110,6 +114,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        Arrays.fill(allowedSizes, Boolean.TRUE);
         boolean shiftTopLeft = false;
         boolean minimiseArea = false;
         boolean processNow = false;
@@ -118,6 +123,23 @@ public class Main {
         HashSet<String> removeDuplicatesNames = new HashSet<String>();
 
         for (int i = 0 ; i < args.length ; i++) {
+            if (args[i].compareToIgnoreCase("--allowedSizesClear") == 0) {
+                Arrays.fill(allowedSizes, 0 , 254, Boolean.FALSE);
+                continue;
+            }
+            if (args[i].compareToIgnoreCase("--allowedSizesFileAdd") == 0) {
+                i++;
+                try {
+                    List<String> lines = FileUtils.readLines(FileUtils.getFile(args[i]), StandardCharsets.UTF_8);
+                    for (String line : lines) {
+                        allowedSizes[Integer.parseInt(line)] = true;
+                    }
+                } catch (Exception e) {
+                    System.out.println("Warning: File error for allowedSizesFileAdd " + e.getLocalizedMessage());
+                    Arrays.fill(allowedSizes, Boolean.TRUE);
+                }
+                continue;
+            }
             if (args[i].compareToIgnoreCase("--transparentRGB") == 0) {
                 i++;
                 Color transparentRGB = new Color(Integer.parseInt(args[i]) , Integer.parseInt(args[i+1]) , Integer.parseInt(args[i+2]));
@@ -458,32 +480,6 @@ public class Main {
                     img = ImageIO.read(file);
                     setupInputImage();
 
-                    /*
-                    int newWidth = (img.getWidth()+1)/2;
-                    newWidth = newWidth * 2;
-                    if (newWidth != img.getWidth()) {
-                        BufferedImage newImage = new BufferedImage(newWidth , img.getHeight() , img.getType());
-                        final int[] firstTransColour = {0};
-                        if (!forcedColourByIndex.isEmpty()) {
-                            firstTransColour[0] = forcedColourByIndex.get(0);
-                        } else if (!palettes.isEmpty()) {
-                            HashMap<Integer,Integer> thePalette = palettes.get(0);
-                            thePalette.forEach( (k,v) -> {if (v==0){
-                                firstTransColour[0] = k;}});
-                        }
-                        for (int x = 0 ; x < newImage.getWidth(); x++) {
-                            for (int y = 0 ; y < newImage.getHeight(); y++) {
-                                newImage.setRGB(x,y, firstTransColour[0]);
-                            }
-                        }
-                        for (int x = 0 ; x < img.getWidth(); x++) {
-                            for (int y = 0 ; y < img.getHeight(); y++) {
-                                newImage.setRGB(x,y,img.getRGB(x,y));
-                            }
-                        }
-                        img = newImage;
-                    }
-                    */
                     if (paletteMaxQuantize < 32) {
                         ImageQuantize();
                     }
@@ -864,6 +860,7 @@ public class Main {
 
 
         if (removeDuplicates) {
+            Map<String, Integer> nameToWidth = new HashMap<>();
             for (String filename : removeDuplicatesNames) {
                 if (!Files.exists(Paths.get(filename))) {
                     continue;
@@ -925,6 +922,60 @@ public class Main {
     }
 
     private static void setupInputImage() {
+
+        while (!allowedSizes[img.getWidth()]) {
+            System.out.println("   Expand width from " + img.getWidth());
+            BufferedImage newImage = new BufferedImage(img.getWidth() + 1, img.getHeight(), BufferedImage.TYPE_INT_RGB);
+            final int[] firstTransColour = {0};
+            if (!forcedColourByIndex.isEmpty()) {
+                firstTransColour[0] = forcedColourByIndex.get(0);
+            } else if (!palettes.isEmpty()) {
+                HashMap<Integer, Integer> thePalette = palettes.get(0);
+                thePalette.forEach((k, v) -> {
+                    if (v == 0) {
+                        firstTransColour[0] = k;
+                    }
+                });
+            }
+            for (int x = 0; x < newImage.getWidth(); x++) {
+                for (int y = 0; y < newImage.getHeight(); y++) {
+                    newImage.setRGB(x, y, firstTransColour[0]);
+                }
+            }
+            for (int x = 0; x < img.getWidth(); x++) {
+                for (int y = 0; y < img.getHeight(); y++) {
+                    newImage.setRGB(x, y, img.getRGB(x, y));
+                }
+            }
+            img = newImage;
+        }
+        while (!allowedSizes[img.getHeight()]) {
+            System.out.println("   Expand height from " + img.getHeight());
+            BufferedImage newImage = new BufferedImage(img.getWidth(), img.getHeight()+1, BufferedImage.TYPE_INT_RGB);
+            final int[] firstTransColour = {0};
+            if (!forcedColourByIndex.isEmpty()) {
+                firstTransColour[0] = forcedColourByIndex.get(0);
+            } else if (!palettes.isEmpty()) {
+                HashMap<Integer, Integer> thePalette = palettes.get(0);
+                thePalette.forEach((k, v) -> {
+                    if (v == 0) {
+                        firstTransColour[0] = k;
+                    }
+                });
+            }
+            for (int x = 0; x < newImage.getWidth(); x++) {
+                for (int y = 0; y < newImage.getHeight(); y++) {
+                    newImage.setRGB(x, y, firstTransColour[0]);
+                }
+            }
+            for (int x = 0; x < img.getWidth(); x++) {
+                for (int y = 0; y < img.getHeight(); y++) {
+                    newImage.setRGB(x, y, img.getRGB(x, y));
+                }
+            }
+            img = newImage;
+        }
+
         regions = null;
         regionShift = false;
 

@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cli/TileIndexFlip.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/TileIndexFlip.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -95,6 +95,7 @@
     &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;
   }
 }</component>
@@ -191,7 +192,7 @@
     <configuration name="Demo14 Sprites4 existing tile issue" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="cli.Main" />
       <module name="imagetobitplane" />
-      <option name="PROGRAM_PARAMETERS" value="--rgbshift 5 6 5 --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4GameEntity0.pal --fitpalettes --nostacking --outputscaled4 ..\tmp\ScaledSprites4 --outputsprites ..\tmp\Demo14ScaledSprites4Sheet.txt --batchimagequantize 16 --batchimagequantize 16 --batchimages Demo14\t-241.png Demo14\t-104.png Demo14\t-113.png Demo14\t-279.png Demo14\t-90.png Demo14\t-177.png --batchimages Demo14\BulletsExplosions\t-208.png Demo14\BulletsExplosions\t-793.png Demo14\BulletsExplosions\t-328.png &quot;Demo14\BulletsExplosions\et-731.png&quot; &quot;Demo14\BulletsExplosions\et-300.png&quot; &quot;Demo14\BulletsExplosions\et-509.png&quot; &quot;Demo14\BulletsExplosions\et-514.png&quot; &quot;Demo14\BulletsExplosions\et-523.png&quot; &quot;Demo14\BulletsExplosions\et-501.png&quot; &quot;Demo14\BulletsExplosions\et-528.png&quot; &quot;Demo14\BulletsExplosions\et-301.png&quot; &quot;Demo14\BulletsExplosions\et-517.png&quot; &quot;Demo14\BulletsExplosions\et-365.png&quot; &quot;Demo14\BulletsExplosions\et-383.png&quot; &quot;Demo14\BulletsExplosions\et-408.png&quot; --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4Game0.pal --batchimages Demo14\t-787.png Demo14\t-1565.png Demo14\t-1565rot.png Demo14\t-1607.png Demo14\t-1611.png Demo14\t-786.png Demo14\t-576.png Demo14\t-934.png Demo14\t-1039.png Demo14\t-14.png Demo14\t-14rot.png Demo14\t-42.png &quot;Demo14\BulletsExplosions\t-231 - Copy.png&quot; &quot;Demo14\BulletsExplosions\t-231.png&quot; &quot;Demo14\BulletsExplosions\t-232 - Copy.png&quot; &quot;Demo14\BulletsExplosions\t-232.png&quot; &quot;Demo14\BulletsExplosions\t-258.png&quot; &quot;Demo14\BulletsExplosions\t-259.png&quot; &quot;Demo14\BulletsExplosions\et-317.png&quot; &quot;Demo14\BulletsExplosions\et-318.png&quot; &quot;Demo14\BulletsExplosions\et-319.png&quot; --batchimages Demo14\t-1145.png --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4TitleScreenSprites.pal --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4Game1.pal --batchimages Demo14\t-3081.png Demo14\t-3112.png --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4Game2.pal --batchimages Demo14\Canyon\t-1728.png Demo14\Canyon\t-1692.png Demo14\Canyon\t-1745.png Demo14\Canyon\t-1862.png Demo14\Canyon\t-1850.png Demo14\Canyon\t-1852.png Demo14\Canyon\t-1853.png Demo14\Canyon\t-1855.png Demo14\Canyon\t-1858.png --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4Game3.pal --batchimages Demo14\t-715.png --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4Game4.pal --batchimages Demo14\Refuel\rt-464.png Demo14\Refuel\rt-474.png Demo14\Refuel\rt-484.png Demo14\Refuel\rt-494.png Demo14\Refuel\rt-500.png Demo14\Refuel\rt-506.png Demo14\Refuel\rt-508left.png Demo14\Refuel\rt-508right.png Demo14\Refuel\rt-509left.png Demo14\Refuel\rt-511.png --writepass" />
+      <option name="PROGRAM_PARAMETERS" value="--allowedSizesClear --allowedSizesFileAdd &quot;C:\Work\C64\VideoHardware\tmp\Demo14ScaledSprites4SheetOptimised.txtTables.allowed.txt&quot; --rgbshift 5 6 5 --newpalettes --palettesize 16 --loadpaletteraw ..\tmp\Demo14ScaledSprites4GameEntity0.pal --fitpalettes --nostacking --outputscaled4 ..\tmp\ScaledSprites4 --outputsprites ..\tmp\Demo14ScaledSprites4Sheet.txt --batchimagequantize 16 --batchimagequantize 16 --batchimages Demo14\Radar\radar15.png Demo14\Radar\radar165.png --writepass" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../C64/VideoHardware/assets" />
       <extension name="coverage">
         <pattern>
@@ -1162,8 +1163,78 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1847</line>
+          <line>1898</line>
           <option name="timeStamp" value="215" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>1897</line>
+          <option name="timeStamp" value="216" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>2041</line>
+          <option name="timeStamp" value="217" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>1889</line>
+          <option name="timeStamp" value="218" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>2079</line>
+          <option name="timeStamp" value="219" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>1438</line>
+          <option name="timeStamp" value="220" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>126</line>
+          <option name="timeStamp" value="221" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>130</line>
+          <option name="timeStamp" value="222" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>926</line>
+          <option name="timeStamp" value="224" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>952</line>
+          <option name="timeStamp" value="225" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>137</line>
+          <option name="timeStamp" value="226" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>140</line>
+          <option name="timeStamp" value="227" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>127</line>
+          <option name="timeStamp" value="228" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>125</line>
+          <option name="timeStamp" value="229" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
+          <line>124</line>
+          <option name="timeStamp" value="230" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1173,6 +1244,9 @@
         <watch expression="theTile" language="JAVA" />
         <watch expression="value" />
         <watch expression="colour" />
+        <watch expression="tileByteData" language="JAVA" />
+        <watch expression="tileByteData.position()" language="JAVA" />
+        <watch expression="args[i]" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

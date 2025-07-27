@@ -116,6 +116,10 @@
   * Prefers searching for later palettes when tile matching.
 * --nopreferLaterPalettes
   * Prefers searching for earlier palettes when tile matching.
+* --allowedSizesClear
+  * Clears the allowed sizes table used when loading an image
+* --allowedSizesFileAdd <filename>
+  * Adds allowed sizes from a file, each size is on a new line.
 * Image processing options
   * --transparentRGB 255 0 255
     * For image processing (--processNow) sets the transparent colour

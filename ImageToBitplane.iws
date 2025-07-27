@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fe0c7a1d-8096-4048-a9f2-28c2f0cdab17" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/ImageToBitplane.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ImageToBitplane.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cli/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cli/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/imagetobitplane-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
     </list>
@@ -1163,32 +1162,32 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1898</line>
+          <line>1920</line>
           <option name="timeStamp" value="215" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1897</line>
+          <line>1919</line>
           <option name="timeStamp" value="216" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>2041</line>
+          <line>2063</line>
           <option name="timeStamp" value="217" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1889</line>
+          <line>1911</line>
           <option name="timeStamp" value="218" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>2079</line>
+          <line>2101</line>
           <option name="timeStamp" value="219" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>1438</line>
+          <line>1460</line>
           <option name="timeStamp" value="220" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -1203,12 +1202,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>926</line>
+          <line>948</line>
           <option name="timeStamp" value="224" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cli/Main.java</url>
-          <line>952</line>
+          <line>974</line>
           <option name="timeStamp" value="225" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

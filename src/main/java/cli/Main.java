@@ -860,23 +860,45 @@ public class Main {
 
 
         if (removeDuplicates) {
+            Map<String, BufferedImage> nameToBufferedImage = new HashMap<>();
             Map<String, Integer> nameToWidth = new HashMap<>();
+            Map<String, Integer> nameToHeight = new HashMap<>();
             for (String filename : removeDuplicatesNames) {
                 if (!Files.exists(Paths.get(filename))) {
                     continue;
                 }
 
                 System.out.println("Consider duplicate removal: " + filename);
-                BufferedImage image1 = ImageIO.read(new File(filename));
+                BufferedImage image1 = nameToBufferedImage.get(filename);
+                if (image1 == null) {
+//                    System.out.println("Used cache: " + filename);
+                    image1 = ImageIO.read(new File(filename));
+                    nameToBufferedImage.put(filename, image1);
+                    nameToWidth.put(filename, image1.getWidth());
+                    nameToHeight.put(filename, image1.getHeight());
+                }
                 for (String otherFilename : removeDuplicatesNames) {
-                    if (!Files.exists(Paths.get(otherFilename))) {
-                        continue;
-                    }
                     if (filename.equals(otherFilename)) {
                         continue;
                     }
-                    System.out.println("Consider duplicate removal with: " + otherFilename);
-                    BufferedImage image2 = ImageIO.read(new File(otherFilename));
+                    if (image1.getWidth() > nameToWidth.getOrDefault(otherFilename , Integer.MAX_VALUE)) {
+                        continue;
+                    }
+                    if (image1.getHeight() > nameToHeight.getOrDefault(otherFilename , Integer.MAX_VALUE)) {
+                        continue;
+                    }
+                    if (!Files.exists(Paths.get(otherFilename))) {
+                        continue;
+                    }
+//                    System.out.println("Consider duplicate removal with: " + otherFilename);
+                    BufferedImage image2 = nameToBufferedImage.get(otherFilename);
+                    if (image2 == null) {
+//                        System.out.println("Used cache: " + otherFilename);
+                        image2 = ImageIO.read(new File(otherFilename));
+                        nameToBufferedImage.put(otherFilename, image2);
+                        nameToWidth.put(otherFilename, image2.getWidth());
+                        nameToHeight.put(otherFilename, image2.getHeight());
+                    }
                     // If image1 is a sub-image of image2 then still compare it and remove if needed
                     if (image1.getWidth() > image2.getWidth()) {
                         continue;
@@ -885,8 +907,8 @@ public class Main {
                         continue;
                     }
                     boolean identical = true;
-                    for (int x = 0; x < image1.getWidth(); x++) {
-                        for (int y = 0; y < image1.getHeight(); y++) {
+                    for (int x = 0; x < image1.getWidth() && identical; x++) {
+                        for (int y = 0; y < image1.getHeight() && identical; y++) {
                             if (image1.getRGB(x, y) == image2.getRGB(x, y)) {
                                 continue;
                             }

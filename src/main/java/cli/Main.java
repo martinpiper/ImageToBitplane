@@ -1,6 +1,7 @@
 package cli;
 
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 
@@ -2065,10 +2066,10 @@ public class Main {
                 if (outputScaled4 != null) {
                     outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileAddress=" + currentTileAddress);
                     outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileWidth=" + tileWidth);
-                    labelToValue.add(new Pair<String,Integer>(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileWidth", tileWidth));
+                    labelToValue.add(new ImmutablePair<String,Integer>(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileWidth", tileWidth));
                     labelValues.add(tileWidth);
                     outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileHeight=" + tileHeight);
-                    labelToValue.add(new Pair<String,Integer>(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileHeight", tileHeight));
+                    labelToValue.add(new ImmutablePair<String,Integer>(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileHeight", tileHeight));
                     labelValues.add(tileHeight);
                 } else {
                     outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileIndex=" + theTileIndex);

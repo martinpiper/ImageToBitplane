@@ -132,7 +132,9 @@ public class Main {
                 try {
                     List<String> lines = FileUtils.readLines(FileUtils.getFile(args[i]), StandardCharsets.UTF_8);
                     for (String line : lines) {
-                        allowedSizes[Integer.parseInt(line)] = true;
+                        int theLine = Integer.parseInt(line);
+                        allowedSizes[theLine] = true;
+                        System.out.println("Allowed size " + line + " , " + theLine);
                     }
                 } catch (Exception e) {
                     System.out.println("Warning: File error for allowedSizesFileAdd " + e.getLocalizedMessage());

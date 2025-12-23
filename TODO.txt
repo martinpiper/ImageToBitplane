@@ -93,3 +93,16 @@
 
 
 * "Palette quantize pass. Size =" is very slow
+
+
+
+* Convert to RGB for background layer...
+
+
+
+* Image size adjust (for the concat option as well)
+    Bigger and smaller, uses the first force RGB colour or black if not set
+
+
+
+* Image flip (for the concat option as well)

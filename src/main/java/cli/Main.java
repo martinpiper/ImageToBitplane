@@ -2,7 +2,6 @@ package cli;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 
 import javax.imageio.ImageIO;
@@ -16,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -1368,8 +1368,12 @@ public class Main {
         }
     }
 
+    static HashMap<Integer,Integer> paletteIndexUsedCount = new HashMap<>();
+
     static PrintStream fcdTileScreen;
     private static void TileConvert() throws FileNotFoundException {
+        paletteIndexUsedCount = new HashMap<>();
+
         System.out.println("To tiles...");
         fcdTileScreen = null;
         if (outputScreenData != null) {
@@ -1462,6 +1466,16 @@ public class Main {
             System.out.println("palette size=" + palette.size());
         }
         System.out.println("num tiles=" + currentTile);
+
+        PrintStream debug = new PrintStream(new FileOutputStream(outputScreenData + ".PaletteUsage.txt"));
+        AtomicInteger index = new AtomicInteger();
+        paletteIndexUsedCount.forEach((key,value)-> {
+            int thisIndex = index.getAndIncrement();
+            debug.println("kTilePaletteDebug_" + lastGoodDebugName + "_palette" + thisIndex + "IndexUsed=" + key);
+            debug.println("kTilePaletteDebug_" + lastGoodDebugName + "_palette" + thisIndex + "IndexUsedCount=" + value);
+                }
+                );
+        debug.close();
     }
 
     private static void ensureRegions() {
@@ -1569,6 +1583,8 @@ public class Main {
     static int cumulativeSpriteCount = 0;
     static String lastGoodSpriteName;
 
+    static String lastGoodDebugName = "";
+
     static int getOffsetForXY(int x , int y) {
         return (x/tileWidth) + ((y/tileHeight) * (imageWidth/tileHeight));
     }
@@ -1576,6 +1592,7 @@ public class Main {
         String tileScreenDebugName = "";
         if (fcdTileScreen != null && outputScreenData != null) {
             tileScreenDebugName = outputScreenData.replace(" " , "_").replace("-" , "_").replace("/" , "_").replace("\\" , "_").replace("." , "_").replace(":" , "_");
+            lastGoodDebugName = tileScreenDebugName;
             tileScreenDebugName = "kTileScreenDebug_" + tileScreenDebugName + "_x" + x + "_y" + y + "_";
         }
         int dataOffset = getOffsetForXY(x,y);
@@ -1920,6 +1937,12 @@ public class Main {
             String testTile = Base64.getEncoder().encodeToString(theTile);
             TileIndexFlip existingIndexFlip = tileToIndexFlip.get(testTile);
 
+            if (paletteIndexUsedCount != null) {
+                Integer value = paletteIndexUsedCount.getOrDefault(bestFoundPaletteIndex, 0);
+                value = value + 1;
+                paletteIndexUsedCount.put(bestFoundPaletteIndex, value);
+            }
+
             if (existingIndexFlip != null) {
                 bestFlipX = existingIndexFlip.flipX;
                 bestFlipY = existingIndexFlip.flipY;
@@ -2075,7 +2098,15 @@ public class Main {
                     outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_tileIndex=" + theTileIndex);
                 }
 
-                outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_colour=" + (theColour + paletteOffset));
+                int realPalette = theColour + paletteOffset;
+                outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_colour=" + realPalette);
+
+                if (paletteIndexUsedCount != null) {
+                    Integer value = paletteIndexUsedCount.getOrDefault(realPalette, 0);
+                    value = value + 1;
+                    paletteIndexUsedCount.put(realPalette, value);
+                }
+
                 outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_offsetX=" + region.offsetX);
                 outputSprites3.println(lastGoodSpriteName + "_" + cumulativeSpriteCount+ "_offsetY=" + region.offsetY);
                 cumulativeSpriteCount++;
